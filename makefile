@@ -1,19 +1,19 @@
 
-docName = draft-ounsworth-pq-composite-sigs
+docName = draft-ounsworth-pq-composite-encryption
 
 
 default: all
 
 txt: $(docName).txt
 
-draft-ounsworth-pq-composite-sigs.txt: $(docName).mkd
+draft-ounsworth-pq-composite-encryption.txt: $(docName).mkd
 	kdrfc $(docName).mkd
 
 
 
 xml: $(docName).xml
 
-draft-ounsworth-pq-composite-sigs.xml: $(docName).mkd
+draft-ounsworth-pq-composite-encryption.xml: $(docName).mkd
 	 kramdown-rfc2629 $(docName).mkd > $(docName).xml
 
 
