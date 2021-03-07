@@ -1,14 +1,13 @@
 ---
-title: Composite Keys and Signatures For Use In Internet PKI
+title: Composite Encryption For Use In Internet PKI
 abbrev: PQ Composite Certs
 # <!-- EDNOTE: Edits the draft name -->
-docname: draft-ounsworth-pq-composite-sigs-05
+docname: draft-ounsworth-pq-composite-encryption-00
 # <!-- date: 2012-01-13 -->
 # <!-- date: 2012-01 -->
 # <!-- date: 2012 -->
 
 # <!-- stand_alone: true -->
-<!-- ipr: trust200902 -->
 area: Security
 wg: LAMPS
 kw: Internet-Draft

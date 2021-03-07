@@ -8,8 +8,8 @@ Intended status: Standards Track                                 Entrust
 Expires: September 8, 2021                                March 07, 2021
 
 
-         Composite Keys and Signatures For Use In Internet PKI
-                  draft-ounsworth-pq-composite-sigs-05
+              Composite Encryption For Use In Internet PKI
+               draft-ounsworth-pq-composite-encryption-00
 
 Abstract
 
