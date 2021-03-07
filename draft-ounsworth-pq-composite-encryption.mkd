@@ -33,10 +33,11 @@ author:
       email: mike.ounsworth@entrust.com
 
     -
-      ins: M. Pala
-      name: Massimiliano Pala
-      org: CableLabs
-      email: director@openca.org
+      ins: J. Gray
+      name: John Gray
+      org: Enrust Limited
+      abbrev: Entrust
+      email: john.gray@entrust.com
 
 normative:
   RFC1421:
