@@ -380,13 +380,16 @@
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Algorithm Identifier">
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Composite Keys">
 <link href="#rfc.section.2.2.1" rel="Chapter" title="2.2.1 Key Usage Bits">
-<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Composite Signature">
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Composite Key Encryption">
 <link href="#rfc.section.2.4" rel="Chapter" title="2.4 Encoding Rules">
-<link href="#rfc.section.3" rel="Chapter" title="3 Composite Signature Algorithm">
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Composite Signature Generation">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Composite Signature Verification">
+<link href="#rfc.section.3" rel="Chapter" title="3 Composite encryption and decryption Processes">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Composite encryption">
+<link href="#rfc.section.3.1.1" rel="Chapter" title="3.1.1 Composite-OR encryption">
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Composite Decryption">
+<link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 Composite-OR decryption">
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Deriving a content encryption key">
+<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Key encryption">
 <link href="#rfc.section.4" rel="Chapter" title="4 In Practice">
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Cryptographic protocols">
 <link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations">
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Policy for Deprecated and Acceptable Algorithms">
@@ -406,9 +409,9 @@
 
   <meta name="dct.creator" content="Ounsworth (Editor), M. and J. Gray" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-encryption-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2021-03-07" />
-  <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined. " />
-  <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data. This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined. " />
+  <meta name="dct.issued" scheme="ISO8601" content="2021-03-15" />
+  <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient&#x27;s component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2. " />
+  <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient&#x27;s component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2. " />
 
 </head>
 
@@ -430,8 +433,8 @@
 <td class="right">Entrust</td>
 </tr>
 <tr>
-<td class="left">Expires: September 8, 2021</td>
-<td class="right">March 07, 2021</td>
+<td class="left">Expires: September 16, 2021</td>
+<td class="right">March 15, 2021</td>
 </tr>
 
     	
@@ -442,13 +445,13 @@
   <span class="filename">draft-ounsworth-pq-composite-encryption-00</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data.</p>
-<p>This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined.</p>
+<p>With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data.</p>
+<p>This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient's component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 8, 2021.</p>
+<p>This Internet-Draft will expire on September 16, 2021.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2021 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -470,21 +473,27 @@
 </li>
 <ul><li>2.2.1.   <a href="#rfc.section.2.2.1">Key Usage Bits</a>
 </li>
-</ul><li>2.3.   <a href="#rfc.section.2.3">Composite Signature</a>
+</ul><li>2.3.   <a href="#rfc.section.2.3">Composite Key Encryption</a>
 </li>
 <li>2.4.   <a href="#rfc.section.2.4">Encoding Rules</a>
 </li>
-</ul><li>3.   <a href="#rfc.section.3">Composite Signature Algorithm</a>
+</ul><li>3.   <a href="#rfc.section.3">Composite encryption and decryption Processes</a>
 </li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">Composite Signature Generation</a>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Composite encryption</a>
 </li>
-<li>3.2.   <a href="#rfc.section.3.2">Composite Signature Verification</a>
+<ul><li>3.1.1.   <a href="#rfc.section.3.1.1">Composite-OR encryption</a>
+</li>
+</ul><li>3.2.   <a href="#rfc.section.3.2">Composite Decryption</a>
+</li>
+<ul><li>3.2.1.   <a href="#rfc.section.3.2.1">Composite-OR decryption</a>
+</li>
+</ul><li>3.3.   <a href="#rfc.section.3.3">Deriving a content encryption key</a>
+</li>
+<li>3.4.   <a href="#rfc.section.3.4">Key encryption</a>
 </li>
 </ul><li>4.   <a href="#rfc.section.4">In Practice</a>
 </li>
-<ul><li>4.1.   <a href="#rfc.section.4.1">Cryptographic protocols</a>
-</li>
-</ul><li>5.   <a href="#rfc.section.5">IANA Considerations</a>
+<li>5.   <a href="#rfc.section.5">IANA Considerations</a>
 </li>
 <li>6.   <a href="#rfc.section.6">Security Considerations</a>
 </li>
@@ -516,15 +525,15 @@
 <a href="#rfc.section.1">1.</a> <a href="#sec-intro" id="sec-intro">Introduction</a>
 </h1>
 <p id="rfc.section.1.p.1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.</p>
-<p id="rfc.section.1.p.2">The deployment of composite public keys and composite signatures using post-quantum algorithms will face two challenges</p>
+<p id="rfc.section.1.p.2">The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges</p>
 <p></p>
 
 <ul>
 <li>Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.</li>
 <li>Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.</li>
 </ul>
-<p id="rfc.section.1.p.4">This document provides a mechanism to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for encoding multiple signature values into existing public signature fields, as well as an algorithm for validating a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).</p>
-<p id="rfc.section.1.p.5">This document is intended for general applicability anywhere that digital signatures are used within PKIX structures.</p>
+<p id="rfc.section.1.p.4">This document provides a mechanism to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for wrapping a content encryption key using multiple public key encryption mechanisms into existing fields. The issue of backwards compatibility is left open to be addressed in separate draft(s).</p>
+<p id="rfc.section.1.p.5">This document is intended for general applicability anywhere that content encryption is used within PKIX and CMS structures.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#sec-terminology" id="sec-terminology">Terminology</a>
 </h1>
@@ -541,8 +550,9 @@
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#sec-composite-structs" id="sec-composite-structs">Composite Structures</a>
 </h1>
-<p id="rfc.section.2.p.1">In order for public keys and signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of public key and signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing public key or signature fields such as those found in PKCS#10 <a href="#RFC2986" class="xref">[RFC2986]</a>, CMP <a href="#RFC4210" class="xref">[RFC4210]</a>, X.509 <a href="#RFC5280" class="xref">[RFC5280]</a>, CMS <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
-<p id="rfc.section.2.p.2">This section defines the following structures:</p>
+<p id="rfc.section.2.p.1">EDNOTE: TODO: RE-WORK THIS SECTION.</p>
+<p id="rfc.section.2.p.2">In order for public keys and signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of public key and signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing public key or signature fields such as those found in PKCS#10 <a href="#RFC2986" class="xref">[RFC2986]</a>, CMP <a href="#RFC4210" class="xref">[RFC4210]</a>, X.509 <a href="#RFC5280" class="xref">[RFC5280]</a>, CMS <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
+<p id="rfc.section.2.p.3">This section defines the following structures:</p>
 <p></p>
 
 <ul>
@@ -550,8 +560,8 @@
 <li>The CompositePrivateKey carries all the private keys associated with an identity within a single private key structure.</li>
 <li>The CompositeSignatureValue, carries a sequence of signatures that are generated by a CompositePrivateKey, and can be verified with the corresponding CompositePublicKey.</li>
 </ul>
-<p id="rfc.section.2.p.4">EDNOTE 2: the choice to define composite algorithm parameters as a sequence inside the existing fields avoids the exponential proliferation of OIDs that are needed for each combination of signature algorithms in other schemes for achieving multi-key certificates. This scheme also naturally extends from 2-keypair to n-keypair keys and certificates.</p>
-<p id="rfc.section.2.p.5">EDNOTE 2a: We have heard community feedback that the ASN.1 structures presented here are too flexible in that allow arbitrary combinations of an arbitrary number of signature algorithms. The feedback is that this is too much of a "footgun" for implementors and sysadmins. We are working on an alternative formulation using ASN.1 information object classes that allow for compiling explicit pairs of algorithmIDs. We would love community feedback on which approach is preferred. See slide 30 of this presentation: https://datatracker.ietf.org/meeting/interim-2021-lamps-01/materials/slides-interim-2021-lamps-01-sessa-position-presentation-by-mike-ounsworth-00.pdf</p>
+<p id="rfc.section.2.p.5">EDNOTE 2: the choice to define composite algorithm parameters as a sequence inside the existing fields avoids the exponential proliferation of OIDs that are needed for each combination of signature algorithms in other schemes for achieving multi-key certificates. This scheme also naturally extends from 2-keypair to n-keypair keys and certificates.</p>
+<p id="rfc.section.2.p.6">EDNOTE 2a: We have heard community feedback that the ASN.1 structures presented here are too flexible in that allow arbitrary combinations of an arbitrary number of signature algorithms. The feedback is that this is too much of a "footgun" for implementors and sysadmins. We are working on an alternative formulation using ASN.1 information object classes that allow for compiling explicit pairs of algorithmIDs. We would love community feedback on which approach is preferred. See slide 30 of this presentation: https://datatracker.ietf.org/meeting/interim-2021-lamps-01/materials/slides-interim-2021-lamps-01-sessa-position-presentation-by-mike-ounsworth-00.pdf</p>
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#sec-alg-identifier" id="sec-alg-identifier">Algorithm Identifier</a>
 </h1>
@@ -562,165 +572,165 @@ id-alg-composite OBJECT IDENTIFIER ::= {
     enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
 </pre>
 <p id="rfc.section.2.1.p.2">EDNOTE 3: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see <a href="#sec-iana" class="xref">Section 5</a>.</p>
+<p id="rfc.section.2.1.p.3">EDNOTE: should this be an instance of RFC 5652's KeyEncryptionAlgorithmIdentifier ?</p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#composite-keys" id="composite-keys">Composite Keys</a>
 </h1>
-<p id="rfc.section.2.2.p.1">A Composite signature MUST be associated with a Composite public key as defined in ~~ reference draft-ounsworth-pq-composite-pubkey ~~.</p>
+<p id="rfc.section.2.2.p.1">A Composite encryption MUST be associated with a Composite public key as defined in ~~ reference draft-ounsworth-pq-composite-pubkey ~~.</p>
 <h1 id="rfc.section.2.2.1">
 <a href="#rfc.section.2.2.1">2.2.1.</a> <a href="#key-usage-bits" id="key-usage-bits">Key Usage Bits</a>
 </h1>
 <p id="rfc.section.2.2.1.p.1">For protocols such as X.509 <a href="#RFC5280" class="xref">[RFC5280]</a> that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.</p>
 <p id="rfc.section.2.2.1.p.2">If the keyUsage extension is present in an end-entity certificate whose keys are being used with id-alg-composite signatures, then the keyUsage extension MUST contain one or both of the following values:</p>
 <pre>
-    nonRepudiation; and
-    digitalSignature.
-</pre>
-<p id="rfc.section.2.2.1.p.3">If the keyUsage extension is present in a certification authority certificate whose keys are being used with id-alg-composite signatures, then the keyUsage extension MUST contain one or more of the following values:</p>
-<pre>
-    nonRepudiation;
-    digitalSignature;
-    keyCertSign; and
-    cRLSign.
+    keyEncipherment; and
+    dataEncipherment.
 </pre>
 <h1 id="rfc.section.2.3">
-<a href="#rfc.section.2.3">2.3.</a> <a href="#sec-composite-sig-structs" id="sec-composite-sig-structs">Composite Signature</a>
+<a href="#rfc.section.2.3">2.3.</a> <a href="#sec-composite-encr-structs" id="sec-composite-encr-structs">Composite Key Encryption</a>
 </h1>
-<p id="rfc.section.2.3.p.1">The ASN.1 algorithm object for a composite signature is:</p>
+<p id="rfc.section.2.3.p.1">The composite content-encryption algorithm supports encryption and decryption operations. The encryption operation maps an octet string (the plaintext) to another octet string (the ciphertext) under control of a content-encryption key formed by combining multiple shared secrets each encrypted for a different recipient component public key. The decryption operation is the inverse of the encryption operation.  Context determines which operation is intended.</p>
+<p id="rfc.section.2.3.p.2">The id-alg-composite object identifier MUST be used to identify when an encrypted key has been created for decryption by a CompositePrivateKey. Composite encryption uses the following structure:</p>
 <pre>
-sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite
-    VALUE CompositeSignatureValue
-    PARAMS TYPE CompositeParams ARE required
-    PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
+CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
 </pre>
-<p id="rfc.section.2.3.p.2">The id-alg-composite object identifier MUST be used to identify when a signature has been created by a CompositePrivateKey and following algorithm parameters MUST be included:</p>
+<p id="rfc.section.2.3.p.3">EDNOTE: Need to run this through an ASN.1 compiler and fix: intent is that this fits into any EncryptedKey field, but defines some stricture within the existing EncryptedKey ::= OCTET STRING. If wrapping it on the wire inside the EncryptedKey OID provides that, then great!</p>
+<p id="rfc.section.2.3.p.4">Where each OCTEC STRING within the SEQUENCE contains key material encrypted for one of the recipient's component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated composite public key object.</p>
+<p id="rfc.section.2.3.p.5">The choice of <samp>SEQUENCE OF OCTET STRING</samp>, rather than a single OCTET STRING containing the concatenated signature values, is to gracefully handle variable-length ciphertext values by taking advantage of ASN.1's built-in length fields.</p>
+<p id="rfc.section.2.3.p.6">EDNOTE: do we need a CompositeParams to denote the list of component algorithms used, or will that be implied when the decryptor tries to use their private key? Need to take another look at RFC 5652 and CMP to see if there's even a spot to put CompositeParams in an encryption alg.</p>
 <pre>
 CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 </pre>
-<p id="rfc.section.2.3.p.3">The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePrivateKey and CompositePublicKey.</p>
-<p id="rfc.section.2.3.p.4">The output of the composite signature algorithm is the DER encoding of the following structure:</p>
-<pre>
-CompositeSignatureValue ::= SEQUENCE SIZE (1..MAX) OF BIT STRING
-</pre>
-<p id="rfc.section.2.3.p.5">Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.</p>
-<p id="rfc.section.2.3.p.6">The choice of <samp>SEQUENCE OF BIT STRING</samp>, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's build-in length fields.</p>
 <h1 id="rfc.section.2.4">
 <a href="#rfc.section.2.4">2.4.</a> <a href="#sec-encoding-rules" id="sec-encoding-rules">Encoding Rules</a>
 </h1>
-<p id="rfc.section.2.4.p.1">Many protocol specifications will require that the composite public key, composite private key, and composite signature data structures be represented by an octet string or bit string.</p>
-<p id="rfc.section.2.4.p.2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.</p>
-<p id="rfc.section.2.4.p.3">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.</p>
-<p id="rfc.section.2.4.p.4">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.</p>
+<p id="rfc.section.2.4.p.1">EDNOTE: this section was copied from the composite-sigs draft. Does it apply here since I've defined it above as an OCTET STRING already?</p>
+<p id="rfc.section.2.4.p.2">Many protocol specifications will require that the composite public key, composite private key, and composite signature data structures be represented by an octet string or bit string.</p>
+<p id="rfc.section.2.4.p.3">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.</p>
+<p id="rfc.section.2.4.p.4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.</p>
+<p id="rfc.section.2.4.p.5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.</p>
 <h1 id="rfc.section.3">
-<a href="#rfc.section.3">3.</a> <a href="#sec-composite-signature-algorithm" id="sec-composite-signature-algorithm">Composite Signature Algorithm</a>
+<a href="#rfc.section.3">3.</a> <a href="#sec-composite-encryption-algorithm" id="sec-composite-encryption-algorithm">Composite encryption and decryption Processes</a>
 </h1>
-<p id="rfc.section.3.p.1">This section specifies the algorithms for generating and verifying composite signatures.</p>
-<p id="rfc.section.3.p.2">This algorithm addresses algorithm strength uncertainty by providing the verifier with parallel signatures from all the component signature algorithms; thus breaking the composite signature would require breaking all of the component signatures.</p>
+<p id="rfc.section.3.p.1">This section specifies the algorithms for encrypting and decrypting using composite encryption.</p>
+<p id="rfc.section.3.p.2">This algorithm addresses algorithm strength uncertainty by establishing separate key material using each component algorithm, to be combined into the content encryption key using :: TODO: ref properly :: NIST SP 800-56Cr2.</p>
 <h1 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#sec-comp-sig-gen" id="sec-comp-sig-gen">Composite Signature Generation</a>
+<a href="#rfc.section.3.1">3.1.</a> <a href="#sec-comp-encr" id="sec-comp-encr">Composite encryption</a>
 </h1>
-<p id="rfc.section.3.1.p.1">Generation of a composite signature involves applying each component algorithm's signature routine to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in <a href="#sec-composite-sig-structs" class="xref">Section 2.3</a>.</p>
-<p id="rfc.section.3.1.p.2">The following algorithm is used to generate composite signature values.</p>
+<p id="rfc.section.3.1.p.1">Generation of a CompositeEncryptedKey involves applying each component algorithm's encryption routine to a shared secret value according to its specification, and then placing each component value into the CompositeEncryptedKey structure defined in <a href="#sec-composite-encr-structs" class="xref">Section 2.3</a>.</p>
+<p id="rfc.section.3.1.p.2">The following algorithm is used to generate composite encrypted key values.</p>
 <pre>
 Input:
-     K1, K2, .., Kn     Private keys for the n component signature
-                        algorithms, a CompositePrivateKey
-     M                  Message to be signed, an octet string
+     P1, P2, .., Pn     Public keys for the n component encryption
+                        algorithms, a CompositePublicKey
+    
+    SIZE                The size, in bits, for shared secrets to be combined by both 
+                        parties into a content encryption key. This value SHOULD correspond
+                        to the size of the content encryption key.
 
 Output:
-     S                  The signatures, a CompositeSignatureValue
+     E                  The encrypted value, a CompositeEncryptedKey
 
-Signature Generation Procedure:
-   1. Generate the n component signatures independently,
+     SS1, SS2, .., SSn Key material in the form of a set of shared secrets.
+
+Ciphertext Generation Procedure:
+   1. Generate a set of shared secrets
+        for i := 1 to n
+          SSi := random_bits(SIZE)
+
+   2. Generate the n component ciphertexts independently,
       according to their algorithm specifications.
 
         for i := 1 to n
-            Si := Sign( Ki, M )
+            Ei := Encrypt( Pi, SSi )
 
-   2. Encode each component signature S1, S2, .., Sn into a BIT STRING
-      according to its algorithm specification.2020-01-21g
+   3. Encode each component ciphertext E1, E2, .., En into a OCTET STRING
+      according to its algorithm specification.
 
-        S ::= Sequence { S1, S2, .., Sn }
+        E ::= Sequence { E1, E2, .., En }
 
-   3. Output S
+   4. Output E
+      Output SS1, SS2, .., SSn
 </pre>
-<p id="rfc.section.3.1.p.3">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation routine MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.</p>
-<p id="rfc.section.3.1.p.4">A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey. While it may be tempting to allow a signer to produce a signature with a subset of their keys, the complexity of securely verifying such a "subset signature" is high and out of scope for this document.</p>
-<h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#sec-comp-sig-verify" id="sec-comp-sig-verify">Composite Signature Verification</a>
+<p id="rfc.section.3.1.p.3">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component ciphertext may itself be a composite; ie the composite encryption process MUST fail if one of the public keys K1, K2, .., Kn is a composite with the OID id-alg-composite.</p>
+<p id="rfc.section.3.1.p.4">A composite encryption MUST produce and include in the output a ciphertext value for every component key in the corresponding CompositePublicKey. For this mode, please see Composite-OR in section <a href="#sec-comp-or-encr" class="xref">Section 3.1.1</a>.</p>
+<p id="rfc.section.3.1.p.5">This process MAY be modified to accept the key material SS1, SS2, .., SSn as an input rather than generated as part of this process.</p>
+<h1 id="rfc.section.3.1.1">
+<a href="#rfc.section.3.1.1">3.1.1.</a> <a href="#sec-comp-or-encr" id="sec-comp-or-encr">Composite-OR encryption</a>
 </h1>
-<p id="rfc.section.3.2.p.1">Verification of a composite signature involves applying each component algorithm's verification routine according to its specification.</p>
-<p id="rfc.section.3.2.p.2">In the absence of an application profile specifying otherwise, compliant applications MUST output "Valid signature" (true) if and only if all component signatures were successfully validated, and "Invalid signature" (false) otherwise.</p>
-<p id="rfc.section.3.2.p.3">The following algorithm is used to perform this verification.</p>
+<p id="rfc.section.3.1.1.p.1">If the algorithm ID of the public key associated with this signature is id-composite-or-key then the encryptor MAY use only a subset of the component keys and therefore produce fewer ciphertexts than the number of recipient component keys.</p>
+<p id="rfc.section.3.1.1.p.2">Composite-OR encryption uses the same structures and algorithms as Composite, with the difference that the encryption process may emit a null instead of a ciphertext in step 2 for one or more component algorithms. A Composite-OR CompositeEncryptedKey MUST NOT be entirely null; it must contain at least one ciphertext.</p>
+<p id="rfc.section.3.1.1.p.3">The design intent of this mode is to support migration scenarios where an entity is encrypting for a peer which has been issued keys on algorithms that either the encryptor or the recipient do not (yet) support.</p>
+<p id="rfc.section.3.1.1.p.4">EDNOTE: Do we want to allow a Composite-OR with only a single ciphertext to produce non-composite EncryptedKey<a href="#RFC5652" class="xref">[RFC5652]</a>? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a encrypted key is traditional or composite until you look at the corresponding key.</p>
+<h1 id="rfc.section.3.2">
+<a href="#rfc.section.3.2">3.2.</a> <a href="#sec-comp-decr" id="sec-comp-decr">Composite Decryption</a>
+</h1>
+<p id="rfc.section.3.2.p.1">The following algorithm is used to decrypt a composite encrypted key values.</p>
 <pre>
 Input:
-     P    Signer's composite public key
-     M    Message whose signature is to be verified, an octet string
-     S    Composite Signature to be verified
-     A    Composite Algorithm identifier
+    E                  The encrypted value, a CompositeEncryptedKey
+    
+    K                  Private key for the n component encryption
+                       algorithms, a CompositePurivateKey
 
 Output:
-    Validity      "Valid signature" (true) if the composite signature
-                  is valid, "Invalid signature" (false) otherwise.
+     SS1, SS2, .., SSn Key material in the form of a set of shared secrets.
 
-Signature Verification Procedure::
-   1. Parse P, S, A into the component public keys, signatures,
-      and algorithm identifiers
+Ciphertext Decryption Procedure:
 
-      P1, P2, .., Pn := Desequence( P )
-      S1, S2, .., Sn := Desequence( S )
-      A1, A2, .., An := Desequence( A )
+   1. Parse E into the component ciphertexts
+
+      E1, E2, .., En := Desequence( E )
+      K1, K2, .., Kn := Desequence( K )
 
     If Error during Desequencing, or the three sequences have
-    different numbers of elements, or any of the public keys P1, P2, .., Pn or
-    algorithm identifiers A1, A2, .., An are composite with the OID
-    id-alg-composite then output "Invalid signature" and stop.
+    different numbers of elements, or any of the private keys K1, K2, .., Kn or
+    are composite with the OID id-alg-composite then output "Invalid ciphertext" and stop.
 
-   2. Check each component signature individually, according to its
+   2. Decrypt each component ciphertext individually, according to its
        algorithm specification.
-       If any fail, then the entire signature validation fails.
+       If any fail, then the entire decryption operation fails.
 
-     for i := 1 to n
-          if not verify( Pi, M, Si ), then
-            output "Invalid signature"
+        for i := 1 to n
+              if not (SSi := decrypt( Ki, Ei ), then
+                output "Invalid ciphertext"
 
-      if all succeeded, then
-        output "Valid signature"
+   3. Output SS1, SS2, .., SSn
 </pre>
-<p id="rfc.section.3.2.p.4">Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.</p>
-<p id="rfc.section.3.2.p.5">It is expected that some use-cases for algorithm migration or high performance will require verifiers to succeed when only a subset of the component algorithms have been verified. Defining this verification behaviour is out of scope for this document, and falls to an application profile.</p>
+<p id="rfc.section.3.2.p.2">Security consideration: for timing-invariance, step 2 may need to process all provided ciphertexsts rather than short-circuiting with an error.</p>
+<h1 id="rfc.section.3.2.1">
+<a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#sec-comp-or-decr" id="sec-comp-or-decr">Composite-OR decryption</a>
+</h1>
+<p id="rfc.section.3.2.1.p.1">If the decryptor supports using their private key in the Composite-OR mode, then decryption of a null-valued ciphertext in step 2 is not considered an error. The process should emit a null value for the corresponding shared secret SSi, which MUST be treated as an empty string for the purposes of concatenation.</p>
+<h1 id="rfc.section.3.3">
+<a href="#rfc.section.3.3">3.3.</a> <a href="#deriving-a-content-encryption-key" id="deriving-a-content-encryption-key">Deriving a content encryption key</a>
+</h1>
+<p id="rfc.section.3.3.p.1">Given a set of shared secrets SS1, SS2, .., SSn as per <a href="#sec-comp-encr" class="xref">Section 3.1</a> and <a href="#sec-comp-decr" class="xref">Section 3.2</a>, they are to be combined into a content encryption key as:</p>
+<pre>
+Z := SS1
+T := SS2 || .. || SSn
+</pre>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<thead><tr>
+<th class="left">where</th>
+<th class="left"></th>
+<th class="left">denotes concatenation. Z and T are then used as input to the key derivation scheme defined in :: TODO: CITE PROPERLY :: NIST SP 800-56Cr2 as the "hybrid" shared secret of the form Z' = Z</th>
+<th class="left"></th>
+<th class="left">T.</th>
+</tr></thead>
+<tbody><tr></tr></tbody>
+</table>
+<h1 id="rfc.section.3.4">
+<a href="#rfc.section.3.4">3.4.</a> <a href="#key-encryption" id="key-encryption">Key encryption</a>
+</h1>
+<p id="rfc.section.3.4.p.1">EDNOTE: Copy from CMS (RFC 5652):</p>
+<p id="rfc.section.3.4.p.2">6.4.  Key-encryption Process</p>
+<p id="rfc.section.3.4.p.3">The input to the key-encryption process -- the value supplied to the recipient's key-encryption algorithm -- is just the "value" of the content-encryption key.</p>
+<p id="rfc.section.3.4.p.4">Any of the aforementioned key management techniques can be used for each recipient of the same encrypted content.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#sec-in-pract" id="sec-in-pract">In Practice</a>
 </h1>
 <p id="rfc.section.4.p.1">This section addresses practical issues of how this draft affects other protocols and standards.</p>
-<p id="rfc.section.4.p.2">~~~ BEGIN EDNOTE 10~~~</p>
-<p id="rfc.section.4.p.3">EDNOTE 10: Possible topics to address:</p>
-<p></p>
-
-<ul>
-<li>The size of these certs and cert chains.</li>
-<li>In particular, implications for (large) composite keys / signatures / certs on the handshake stages of TLS and IKEv2.</li>
-<li>If a cert in the chain is a composite cert then does the whole chain need to be of composite Certs?</li>
-<li>We could also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs.</li>
-<li>We could talk about overhead (size and processing).</li>
-<li>We could also discuss backwards compatibility.</li>
-<li>We could include a subsection about implementation considerations.</li>
-</ul>
-<p id="rfc.section.4.p.5">~~~ END EDNOTE 10~~~</p>
-<h1 id="rfc.section.4.1">
-<a href="#rfc.section.4.1">4.1.</a> <a href="#cryptographic-protocols" id="cryptographic-protocols">Cryptographic protocols</a>
-</h1>
-<p id="rfc.section.4.1.p.1">This section talks about how protocols like (D)TLS and IKEv2 are affected by this specifications. It will not attempt to solve all these problems, but it will explain the rationale, how things will work and what open problems need to be solved. Obvious issues that need to be discussed.</p>
-<p></p>
-
-<ul>
-<li>How does the protocol declare support for composite signatures?  TLS has hooks for declaring support for specific signature algorithms, however it would need to be extended, because the client would need to declare support for both the composite infrastructure, as well as for the various component signature algorithms.</li>
-<li>How does the protocol use the multiple keys.  The obvious way would be to have the server sign using its composite public key; is this sufficient.</li>
-<li>Overhead; including certificate size, signature processing time, and size of the signature.</li>
-<li>How to deal with crypto protocols that use public key encryption algorithms; this document only lists how to work with signature algorithms.  Encoding composite public keys is straightforward; encoding composite ciphertexts is less so - we decided to put that off to another draft.</li>
-</ul>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#sec-iana" id="sec-iana">IANA Considerations</a>
 </h1>
@@ -753,6 +763,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <h1 id="rfc.section.7.1">
 <a href="#rfc.section.7.1">7.1.</a> <a href="#asn1-module" id="asn1-module">ASN.1 Module</a>
 </h1>
+<p id="rfc.section.7.1.p.1">EDNOTE: TODO: Update this from the signatures ASN.1.</p>
 <pre>
 &lt;CODE STARTS&gt;
 

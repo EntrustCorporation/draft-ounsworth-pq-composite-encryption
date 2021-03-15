@@ -3,9 +3,6 @@ title: Composite Encryption For Use In Internet PKI
 abbrev: PQ Composite Certs
 # <!-- EDNOTE: Edits the draft name -->
 docname: draft-ounsworth-pq-composite-encryption-00
-# <!-- date: 2012-01-13 -->
-# <!-- date: 2012-01 -->
-# <!-- date: 2012 -->
 
 # <!-- stand_alone: true -->
 area: Security
@@ -75,9 +72,10 @@ informative:
 # <!-- EDNOTE: Add RFC 3279? -->
 
 --- abstract
-With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite public keys and composite signature data.
+With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data.
 
-This document defines the structures CompositeSignatureValue, and CompositeParams, which are sequences of the respective structure for each component algorithm. This document also defines algorithms for generating and verifying composite signatures. This document makes no assumptions about what the component algorithms are, provided that their algorithm identifiers and signature generation and verification algorithms are defined.
+
+This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient's component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2.
 
 <!-- End of Abstract -->
 
@@ -88,14 +86,14 @@ This document defines the structures CompositeSignatureValue, and CompositeParam
 
 During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
-The deployment of composite public keys and composite signatures using post-quantum algorithms will face two challenges
+The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges
 
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
-This document provides a mechanism to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for encoding multiple signature values into existing public signature fields, as well as an algorithm for validating a composite signature. The issue of backwards compatibility is left open to be addressed in separate draft(s).
+This document provides a mechanism to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for wrapping a content encryption key using multiple public key encryption mechanisms into existing fields. The issue of backwards compatibility is left open to be addressed in separate draft(s).
 
-This document is intended for general applicability anywhere that digital signatures are used within PKIX structures.
+This document is intended for general applicability anywhere that content encryption is used within PKIX and CMS structures.
 
 
 <!-- End of Introduction section -->
@@ -142,6 +140,9 @@ SIGNATURE:
 
 
 # Composite Structures {#sec-composite-structs}
+
+EDNOTE: TODO: RE-WORK THIS SECTION.
+
 In order for public keys and signatures to be composed of multiple algorithms, we define encodings consisting of a sequence of public key and signature primitives (aka "component algorithms") such that these structures can be used as a drop-in replacement for existing public key or signature fields such as those found in PKCS#10 [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652].
 
 This section defines the following structures:
@@ -168,9 +169,11 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 
 EDNOTE 3: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
 
+EDNOTE: should this be an instance of RFC 5652's KeyEncryptionAlgorithmIdentifier ?
+
 ## Composite Keys
 
-A Composite signature MUST be associated with a Composite public key as defined in ~~ reference draft-ounsworth-pq-composite-pubkey ~~. 
+A Composite encryption MUST be associated with a Composite public key as defined in ~~ reference draft-ounsworth-pq-composite-pubkey ~~. 
 
 
 ### Key Usage Bits
@@ -180,59 +183,44 @@ For protocols such as X.509 [RFC5280] that specify key usage along with the publ
 If the keyUsage extension is present in an end-entity certificate whose keys are being used with id-alg-composite signatures, then the keyUsage extension MUST contain one or both of the following values:
 
 ~~~
-    nonRepudiation; and
-    digitalSignature.
+    keyEncipherment; and
+    dataEncipherment.
 ~~~
 {: artwork-name="Cert-Key-Usage-1"}
 
-If the keyUsage extension is present in a certification authority certificate whose keys are being used with id-alg-composite signatures, then the keyUsage extension MUST contain one or more of the following values:
-
-~~~
-    nonRepudiation;
-    digitalSignature;
-    keyCertSign; and
-    cRLSign.
-~~~
-{: artwork-name="Cert-Key-Usage-2"}
 
 
+## Composite Key Encryption {#sec-composite-encr-structs}
 
-## Composite Signature {#sec-composite-sig-structs}
+The composite content-encryption algorithm supports encryption and decryption operations. The encryption operation maps an octet string (the plaintext) to another octet string (the ciphertext) under control of a content-encryption key formed by combining multiple shared secrets each encrypted for a different recipient component public key. The decryption operation is the inverse of the encryption operation.  Context determines which operation is intended.
 
-The ASN.1 algorithm object for a composite signature is:
+
+The id-alg-composite object identifier MUST be used to identify when an encrypted key has been created for decryption by a CompositePrivateKey. Composite encryption uses the following structure:
 
 ~~~ asn.1
-sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite
-    VALUE CompositeSignatureValue
-    PARAMS TYPE CompositeParams ARE required
-    PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
+CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
 ~~~
+{: artwork-name="CompositeEncryptionStructure"}
 
-The id-alg-composite object identifier MUST be used to identify when a signature has been created by a CompositePrivateKey and following algorithm parameters MUST be included:
+EDNOTE: Need to run this through an ASN.1 compiler and fix: intent is that this fits into any EncryptedKey field, but defines some stricture within the existing EncryptedKey ::= OCTET STRING. If wrapping it on the wire inside the EncryptedKey OID provides that, then great!
+
+Where each OCTEC STRING within the SEQUENCE contains key material encrypted for one of the recipient's component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated composite public key object.
+
+The choice of `SEQUENCE OF OCTET STRING`, rather than a single OCTET STRING containing the concatenated signature values, is to gracefully handle variable-length ciphertext values by taking advantage of ASN.1's built-in length fields.
+
+EDNOTE: do we need a CompositeParams to denote the list of component algorithms used, or will that be implied when the decryptor tries to use their private key? Need to take another look at RFC 5652 and CMP to see if there's even a spot to put CompositeParams in an encryption alg.
 
 ~~~ asn.1
 CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 ~~~
 {: artwork-name="CompositeSignatureParams-asn.1-structures"}
 
-The signature's CompositeParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePrivateKey and CompositePublicKey.
 
-The output of the composite signature algorithm is the DER encoding of the following structure:
-
-~~~ asn.1
-CompositeSignatureValue ::= SEQUENCE SIZE (1..MAX) OF BIT STRING
-~~~
-{: artwork-name="composite-sig-asn.1"}
-
-Where each BIT STRING within the SEQUENCE is a signature value produced by one of the component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated CompositeParams object.
-
-The choice of `SEQUENCE OF BIT STRING`, rather than for example a single BIT STRING containing the concatenated signature values, is to gracefully handle variable-length signature values by taking advantage of ASN.1's build-in length fields.
 
 ## Encoding Rules {#sec-encoding-rules}
 <!-- EDNOTE 7: Examples of how other specifications specify how a data structure is converted to a bit string can be found in RFC 2313, section 10.1.4, 3279 section 2.3.5, and RFC 4055, section 3.2. -->
+
+EDNOTE: this section was copied from the composite-sigs draft. Does it apply here since I've defined it above as an OCTET STRING already?
 
 Many protocol specifications will require that the composite public key, composite private key, and composite signature data structures be represented by an octet string or bit string.
 
@@ -242,135 +230,145 @@ When a bit string is required, the octets of the DER encoded composite data stru
 
 In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.
 
-# Composite Signature Algorithm {#sec-composite-signature-algorithm}
+# Composite encryption and decryption Processes {#sec-composite-encryption-algorithm}
 
-This section specifies the algorithms for generating and verifying composite signatures.
+This section specifies the algorithms for encrypting and decrypting using composite encryption.
 
-This algorithm addresses algorithm strength uncertainty by providing the verifier with parallel signatures from all the component signature algorithms; thus breaking the composite signature would require breaking all of the component signatures.
+This algorithm addresses algorithm strength uncertainty by establishing separate key material using each component algorithm, to be combined into the content encryption key using :: TODO: ref properly :: NIST SP 800-56Cr2.
 
-## Composite Signature Generation {#sec-comp-sig-gen}
+## Composite encryption {#sec-comp-encr}
 
-Generation of a composite signature involves applying each component algorithm's signature routine to the input message according to its specification, and then placing each component signature value into the CompositeSignatureValue structure defined in {{sec-composite-sig-structs}}.
+Generation of a CompositeEncryptedKey involves applying each component algorithm's encryption routine to a shared secret value according to its specification, and then placing each component value into the CompositeEncryptedKey structure defined in {{sec-composite-encr-structs}}.
 
-The following algorithm is used to generate composite signature values.
+The following algorithm is used to generate composite encrypted key values.
 
 ~~~
 Input:
-     K1, K2, .., Kn     Private keys for the n component signature
-                        algorithms, a CompositePrivateKey
-     M                  Message to be signed, an octet string
+     P1, P2, .., Pn     Public keys for the n component encryption
+                        algorithms, a CompositePublicKey
+    
+    SIZE                The size, in bits, for shared secrets to be combined by both 
+                        parties into a content encryption key. This value SHOULD correspond
+                        to the size of the content encryption key.
 
 Output:
-     S                  The signatures, a CompositeSignatureValue
+     E                  The encrypted value, a CompositeEncryptedKey
 
-Signature Generation Procedure:
-   1. Generate the n component signatures independently,
+     SS1, SS2, .., SSn Key material in the form of a set of shared secrets.
+
+Ciphertext Generation Procedure:
+   1. Generate a set of shared secrets
+        for i := 1 to n
+          SSi := random_bits(SIZE)
+
+   2. Generate the n component ciphertexts independently,
       according to their algorithm specifications.
 
         for i := 1 to n
-            Si := Sign( Ki, M )
+            Ei := Encrypt( Pi, SSi )
 
-   2. Encode each component signature S1, S2, .., Sn into a BIT STRING
-      according to its algorithm specification.2020-01-21g
+   3. Encode each component ciphertext E1, E2, .., En into a OCTET STRING
+      according to its algorithm specification.
 
-        S ::= Sequence { S1, S2, .., Sn }
+        E ::= Sequence { E1, E2, .., En }
 
-   3. Output S
+   4. Output E
+      Output SS1, SS2, .., SSn
 ~~~
-{: artwork-name="alg-composite-sig-gen"}
+{: artwork-name="alg-composite-encr"}
 
 
-Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may itself be a composite; ie the signature generation routine MUST fail if one of the private keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
+Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component ciphertext may itself be a composite; ie the composite encryption process MUST fail if one of the public keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
 
-A composite signature MUST produce and include in the output a signature value for every component key in the corresponding CompositePrivateKey. While it may be tempting to allow a signer to produce a signature with a subset of their keys, the complexity of securely verifying such a "subset signature" is high and out of scope for this document.
+A composite encryption MUST produce and include in the output a ciphertext value for every component key in the corresponding CompositePublicKey. For this mode, please see Composite-OR in section {{sec-comp-or-encr}}.
 
-
-## Composite Signature Verification {#sec-comp-sig-verify}
-
-Verification of a composite signature involves applying each component algorithm's verification routine according to its specification.
-
-In the absence of an application profile specifying otherwise, compliant applications MUST output "Valid signature" (true) if and only if all component signatures were successfully validated, and "Invalid signature" (false) otherwise.
-
-The following algorithm is used to perform this verification.
+This process MAY be modified to accept the key material SS1, SS2, .., SSn as an input rather than generated as part of this process.
 
 
+### Composite-OR encryption {#sec-comp-or-encr}
+
+If the algorithm ID of the public key associated with this signature is id-composite-or-key then the encryptor MAY use only a subset of the component keys and therefore produce fewer ciphertexts than the number of recipient component keys.
+
+Composite-OR encryption uses the same structures and algorithms as Composite, with the difference that the encryption process may emit a null instead of a ciphertext in step 2 for one or more component algorithms. A Composite-OR CompositeEncryptedKey MUST NOT be entirely null; it must contain at least one ciphertext.
+
+The design intent of this mode is to support migration scenarios where an entity is encrypting for a peer which has been issued keys on algorithms that either the encryptor or the recipient do not (yet) support.
+
+EDNOTE: Do we want to allow a Composite-OR with only a single ciphertext to produce non-composite EncryptedKey[RFC5652]? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a encrypted key is traditional or composite until you look at the corresponding key.
+
+## Composite Decryption {#sec-comp-decr}
+
+The following algorithm is used to decrypt a composite encrypted key values.
 
 ~~~
 Input:
-     P    Signer's composite public key
-     M    Message whose signature is to be verified, an octet string
-     S    Composite Signature to be verified
-     A    Composite Algorithm identifier
+    E                  The encrypted value, a CompositeEncryptedKey
+    
+    K                  Private key for the n component encryption
+                       algorithms, a CompositePurivateKey
 
 Output:
-    Validity      "Valid signature" (true) if the composite signature
-                  is valid, "Invalid signature" (false) otherwise.
+     SS1, SS2, .., SSn Key material in the form of a set of shared secrets.
 
-Signature Verification Procedure::
-   1. Parse P, S, A into the component public keys, signatures,
-      and algorithm identifiers
+Ciphertext Decryption Procedure:
 
-      P1, P2, .., Pn := Desequence( P )
-      S1, S2, .., Sn := Desequence( S )
-      A1, A2, .., An := Desequence( A )
+   1. Parse E into the component ciphertexts
+
+      E1, E2, .., En := Desequence( E )
+      K1, K2, .., Kn := Desequence( K )
 
     If Error during Desequencing, or the three sequences have
-    different numbers of elements, or any of the public keys P1, P2, .., Pn or
-    algorithm identifiers A1, A2, .., An are composite with the OID
-    id-alg-composite then output "Invalid signature" and stop.
+    different numbers of elements, or any of the private keys K1, K2, .., Kn or
+    are composite with the OID id-alg-composite then output "Invalid ciphertext" and stop.
 
-   2. Check each component signature individually, according to its
+   2. Decrypt each component ciphertext individually, according to its
        algorithm specification.
-       If any fail, then the entire signature validation fails.
+       If any fail, then the entire decryption operation fails.
 
-     for i := 1 to n
-          if not verify( Pi, M, Si ), then
-            output "Invalid signature"
+        for i := 1 to n
+              if not (SSi := decrypt( Ki, Ei ), then
+                output "Invalid ciphertext"
 
-      if all succeeded, then
-        output "Valid signature"
+   3. Output SS1, SS2, .., SSn
 ~~~
-{: artwork-name="alg-sig-verif"}
+{: artwork-name="alg-composite-decr"}
 
-Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component signature may be composite; ie the signature verification procedure MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
+Security consideration: for timing-invariance, step 2 may need to process all provided ciphertexsts rather than short-circuiting with an error.
 
-It is expected that some use-cases for algorithm migration or high performance will require verifiers to succeed when only a subset of the component algorithms have been verified. Defining this verification behaviour is out of scope for this document, and falls to an application profile.
+### Composite-OR decryption {#sec-comp-or-decr}
+
+If the decryptor supports using their private key in the Composite-OR mode, then decryption of a null-valued ciphertext in step 2 is not considered an error. The process should emit a null value for the corresponding shared secret SSi, which MUST be treated as an empty string for the purposes of concatenation.
+
+## Deriving a content encryption key
 
 
-<!-- End of Composite Signature Algorithm section -->
+Given a set of shared secrets SS1, SS2, .., SSn as per {{sec-comp-encr}} and {{sec-comp-decr}}, they are to be combined into a content encryption key as:
+
+~~~
+Z := SS1
+T := SS2 || .. || SSn
+~~~
+
+where || denotes concatenation. Z and T are then used as input to the key derivation scheme defined in :: TODO: CITE PROPERLY :: NIST SP 800-56Cr2 as the “hybrid” shared secret of the form Z′ = Z || T.
+
+
+## Key encryption
+
+EDNOTE: Copy from CMS (RFC 5652):
+
+6.4.  Key-encryption Process
+
+   The input to the key-encryption process -- the value supplied to the
+   recipient's key-encryption algorithm -- is just the "value" of the
+   content-encryption key.
+
+   Any of the aforementioned key management techniques can be used for
+   each recipient of the same encrypted content.
+
+<!-- End of Composite Encryption Algorithm section -->
 
 # In Practice {#sec-in-pract}
 
 This section addresses practical issues of how this draft affects other protocols and standards.
-
-
-~~~ BEGIN EDNOTE 10~~~
-
-EDNOTE 10: Possible topics to address:
-
-  - The size of these certs and cert chains.
-  - In particular, implications for (large) composite keys / signatures / certs on the handshake stages of TLS and IKEv2.
-  - If a cert in the chain is a composite cert then does the whole chain need to be of composite Certs?
-  - We could also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs.
-  - We could talk about overhead (size and processing).
-  - We could also discuss backwards compatibility.
-  - We could include a subsection about implementation considerations.
-
-~~~ END EDNOTE 10~~~
-
-
-
-## Cryptographic protocols
-This section talks about how protocols like (D)TLS and IKEv2 are affected by this specifications. It will not attempt to solve all these problems, but it will explain the rationale, how things will work and what open problems need to be solved. Obvious issues that need to be discussed.
-
-- How does the protocol declare support for composite signatures?  TLS has hooks for declaring support for specific signature algorithms, however it would need to be extended, because the client would need to declare support for both the composite infrastructure, as well as for the various component signature algorithms.
-
-- How does the protocol use the multiple keys.  The obvious way would be to have the server sign using its composite public key; is this sufficient.
-
-- Overhead; including certificate size, signature processing time, and size of the signature.
-
-- How to deal with crypto protocols that use public key encryption algorithms; this document only lists how to work with signature algorithms.  Encoding composite public keys is straightforward; encoding composite ciphertexts is less so - we decided to put that off to another draft.
-
 
 <!-- End of In Practice section -->
 
@@ -413,6 +411,8 @@ While intentionally not specified in this document, implementors should put care
 # Appendices
 
 ## ASN.1 Module
+
+EDNOTE: TODO: Update this from the signatures ASN.1.
 
 ~~~ asn.1
 
