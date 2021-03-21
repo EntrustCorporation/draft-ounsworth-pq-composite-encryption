@@ -55,8 +55,6 @@ normative:
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
-  I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
-  I-D.draft-pala-composite-crypto-00:
 
 <!--updates:
   RFC2986
@@ -510,6 +508,6 @@ This document borrows text from similar documents, including those referenced be
 
 Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:
 
-https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
+https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-encryption
 
 <!-- End of Contributors section -->

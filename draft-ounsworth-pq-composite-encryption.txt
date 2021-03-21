@@ -99,10 +99,10 @@ Table of Contents
      7.2.  Intellectual Property Considerations  . . . . . . . . . .  14
    8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  14
      8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  14
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  15
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  14
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
+
+
 
 
 
@@ -765,16 +765,16 @@ Internet-Draft             PQ Composite Certs                 March 2021
    Additional contributions to this draft are weclome.  Please see the
    working copy of this draft at, as well as open issues at:
 
-   https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
+   https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-
+   encryption
 
-9.  References
-
-9.1.  Normative References
+9.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
+
 
 
 
@@ -821,27 +821,6 @@ Internet-Draft             PQ Composite Certs                 March 2021
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
-9.2.  Informative References
-
-   [I-D.pala-composite-crypto]
-              Pala, M., "Composite Public Keys and Signatures", draft-
-              pala-composite-crypto-00 (work in progress), February
-              2019.
-
-   [I-D.truskovsky-lamps-pq-hybrid-x509]
-              Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
-              Ounsworth, M., and S. Mister, "Multiple Public-Key
-              Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
-              hybrid-x509-01 (work in progress), August 2018.
-
-
-
-
-Ounsworth (Editor) & GrExpires September 22, 2021              [Page 15]
-
-Internet-Draft             PQ Composite Certs                 March 2021
-
-
 Authors' Addresses
 
    Mike Ounsworth
@@ -853,10 +832,31 @@ Authors' Addresses
    Email: mike.ounsworth@entrust.com
 
 
+
+
+
+
+
+Ounsworth (Editor) & GrExpires September 22, 2021              [Page 15]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
    John Gray
    Enrust Limited
 
    Email: john.gray@entrust.com
+
+
+
+
+
+
+
+
+
+
+
 
 
 
