@@ -101,7 +101,7 @@ Table of Contents
      8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  14
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  16
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  15
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
 
 
@@ -771,10 +771,10 @@ Internet-Draft             PQ Composite Certs                 March 2021
 
 9.1.  Normative References
 
-   [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
-              Mail: Part I: Message Encryption and Authentication
-              Procedures", RFC 1421, DOI 10.17487/RFC1421, February
-              1993, <https://www.rfc-editor.org/info/rfc1421>.
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
 
 
 
@@ -785,11 +785,6 @@ Ounsworth (Editor) & GrExpires September 22, 2021              [Page 14]
 
 Internet-Draft             PQ Composite Certs                 March 2021
 
-
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
               Request Syntax Specification Version 1.7", RFC 2986,
@@ -802,10 +797,6 @@ Internet-Draft             PQ Composite Certs                 March 2021
               DOI 10.17487/RFC4210, September 2005,
               <https://www.rfc-editor.org/info/rfc4210>.
 
-   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
-              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
-              <https://www.rfc-editor.org/info/rfc4648>.
-
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
               Infrastructure Certificate and Certificate Revocation List
@@ -816,14 +807,6 @@ Internet-Draft             PQ Composite Certs                 March 2021
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/info/rfc5652>.
 
-   [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
-              DOI 10.17487/RFC5958, August 2010,
-              <https://www.rfc-editor.org/info/rfc5958>.
-
-   [RFC7468]  Josefsson, S. and S. Leonard, "Textual Encodings of PKIX,
-              PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
-              April 2015, <https://www.rfc-editor.org/info/rfc7468>.
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -832,15 +815,6 @@ Internet-Draft             PQ Composite Certs                 March 2021
               Cryptographic Algorithm Object Identifier Range",
               RFC 8411, DOI 10.17487/RFC8411, August 2018,
               <https://www.rfc-editor.org/info/rfc8411>.
-
-
-
-
-
-Ounsworth (Editor) & GrExpires September 22, 2021              [Page 15]
-
-Internet-Draft             PQ Composite Certs                 March 2021
-
 
    [X.690]    ITU-T, "Information technology - ASN.1 encoding Rules:
               Specification of Basic Encoding Rules (BER), Canonical
@@ -860,6 +834,14 @@ Internet-Draft             PQ Composite Certs                 March 2021
               Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
               hybrid-x509-01 (work in progress), August 2018.
 
+
+
+
+Ounsworth (Editor) & GrExpires September 22, 2021              [Page 15]
+
+Internet-Draft             PQ Composite Certs                 March 2021
+
+
 Authors' Addresses
 
    Mike Ounsworth
@@ -875,6 +857,24 @@ Authors' Addresses
    Enrust Limited
 
    Email: john.gray@entrust.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

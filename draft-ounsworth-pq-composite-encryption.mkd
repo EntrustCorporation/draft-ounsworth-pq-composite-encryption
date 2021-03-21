@@ -36,15 +36,11 @@ author:
       email: john.gray@entrust.com
 
 normative:
-  RFC1421:
   RFC2119:
   RFC2986:
   RFC4210:
-  RFC4648:
   RFC5280:
   RFC5652:
-  RFC5958:
-  RFC7468:
   RFC8174:
   RFC8411:
   X.690:
