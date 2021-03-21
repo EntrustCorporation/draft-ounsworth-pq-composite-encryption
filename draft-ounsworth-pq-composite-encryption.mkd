@@ -198,7 +198,7 @@ The composite content-encryption algorithm supports encryption and decryption op
 The id-alg-composite object identifier MUST be used to identify when an encrypted key has been created for decryption by a CompositePrivateKey. Composite encryption uses the following structure:
 
 ~~~ asn.1
-CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
+CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (2..Max)  OF OCTET STRING}
 ~~~
 {: artwork-name="CompositeEncryptionStructure"}
 
@@ -211,7 +211,7 @@ The choice of `SEQUENCE OF OCTET STRING`, rather than a single OCTET STRING cont
 EDNOTE: do we need a CompositeParams to denote the list of component algorithms used, or will that be implied when the decryptor tries to use their private key? Need to take another look at RFC 5652 and CMP to see if there's even a spot to put CompositeParams in an encryption alg.
 
 ~~~ asn.1
-CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
+CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 ~~~
 {: artwork-name="CompositeSignatureParams-asn.1-structures"}
 
@@ -461,9 +461,9 @@ pk-Composite PUBLIC-KEY ::= {
     PRIVATE-KEY CompositePrivateKey
 }
 
-CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
+CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
 
-CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
+CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 
 --
 -- Signature Algorithm
@@ -476,9 +476,9 @@ sa-CompositeSignature SIGNATURE-ALGORITHM ::= {
     PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 
-CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
+CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 
-CompositeSignatureValue ::= SEQUENCE SIZE (1..MAX) OF BIT STRING
+CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 
 END
 
