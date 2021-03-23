@@ -86,14 +86,14 @@ This document defines a content encryption process following the hybrid model as
 
 During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
-The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges
+The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges:
 
-- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
+- Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
 This document provides a mechanism to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for wrapping a content encryption key using multiple public key encryption mechanisms into existing fields. The issue of backwards compatibility is left open to be addressed in separate draft(s).
 
-This document is intended for general applicability anywhere that content encryption is used within PKIX and CMS structures.
+This document is intended for general applicability anywhere that content encryption is used.
 
 
 <!-- End of Introduction section -->
@@ -107,9 +107,8 @@ The following terms are used in this document:
 ALGORITHM:
           An information object class for identifying the type of
             cryptographic operation to be performed. This document is
-            primarily concerned with algorithms for producing digital
-            signatures, though the public key structure could just as
-            easily hold encryption keys.
+            primarily concerned with algorithms for producing encryption 
+            keys.
 
 BER:
           Basic Encoding Rules (BER) as defined in [X.690].
@@ -137,6 +136,13 @@ SIGNATURE:
           A digital cryptographic signature, making no assumptions
             about which algorithm.
 
+SHARED SECRET:
+	The output of an exchange of public information between two or more
+        parties that generates a unique shared value for all involved parties.
+
+KEY DERIVATION FUNCTION:
+        A function used to derive secure secret keys using shared secrets, hashing 
+        and other cryptographic primitives. 
 
 
 # Composite Structures {#sec-composite-structs}
@@ -147,7 +153,7 @@ In order for public keys and signatures to be composed of multiple algorithms, w
 
 This section defines the following structures:
 
-  - The id-alg-composite is an OID identifying a composite signature object.
+  - The id-alg-composite is an OID identifying a composite encryption object.
 
   - The CompositePrivateKey carries all the private keys associated with an identity within a single private key structure.
 
@@ -210,6 +216,8 @@ The choice of `SEQUENCE OF OCTET STRING`, rather than a single OCTET STRING cont
 
 EDNOTE: do we need a CompositeParams to denote the list of component algorithms used, or will that be implied when the decryptor tries to use their private key? Need to take another look at RFC 5652 and CMP to see if there's even a spot to put CompositeParams in an encryption alg.
 
+EDNOTE:  I Reviewed RFC 5652 and Parameters are carried in the AlgorithmID fields of the contentEncryptionAlgorithm, KeyEncryptionAlgorithm and KeyDerivationAlgorithm OID values, so the OID used for Composite Encryption can contain the list its component AlgorithmID fields along with each component Algorithms ID's parameters.
+
 ~~~ asn.1
 CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 ~~~
@@ -221,6 +229,7 @@ CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 <!-- EDNOTE 7: Examples of how other specifications specify how a data structure is converted to a bit string can be found in RFC 2313, section 10.1.4, 3279 section 2.3.5, and RFC 4055, section 3.2. -->
 
 EDNOTE: this section was copied from the composite-sigs draft. Does it apply here since I've defined it above as an OCTET STRING already?
+EDNOTE:   I think keeping this here is fine, one less reference to look up.
 
 Many protocol specifications will require that the composite public key, composite private key, and composite signature data structures be represented by an octet string or bit string.
 
@@ -278,6 +287,12 @@ Ciphertext Generation Procedure:
 {: artwork-name="alg-composite-encr"}
 
 
+EDNOTE:  In step 2 above, would it make sense to run the random SS values through a KDF (such as a hash function), and then use that output as the Message from the encryption in step2.   So essentially 1b) could be SSi' = KDF (SSi) which is done before step 2.   Then Step 2 is Ei := Encrypt( Pi, SSi').   If this is agreed, then we can provide a list of accept KDF algorithms as that would be an input.
+  
+EDNOTE:  The above process essentially runs through the encryption process N times, and concatenates the results together.   This would produce CipherText output that is at least 2N times as large as a single key encryption process.  
+
+EDNOTE:  If we are going to recommend this type of encryption, then I think we should bind each component together so that separate encryption operations cannot be joined together to form a composite encryption, or vice-versa.   This could be done by having each component encrypt a small random value or hash of the pre-encrypted data that could be inserted at the end of the plaintext before being encrypted by each component.  It would be similar to AEAD in GCM or a checksum.
+
 Since recursive composite public keys are disallowed in ~~ Reference draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no component ciphertext may itself be a composite; ie the composite encryption process MUST fail if one of the public keys K1, K2, .., Kn is a composite with the OID id-alg-composite.
 
 A composite encryption MUST produce and include in the output a ciphertext value for every component key in the corresponding CompositePublicKey. For this mode, please see Composite-OR in section {{sec-comp-or-encr}}.
@@ -293,8 +308,9 @@ Composite-OR encryption uses the same structures and algorithms as Composite, wi
 
 The design intent of this mode is to support migration scenarios where an entity is encrypting for a peer which has been issued keys on algorithms that either the encryptor or the recipient do not (yet) support.
 
-EDNOTE: Do we want to allow a Composite-OR with only a single ciphertext to produce non-composite EncryptedKey[RFC5652]? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a encrypted key is traditional or composite until you look at the corresponding key.
+EDNOTE: Do we want to allow a Composite-OR with only a single ciphertext to produce non-composite EncryptedKey[RFC5652]? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a encrypted key is traditional or composite until you look at the corresponding key.   
 
+EDNOTE:  I do not think we get a lot of value with Composite-OR with a single key because it is essentially just a wrapper around the regular algorithm.  I can see use for systems that recognize the composite structure which may not yet support all the component encryption algorithms, so a composite with algorithms that are not yet understood could be pushed out and one or more of the components could get used.
 ## Composite Decryption {#sec-comp-decr}
 
 The following algorithm is used to decrypt a composite encrypted key values.
@@ -304,7 +320,7 @@ Input:
     E                  The encrypted value, a CompositeEncryptedKey
     
     K                  Private key for the n component encryption
-                       algorithms, a CompositePurivateKey
+                       algorithms, a CompositePrivateKey
 
 Output:
      SS1, SS2, .., SSn Key material in the form of a set of shared secrets.
@@ -338,6 +354,7 @@ Security consideration: for timing-invariance, step 2 may need to process all pr
 
 If the decryptor supports using their private key in the Composite-OR mode, then decryption of a null-valued ciphertext in step 2 is not considered an error. The process should emit a null value for the corresponding shared secret SSi, which MUST be treated as an empty string for the purposes of concatenation.
 
+
 ## Deriving a content encryption key
 
 
@@ -348,7 +365,14 @@ Z := SS1
 T := SS2 || .. || SSn
 ~~~
 
-where || denotes concatenation. Z and T are then used as input to the key derivation scheme defined in :: TODO: CITE PROPERLY :: NIST SP 800-56Cr2 as the “hybrid” shared secret of the form Z′ = Z || T.
+where || denotes concatenation. Z and T are then used as input to the key derivation scheme defined in :: TODO: CITE PROPERLY :: NIST SP 800-56Cr2 as the “hybrid” shared secret of the form Z' = Z || T.
+
+ED NOTE:  https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Cr2.pdf  section 2.   
+
+
+## Key Derivation
+
+NIST SP 800-56C rev 2 section 4 specifies a 1 step Key Derivation process and section 5 specifies a 2 step Key Derivation Process.   They both require the shared secret Z and a bit length of the output key.  In this context Z' is the concatenation of the shared secrets obtained from each component of the composite encrypted key.  For One-Step Key Derivation, it is recommended that a FIPS 180 or FIPS 202 approved Hash function be used.   For Two-Step Key Derivation an additional salt value is required as part of the input.  Either method may be used to derive the key material.  
 
 
 ## Key encryption
