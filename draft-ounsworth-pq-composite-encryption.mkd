@@ -143,6 +143,9 @@ SHARED SECRET:
 KEY DERIVATION FUNCTION:
         A function used to derive secure secret keys using shared secrets, hashing 
         and other cryptographic primitives. 
+		
+COMPOSITE ENCRYPTION KEY:
+		
 
 
 # Composite Structures {#sec-composite-structs}
@@ -184,35 +187,55 @@ A Composite encryption MUST be associated with a Composite public key as defined
 
 ### Key Usage Bits
 
-For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a signing-type key usage.
+For protocols such as X.509 [RFC5280] that specify key usage along with the public key, then the composite public key associated with a composite signature MUST have a key usage that either protects a given content encryption key (Key Transport), or produces a content encryption key (Key Agreement) 
 
 If the keyUsage extension is present in an end-entity certificate whose keys are being used with id-alg-composite signatures, then the keyUsage extension MUST contain one or both of the following values:
 
 ~~~
-    keyEncipherment; and
-    dataEncipherment.
+    keyEncipherment; and keyAgreement
 ~~~
 {: artwork-name="Cert-Key-Usage-1"}
 
 
 
-## Composite Key Encryption {#sec-composite-encr-structs}
+## Composite Content Key Encryption using Key Transport given a content-encryption key {#sec-composite-encr-keytrans-contentencr-structs}
 
-The composite content-encryption algorithm supports encryption and decryption operations. The encryption operation maps an octet string (the plaintext) to another octet string (the ciphertext) under control of a content-encryption key formed by combining multiple shared secrets each encrypted for a different recipient component public key. The decryption operation is the inverse of the encryption operation.  Context determines which operation is intended.
+If the underlying component keys support Key Transport, then a content-encryption key may be encrypted using the key transport primitive of its component keys.   All of its component algorithms MUST support key transport for the keyEncipherment usage to be used.
 
+The composite content key encryption algorithm supports encryption and decryption of the content encryption key. The encryption operation maps an octet string (the plaintext) of the content-encryption key (for example AES)  to another octet string (the ciphertext) under control of the key transport algorithm for each component algorithm.  -encryption key formed by combining multiple shared secrets each encrypted for a different recipient component public key. The decryption operation is the inverse of the encryption operation.  Context determines which operation is intended.
 
-The id-alg-composite object identifier MUST be used to identify when an encrypted key has been created for decryption by a CompositePrivateKey. Composite encryption uses the following structure:
+The id-alg-composite object identifier MUST be used to identify when a content-encryption key has been encrypted by a CompositePrivateKey. Composite encryption uses the following structure:
+
+EDNOTE:  Should a different composite OID be used to determine the type of composite encryption (Key Transport or Key Agreement?)
 
 ~~~ asn.1
 CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
 ~~~
 {: artwork-name="CompositeEncryptionStructure"}
 
-EDNOTE: Need to run this through an ASN.1 compiler and fix: intent is that this fits into any EncryptedKey field, but defines some stricture within the existing EncryptedKey ::= OCTET STRING. If wrapping it on the wire inside the EncryptedKey OID provides that, then great!
+EDNOTE: Need to run this through an ASN.1 compiler and fix: intent is that this fits into any EncryptedKey field, but defines some structure within the existing EncryptedKey ::= OCTET STRING. If wrapping it on the wire inside the EncryptedKey OID provides that, then great!
 
-Where each OCTEC STRING within the SEQUENCE contains key material encrypted for one of the recipient's component keys. It MUST contain one signature value produced by each component algorithm, and in the same order as in the associated composite public key object.
+Where each OCTET STRING within the SEQUENCE contains the encrypted content-encryption key material encrypted by one of the recipient's component keys. Each OCTET STRING MUST contain one encrypted value produced by the component key in the same order as in the associated composite public key object.
 
-The choice of `SEQUENCE OF OCTET STRING`, rather than a single OCTET STRING containing the concatenated signature values, is to gracefully handle variable-length ciphertext values by taking advantage of ASN.1's built-in length fields.
+Each encrypted content-encryption key will be the same key but encrypted by a different component.  It is recognized this creates duplication and interesting use-case usages.   
+
+
+EDNOTE:  A possible way to mitigate this is that portions of the content-encryption key could be encrypted by each component, which would mean they would have to be combined to produce back the original key.  This would probably be stronger but if one of the components is broken the attacker gets half the key, which would make breaking the other half easier.
+
+
+## Composite Content Key Encryption using Key Transport with key derivation {#sec-composite-encr-keytrans-structs}
+
+A stronger form of Key Transport can be realized when intermediate content-encryption keys are used.   A fresh intermediate content-encryption is given to each component algorithm for encryption.   The final content-encryption key can then be derived as specifed in Deriving a content encryption key algorithm {{#sec-key-derivation}}. 
+
+
+## Composite Content Key Encryption using Key Agreement {#sec-composite-encr-keyagree-structs}
+
+If the underlying component keys support Key Agreement, then a content-encryption key (for example AES) may be derived and used for the encryption of the plaintext.   All of its component algorithms MUST support key agreement for the keyAgreement usage to be used.
+
+The composite content encryption key is formed by combining multiple shared secrets produced by each component algorithms.  
+
+The id-alg-composite object identifier MUST be used to identify when a content-encryption encrypted key has been created for decryption by a CompositePrivateKey. Composite encryption uses the following structure:
+
 
 EDNOTE: do we need a CompositeParams to denote the list of component algorithms used, or will that be implied when the decryptor tries to use their private key? Need to take another look at RFC 5652 and CMP to see if there's even a spot to put CompositeParams in an encryption alg.
 
@@ -231,7 +254,7 @@ CompositeParams ::= SEQUENCE SIZE (1..MAX) OF AlgorithmIdentifier
 EDNOTE: this section was copied from the composite-sigs draft. Does it apply here since I've defined it above as an OCTET STRING already?
 EDNOTE:   I think keeping this here is fine, one less reference to look up.
 
-Many protocol specifications will require that the composite public key, composite private key, and composite signature data structures be represented by an octet string or bit string.
+Many protocol specifications will require that the composite public key, composite private key, and composite encryption data structures be represented by an octet string or bit string.
 
 When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.
 
@@ -245,9 +268,45 @@ This section specifies the algorithms for encrypting and decrypting using compos
 
 This algorithm addresses algorithm strength uncertainty by establishing separate key material using each component algorithm, to be combined into the content encryption key using :: TODO: ref properly :: NIST SP 800-56Cr2.
 
-## Composite encryption {#sec-comp-encr}
+## Generation of CompositeEncryptedKey using Key Transport {#sec-comp-encr-keyTransport}
 
-Generation of a CompositeEncryptedKey involves applying each component algorithm's encryption routine to a shared secret value according to its specification, and then placing each component value into the CompositeEncryptedKey structure defined in {{sec-composite-encr-structs}}.
+The following algorithm is used to generate composite encrypted key values using Key Transport.
+
+~~~
+Input:
+     P1, P2, .., Pn     Public keys for the n component encryption
+                        algorithms, a CompositePublicKey
+    
+    CEK1,CEK2,..,CEKn   (Optional) The intermediate content-encryption keys used to form the final content-encryption key used for the encryption.  
+						Generated internally if not passed in. 
+						
+
+Output:
+     E                  The encrypted value, a CompositeEncryptedKey
+
+Ciphertext Generation Procedure:
+   1. Generate a set of intermediate content-encryption keys (if not supplied to the algorithm)
+        for i := 1 to n
+          CEKi := random_bits(SIZE)
+
+   2. Generate the n component ciphertexts independently using key transport to wrap each intermediate content-encryption key,
+      according to their algorithm specifications.
+
+        for i := 1 to n
+            Ei := Encrypt( Pi, CEKi )
+
+   3. Encode each component ciphertext E1, E2, .., En into a OCTET STRING
+      according to its algorithm specification.
+
+        E ::= Sequence { E1, E2, .., En }
+
+   4. Output E
+~~~
+
+
+## Composite encryption using Key Agree {#sec-comp-encr-keyAgree}
+
+Generation of a CompositeEncryptedKey involves applying each component algorithm's encryption routine to a shared secret value according to its specification, and then placing each component value into the CompositeEncryptedKey structure defined in {{sec-composite-encr-keytrans-contentencr-structs}}.
 
 The following algorithm is used to generate composite encrypted key values.
 
@@ -323,7 +382,7 @@ Input:
                        algorithms, a CompositePrivateKey
 
 Output:
-     SS1, SS2, .., SSn Key material in the form of a set of shared secrets.
+     CEK1, CEK2, .., CEKn Key material in the form of a set of shared secrets (intermediate content-encryption keys).
 
 Ciphertext Decryption Procedure:
 
@@ -341,10 +400,10 @@ Ciphertext Decryption Procedure:
        If any fail, then the entire decryption operation fails.
 
         for i := 1 to n
-              if not (SSi := decrypt( Ki, Ei ), then
+              if not (CEKi := decrypt( Ki, Ei ), then
                 output "Invalid ciphertext"
 
-   3. Output SS1, SS2, .., SSn
+   3. Output CEK1, CEK2, .., CEKn
 ~~~
 {: artwork-name="alg-composite-decr"}
 
@@ -354,8 +413,9 @@ Security consideration: for timing-invariance, step 2 may need to process all pr
 
 If the decryptor supports using their private key in the Composite-OR mode, then decryption of a null-valued ciphertext in step 2 is not considered an error. The process should emit a null value for the corresponding shared secret SSi, which MUST be treated as an empty string for the purposes of concatenation.
 
+EDNOTE:  Have not thought about this yet, but interesting use-cases with key transport because the same content-encryption key could be used for each encryption, which means 1 or more could be used meaning it would lend itself to transition or switching from one algorihtm to another more easily.
 
-## Deriving a content encryption key
+## Deriving a content encryption key {#sec-key-derivation}
 
 
 Given a set of shared secrets SS1, SS2, .., SSn as per {{sec-comp-encr}} and {{sec-comp-decr}}, they are to be combined into a content encryption key as:
