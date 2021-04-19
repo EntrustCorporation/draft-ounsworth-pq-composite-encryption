@@ -149,7 +149,7 @@ COMPOSITE ENCRYPTION KEY:
 
 TRIVIAL SECRET SHARING
         A method to securely share a secret among two or more parties where all parties need to combine their 
-        intermediate secret to re-create the secret.   		
+        intermediate secret to re-create the secret.
 
 
 # Composite Structures {#sec-composite-structs}
@@ -231,9 +231,12 @@ It is recognized there are different ways the content encryption key could be se
 
 ### Content Encryption Key Sharing among n component algorithms {#sec-composite-keyshare}
 
-If n is the number of components, the algorithms works as follows:
+Random bit strings of the same length as the content encryption key are 
+generated for n-1 component algorithms.  The final bit string is 
+computed by XOR'ing the content encryption key with each of n-1 random
+bit strings. 
 
-Random bit strings of the same length as the content encryption key are generated for n-1 component algorithms.   The final bit string is computed by XOR'ing the content encryption key with each of n-1 random bit strings. 
+If n is the number of components, the algorithms works as follows:
 
 ~~~
 Input:
@@ -242,10 +245,12 @@ Input:
      SIZE The size of the Content Encryption Key
 
 Output:
-     S1, S2,... Sn       The intermediate shared secrets to be encapsulated by each component algorithm
+     S1, S2,... Sn       The intermediate shared secrets to be 
+                         encapsulated by each component algorithm
 
 Generation Procedure:
-   1. Generate a random set of bit strings of the same length as the content encryption key
+   1. Generate a random set of bit strings of the same length as the
+      content encryption key
         for i := 1 to n-1
           Si := random_bits(SIZE)
 
@@ -258,14 +263,20 @@ Generation Procedure:
    3. Output S1, S2 ... Sn
 ~~~
 
-Each intermediate shared secret is then encapsulated by each component algorithm.   To obtain the content-encryption key, each component algorithm MUST be used to decrypt the set of intermediate shared secrets.  These intermediate shared secrets are then XOR'ed together to obtain the content-encryption key.
+Each intermediate shared secret is then encapsulated by each component
+algorithm.   To obtain the content-encryption key, each component 
+algorithm MUST be used to decrypt the set of intermediate shared 
+secrets.  These intermediate shared secrets are then XOR'ed together
+ to obtain the content-encryption key.
 
-To obtain the content-encryption key from an set of intermediate shared secrets, the following process should be used:
+To obtain the content-encryption key from an set of intermediate shared
+secrets, the following process should be used:
 
 ~~~
 Input:
      n                   The number of intermediate shared secrets
-     S1, S2,... Sn       The intermediate shared secrets that were decrypted by each component algorithm
+     S1, S2,... Sn       The intermediate shared secrets that were 
+                         decrypted by each component algorithm
 
 Output:
      CEK  The Content Encryption Key
@@ -368,7 +379,7 @@ Ciphertext Generation Procedure:
 
 ## Composite encryption using Key Agree {#sec-comp-encr-keyAgree}
 
-Generation of a CompositeEncryptedKey involves applying each component algorithm's encryption routine to a shared secret value according to its specification, and then placing each component value into the CompositeEncryptedKey structure defined in {{sec-composite-encr-keytrans-contentencr-structs}}.
+Generation of a CompositeEncryptedKey involves applying each component algorithm's encryption routine to a shared secret value according to its specification, and then placing each component value into the CompositeEncryptedKey structure defined in {{sec-composite-encr-keytrans}}.
 
 The following algorithm is used to generate composite encrypted key values.
 
@@ -483,7 +494,7 @@ EDNOTE:  Have not thought about this yet, but interesting use-cases with key tra
 
 ## Deriving a content encryption key {#sec-key-derivation}
 
-Given a set of shared secrets SS1, SS2, .., SSn as per {{sec-comp-encr}} and {{sec-comp-decr}}, they are to be combined into a content encryption key as:
+Given a set of shared secrets SS1, SS2, .., SSn as per {{sec-comp-encr-keyAgree}}, they are to be combined into a content encryption key as:
 
 ~~~
 Z := SS1
