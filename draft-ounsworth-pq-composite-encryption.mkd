@@ -130,23 +130,23 @@ PUBLIC / PRIVATE KEY:
 
 PRIMITIVE PUBLIC KEY / SIGNATURE:
           A public key or signature object of a non-composite algorithm
-            type.
+          type.
 
 SIGNATURE:
           A digital cryptographic signature, making no assumptions
             about which algorithm.
 
 SHARED SECRET:
-	The output of an exchange of public information between two or more
+        The output of an exchange of public information between two or more
         parties that generates a unique shared value for all involved parties.
 
 KEY DERIVATION FUNCTION:
         A function used to derive secure secret keys using shared secrets, hashing 
         and other cryptographic primitives. 
-		
+
 COMPOSITE ENCRYPTION KEY:
         A structure that contains a sequence of content encryption keys, or secrets used to derive a content encryption keys.
-		
+
 TRIVIAL SECRET SHARING
         A method to securely share a secret among two or more parties where all parties need to combine their 
         intermediate secret to re-create the secret.   		
@@ -237,10 +237,10 @@ Random bit strings of the same length as the content encryption key are generate
 
 ~~~
 Input:
-     n   The number of component algorithms
-	 CEK  The Content Encryption Key
-	 SIZE The size of the Content Encryption Key
-						
+     n    The number of component algorithms
+     CEK  The Content Encryption Key
+     SIZE The size of the Content Encryption Key
+
 Output:
      S1, S2,... Sn       The intermediate shared secrets to be encapsulated by each component algorithm
 
@@ -275,7 +275,7 @@ Generation Procedure:
         CEK' = S1 XOR S2 
         for i := 3 to n
            CEK' = CEK' (XOR) Si
-	CEK = CEK'   
+        CEK = CEK'   
 
    2. Output CEK
 ~~~
@@ -341,9 +341,9 @@ Input:
      P1, P2, .., Pn     Public keys for the n component encryption
                         algorithms, a CompositePublicKey
     
-     S1, S2, .., Sn    (Optional) The intermediate content-encryption keys used to form the final content-encryption key used for the encryption.  
-						Generated internally if not passed in. 
-						
+     S1, S2, .., Sn    (Optional) The intermediate content-encryption keys used
+                       to form the final content-encryption key used for the 
+                       encryption. Generated internally if not passed in. 
 
 Output:
      E                  The encrypted value, a CompositeEncryptedKey
