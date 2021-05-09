@@ -85,7 +85,7 @@ Table of Contents
      3.1.  Encrption process . . . . . . . . . . . . . . . . . . . .   7
      3.2.  Decryption process  . . . . . . . . . . . . . . . . . . .   8
    4.  Composite Key Transport using Encryption and KEM primitives .   9
-   5.  Composite Key Exchange with a KDF . . . . . . . . . . . . . .  10
+   5.  Composite Key Exchange  . . . . . . . . . . . . . . . . . . .  10
      5.1.  Encapsulation Process . . . . . . . . . . . . . . . . . .  11
      5.2.  Decapsulation Process . . . . . . . . . . . . . . . . . .  12
    6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . . . .  12
@@ -538,7 +538,7 @@ Internet-Draft             PQ Composite Certs                   May 2021
    The decryption process defined in {#sec-com-key-trans_decr_process}
    applies directly.
 
-5.  Composite Key Exchange with a KDF
+5.  Composite Key Exchange
 
    This mode is the most general in that it supports a composite
    recipient public key which MAY contain an arbitrary mixture of

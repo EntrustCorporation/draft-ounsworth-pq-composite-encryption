@@ -353,7 +353,7 @@ The decryption process defined in {#sec-com-key-trans_decr_process} applies dire
 
 
 
-# Composite Key Exchange with a KDF
+# Composite Key Exchange
 
 
 This mode is the most general in that it supports a composite recipient public key which MAY contain an arbitrary mixture of encryption, key encapsulation machanism (KEM), and key agreement component algorithms. However, due to the nature of key agreement algorithms, this mode cannot take a content encryption key as input, but instead generates a master shared secret as an output. As such, the nomenclature in this mode differs from the modes above. Where the recipient public key has an associated keyUsage as specified in [RFC5280], it MUST have keyUsage: keyEncipherment and or keyUsage: keyAgreement.

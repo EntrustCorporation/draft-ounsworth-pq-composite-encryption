@@ -384,7 +384,7 @@
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Encrption process">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Decryption process">
 <link href="#rfc.section.4" rel="Chapter" title="4 Composite Key Transport using Encryption and KEM primitives">
-<link href="#rfc.section.5" rel="Chapter" title="5 Composite Key Exchange with a KDF">
+<link href="#rfc.section.5" rel="Chapter" title="5 Composite Key Exchange">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Encapsulation Process">
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 Decapsulation Process">
 <link href="#rfc.section.6" rel="Chapter" title="6 Encoding Rules">
@@ -481,7 +481,7 @@
 </li>
 </ul><li>4.   <a href="#rfc.section.4">Composite Key Transport using Encryption and KEM primitives</a>
 </li>
-<li>5.   <a href="#rfc.section.5">Composite Key Exchange with a KDF</a>
+<li>5.   <a href="#rfc.section.5">Composite Key Exchange</a>
 </li>
 <ul><li>5.1.   <a href="#rfc.section.5.1">Encapsulation Process</a>
 </li>
@@ -706,7 +706,7 @@ Generation Procedure:
 </pre>
 <p id="rfc.section.4.p.6">The decryption process defined in {#sec-com-key-trans_decr_process} applies directly.</p>
 <h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#composite-key-exchange-with-a-kdf" id="composite-key-exchange-with-a-kdf">Composite Key Exchange with a KDF</a>
+<a href="#rfc.section.5">5.</a> <a href="#composite-key-exchange" id="composite-key-exchange">Composite Key Exchange</a>
 </h1>
 <p id="rfc.section.5.p.1">This mode is the most general in that it supports a composite recipient public key which MAY contain an arbitrary mixture of encryption, key encapsulation machanism (KEM), and key agreement component algorithms. However, due to the nature of key agreement algorithms, this mode cannot take a content encryption key as input, but instead generates a master shared secret as an output. As such, the nomenclature in this mode differs from the modes above. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment and or keyUsage: keyAgreement.</p>
 <p id="rfc.section.5.p.2">EDNOTE: I think this violates our public key draft where we say that the public key's KU MUST apply to all components. ... we did not want mixing of signatures and encryption keys, but I think in this case we do want to allow mixing of keyEncipherment and keyExchange keys. Not sure how to fix that.</p>
