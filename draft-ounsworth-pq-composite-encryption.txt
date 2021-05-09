@@ -2,10 +2,10 @@
 
 
 
-LAMPS                                              M. Ounsworth (Editor)
+LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: October 21, 2021                                 April 19, 2021
+Expires: November 10, 2021                                  May 09, 2021
 
 
               Composite Encryption For Use In Internet PKI
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 21, 2021.
+   This Internet-Draft will expire on November 10, 2021.
 
 
 
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Ounsworth (Editor) & GraExpires October 21, 2021                [Page 1]
+Ounsworth & Gray        Expires November 10, 2021               [Page 1]
 
-Internet-Draft             PQ Composite Certs                 April 2021
+Internet-Draft             PQ Composite Certs                   May 2021
 
 
 Copyright Notice
@@ -76,50 +76,43 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-     1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
-   2.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   5
+     1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   4
      2.1.  Algorithm Identifier  . . . . . . . . . . . . . . . . . .   5
      2.2.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   6
        2.2.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   6
-   3.  Composite Content Key Encryption Using Key Transport  . . . .   6
-     3.1.  Composite Encryption given a content-encryption key . . .   6
-       3.1.1.  Content Encryption Key Sharing among n component
-               algorithms  . . . . . . . . . . . . . . . . . . . . .   8
-     3.2.  Composite Encryption without secret key sharing . . . . .   9
-     3.3.  Composite Content Key Encryption using Key Transport with
-           key derivation  . . . . . . . . . . . . . . . . . . . . .   9
-   4.  Composite Content Key Encryption using Key Agreement  . . . .   9
-     4.1.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .  10
-   5.  Composite encryption and decryption Processes . . . . . . . .  10
-     5.1.  Generation of CompositeEncryptedKey using Key Transport .  11
-     5.2.  Composite encryption using Key Agree  . . . . . . . . . .  11
-       5.2.1.  Composite-OR encryption . . . . . . . . . . . . . . .  13
-     5.3.  Composite decryption using Key Agree  . . . . . . . . . .  14
-       5.3.1.  Composite-OR decryption . . . . . . . . . . . . . . .  14
-     5.4.  Deriving a content encryption key . . . . . . . . . . . .  15
-     5.5.  Key Derivation  . . . . . . . . . . . . . . . . . . . . .  15
-     5.6.  Key encryption  . . . . . . . . . . . . . . . . . . . . .  15
-   6.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  16
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
-     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  16
-   9.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     9.1.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  17
-     9.2.  Intellectual Property Considerations  . . . . . . . . . .  18
+   3.  Composite Key Transport using Encryption primitives . . . . .   6
+     3.1.  Encrption process . . . . . . . . . . . . . . . . . . . .   7
+     3.2.  Decryption process  . . . . . . . . . . . . . . . . . . .   8
+   4.  Composite Key Transport using Encryption and KEM primitives .   9
+   5.  Composite Key Exchange with a KDF . . . . . . . . . . . . . .  10
+     5.1.  Encapsulation Process . . . . . . . . . . . . . . . . . .  11
+     5.2.  Decapsulation Process . . . . . . . . . . . . . . . . . .  12
+   6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . . . .  12
+   7.  Composite-OR encryption . . . . . . . . . . . . . . . . . . .  13
+   8.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  14
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  14
+     10.1.  Policy for Deprecated and Acceptable Algorithms  . . . .  14
+   11. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     11.1.  ASN.1 Module . . . . . . . . . . . . . . . . . . . . . .  15
+     11.2.  Intellectual Property Considerations . . . . . . . . . .  16
+   12. Contributors and Acknowledgements . . . . . . . . . . . . . .  16
+     12.1.  Making contributions . . . . . . . . . . . . . . . . . .  16
+   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     13.1.  Normative References . . . . . . . . . . . . . . . . . .  17
+     13.2.  Informative References . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
-Ounsworth (Editor) & GraExpires October 21, 2021                [Page 2]
+
+
+
+Ounsworth & Gray        Expires November 10, 2021               [Page 2]
 
-Internet-Draft             PQ Composite Certs                 April 2021
+Internet-Draft             PQ Composite Certs                   May 2021
 
-
-   10. Contributors and Acknowledgements . . . . . . . . . . . . . .  18
-     10.1.  Making contributions . . . . . . . . . . . . . . . . . .  19
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  19
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  20
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
 1.  Introduction
 
@@ -158,18 +151,6 @@ Internet-Draft             PQ Composite Certs                 April 2021
    This document is intended for general applicability anywhere that
    content encryption is used.
 
-
-
-
-
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021                [Page 3]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
 1.1.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -179,6 +160,15 @@ Internet-Draft             PQ Composite Certs                 April 2021
    capitals, as shown here.
 
    The following terms are used in this document:
+
+
+
+
+
+Ounsworth & Gray        Expires November 10, 2021               [Page 3]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
 
    ALGORITHM: An information object class for identifying the type of
    cryptographic operation to be performed.  This document is primarily
@@ -218,14 +208,6 @@ Internet-Draft             PQ Composite Certs                 April 2021
    or more parties where all parties need to combine their intermediate
    secret to re-create the secret.
 
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021                [Page 4]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
 2.  Composite Structures
 
    EDNOTE: TODO: RE-WORK THIS SECTION.
@@ -236,6 +218,13 @@ Internet-Draft             PQ Composite Certs                 April 2021
    these structures can be used as a drop-in replacement for existing
    public key or signature fields such as those found in PKCS#10
    [RFC2986], CMP [RFC4210], X.509 [RFC5280], CMS [RFC5652].
+
+
+
+Ounsworth & Gray        Expires November 10, 2021               [Page 4]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
 
    This section defines the following structures:
 
@@ -274,23 +263,24 @@ Internet-Draft             PQ Composite Certs                 April 2021
    private key, and a signature.  Additional encoding information is
    provided below for each of these objects.
 
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021                [Page 5]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1)  identified-organization(3) dod(6) internet(1) private(4)
        enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite(1) }
 
    EDNOTE 3: this is a temporary OID for the purposes of prototyping.
-   We are requesting IANA to assign a permanent OID, see Section 7.
+   We are requesting IANA to assign a permanent OID, see Section 9.
 
    EDNOTE: should this be an instance of RFC 5652's
    KeyEncryptionAlgorithmIdentifier ?
+
+
+
+
+
+Ounsworth & Gray        Expires November 10, 2021               [Page 5]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
 
 2.2.  Composite Keys
 
@@ -311,36 +301,42 @@ Internet-Draft             PQ Composite Certs                 April 2021
 
        keyEncipherment; and keyAgreement
 
-3.  Composite Content Key Encryption Using Key Transport
+3.  Composite Key Transport using Encryption primitives
 
-3.1.  Composite Encryption given a content-encryption key
+   In this composite encryption mode, a message to be encrypted is
+   provided by the calling application.
 
-   If the underlying component keys support Key Transport, then a
-   content-encryption key may be encrypted using the key transport
-   primitive of its component keys.  All of its component algorithms
-   MUST support key transport for the keyEncipherment usage to be used.
+   The recipient MUST have a composite public key which supports key
+   transport operations.  Where the recipient public key has an
+   associated keyUsage as specified in [RFC5280], it MUST have keyUsage:
+   keyEncipherment.  In other words, the mechanism specified in this
+   section applies only if all of the recipient's public keys are
+   encryption algorithms.
 
-   The composite content key encryption algorithm supports encryption
-   and decryption of the content encryption key.  The encryption
-   operation uses a key sharing method as defined in Section 3.1.1 to
-   encrypt each intermediate share (the plaintext) under a component
-   algorithm into a ciphertext.  The decryption operation is the inverse
-   operation and each decrypted intermediate share is required to be
-   combined together to obtain the content encryption key.
+   This message to be encrypted is assumed without loss of generality to
+   be a symmetric content encryption key (CEK) which is assumed to have
+   a size less than the encryption message sizes <find a better
+   phrasing?> of the chosen encryption algorithms.
 
-
-
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021                [Page 6]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
+   Composite Key Transport using Encryption primitives uses a trivial
+   XOR key-sharing scheme to split the content encryption key into n
+   parts, where n is the number of recipient component public keys, and
+   encrypt each share under a different recipient component public key
+   such that the recipient is required to use all component private keys
+   in order to recover the content encryption key.
 
    The id-alg-composite object identifier MUST be used to identify when
    a content-encryption key has been encrypted by a CompositePrivateKey.
    Composite encryption uses the following structure:
+
+
+
+
+
+Ounsworth & Gray        Expires November 10, 2021               [Page 6]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
 
    EDNOTE: Should a different composite OID be used to determine the
    type of composite encryption (Key Transport or Key Agreement?).
@@ -349,88 +345,92 @@ Internet-Draft             PQ Composite Certs                 April 2021
 
 CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
 
-   EDNOTE: Should we use key encapsulation to avoid having
-   implementations having to use padding scheme like OAEP when the
-   Content encryption Key is smaller than the algorithm that is
-   performing the encryption.  For example, RSA 2048 is much larger than
-   an AES-256 bit key, so RSA Padding should be added to the random bit
-   string of length of the content encryption key.  We could use another
-   layer like KEM in RFC 5990 to avoid having to specify padding schemes
-   (or potentially worse, leaving it up to the implementors to decide
-   what to do).  In this case we would need to create a key-encryption
-   key from a random bit string using a KDF and then generate a wrapping
-   key for each intermediate shared secret (See RFC 5990).  Then the
-   SEQUENCE of ASN.1 above would be a OCTET_STRING that is a
-   concatenation of the Cipher Text and the wrapping key.
-
-   EDNOTE: Need to run this through an ASN.1 compiler and fix: intent is
-   that this fits into any EncryptedKey field, but defines some
-   structure within the existing EncryptedKey ::= OCTET STRING.  If
-   wrapping it on the wire inside the EncryptedKey OID provides that,
-   then great!
+   EDNOTE: This ASN.1 probably does not compile.  The intent is that
+   this fits into any EncryptedKey field, but defines some structure
+   within the existing EncryptedKey ::= OCTET STRING, but I'm not sure
+   exactly how to specify that.
 
    Where each OCTET STRING within the SEQUENCE contains the encrypted
-   intermediate content-encryption key material encrypted by one of the
-   component keys.  Each OCTET STRING MUST contain one encrypted value
-   produced by the component key in the same order as in the associated
-   composite public key object.
+   key share encrypted under one of the recipient component public keys.
+   The CompositeEncryptedKey MUST list encrypted values in the same
+   order as the recipient public key's component keys.
 
-   It is recognized there are different ways the content encryption key
-   could be secured.  For example, the content-encryption key could be
-   encrypted in layers.  Component 1 could encrypt the content-
-   encryption key, Component 2 could encrypt the encrypted content
-   encryption key and so fourth.  However this method would likely cause
-   problems if the underlying component produced cipher text that was
-   too large from the next component and thus a complicated padding-
-   block scheme would need to be secured.  A simpler method is a trivial
-   secret sharing scheme as described in Section 3.1.1.
+3.1.  Encrption process
 
-
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021                [Page 7]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
-3.1.1.  Content Encryption Key Sharing among n component algorithms
+   The process for performing Composite Key Transport using Encryption
+   primitives is as follows:
 
    Random bit strings of the same length as the content encryption key
    are generated for n-1 component algorithms.  The final bit string is
    computed by XOR'ing the content encryption key with each of n-1
-   random bit strings.
+   random bit strings.  Each of these bit strings is referred to as a
+   key share.
 
-   If n is the number of components, the algorithms works as follows:
 
-   Input:
-        n    The number of component algorithms
-        CEK  The Content Encryption Key
-        SIZE The size of the Content Encryption Key
 
-   Output:
-        S1, S2,... Sn       The intermediate shared secrets to be
-                            encapsulated by each component algorithm
 
-   Generation Procedure:
-      1. Generate a random set of bit strings of the same length as the
-         content encryption key
-           for i := 1 to n-1
-             Si := random_bits(SIZE)
 
-      2. To generate Sn, compute the following
-           Sn' = CEK XOR S1
-           for i := 2 to n-1
-             Sn' = Sn' (XOR) Si
-           Sn = Sn'
 
-      3. Output S1, S2 ... Sn
 
-   Each intermediate shared secret is then encapsulated by each
-   component algorithm.  To obtain the content-encryption key, each
-   component algorithm MUST be used to decrypt the set of intermediate
-   shared secrets.  These intermediate shared secrets are then XOR'ed
-   together to obtain the content-encryption key.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth & Gray        Expires November 10, 2021               [Page 7]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
+
+Input:
+     n                  The number of recipient component public keys
+     P1, P2, .., Pn     Recipient component public keys
+     CEK                The Content Encryption Key
+     SIZE               The size of the Content Encryption Key in bits
+
+Output:
+     E1, E2, .., En     EncryptedKey values corresponding to each recipient
+                        component public key
+
+Intermediate values:
+     S1, S2, .., Sn     Key shares to be encapsulated by each
+                        component algorithm
+
+Generation Procedure:
+   1. Generate a set of key shares of the same length as the
+      content encryption key
+        for i := 1 to n-1
+          Si := random_bits(SIZE)
+
+   2. To generate Sn, compute the following
+        Sn = CEK
+        for i := 1 to n-1
+          Sn = Sn XOR Si
+
+   3. Encrypt each key share under a recipient public key
+        for i := 1 to n
+          Ei := encrypt(Si, Pi)
+
+   4. Output E1, E2, .., En
+
+3.2.  Decryption process
+
+   To obtain the content-encryption key from a CompositeEncryptedKey,
+   each component algorithm MUST be used to decrypt the set of
+   intermediate shared secrets.  These intermediate shared secrets are
+   then XOR'ed together to obtain the content-encryption key.
 
    To obtain the content-encryption key from an set of intermediate
    shared secrets, the following process should be used:
@@ -445,83 +445,218 @@ Internet-Draft             PQ Composite Certs                 April 2021
 
 
 
-Ounsworth (Editor) & GraExpires October 21, 2021                [Page 8]
+Ounsworth & Gray        Expires November 10, 2021               [Page 8]
 
-Internet-Draft             PQ Composite Certs                 April 2021
+Internet-Draft             PQ Composite Certs                   May 2021
 
 
-   Input:
-        n                   The number of intermediate shared secrets
-        S1, S2,... Sn       The intermediate shared secrets that were
-                            decrypted by each component algorithm
+Input:
+     n                  The number of recipient component public keys
 
-   Output:
-        CEK  The Content Encryption Key
+     SK1, SK2, .., SKn  Recipient component secret keys
+
+     E1, E2, .., En     EncryptedKey values corresponding to each recipient
+                        component public key
+
+
+Intermediate values:
+     S1, S2, .., Sn     Key shares to be encapsulated by each
+                        component algorithm
+
+Output:
+     CEK  The Content Encryption Key
+
+
+Generation Procedure:
+   1. Recover each key share
+        for i := 1 to n
+          Si := decrypt(Ei, SKi)
+
+   2. Combine into the CEK;
+      For each intermediate shared-secret
+        CEK = S1
+        for i := 2 to n
+           CEK = CEK XOR Si
+
+   3. Output CEK
+
+4.  Composite Key Transport using Encryption and KEM primitives
+
+   This composite encryption mode is the generalization of the mode
+   defined in Section 3 to support a composite recipient public key
+   which MAY contain an arbitrary mixture of encryption and key
+   encapsulation machanism (KEM) component algorithms.
+
+   For a recipient composite public key to be applicable to this mode,
+   all component KEMs MUST be capable of producing a shared secret of
+   SIZE bits, where SIZE is the length in bits of the content encryption
+   key (CEK) to be transported.  This is assumed for the remainer of
+   this section.
+
+   Security consideration: for a recipient composite public key to be
+   applicable to this mode, all component KEMs SHOULD produce a shared
+   secret whose bits are independant and identically distributed (aka
+   "uniformly random"), and therefore the shared secret is safe to use
+   direcly as a symmetric key.  If a recipient public key contains
+
+
+
+Ounsworth & Gray        Expires November 10, 2021               [Page 9]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
+
+   component KEMs which are not know to have this property, then
+   implementors SHOULD use the more general mode described in section
+   XXXX which incorporates the use of a key derivation function.
+
+   EDNOTE: also put this in the Security considerations section.
+
+   Given these conditions are met, the encryption process defined in
+   {#sec-com-key-trans_encr_process} applies almost directly with the
+   following modifications:
 
    Generation Procedure:
-      1. For each intermediate shared-secret
-           CEK' = S1 XOR S2
-           for i := 3 to n
-              CEK' = CEK' (XOR) Si
-           CEK = CEK'
+      1. Generate a set of key shares of the same length as the
+         content encryption key
+           for i := 1 to n-1
+             if P1 is of type KEM:
+               Si,Ei := encaps(P1)
+             else:
+               Si := random_bits(SIZE)
 
-      2. Output CEK
+      ...
 
-3.2.  Composite Encryption without secret key sharing
+      3. Encrypt each key share under a recipient public key
+           for i := 1 to n
+             if P1 is of type KEM:
+               skip  // Ei was already produced above
+             else
+               Ei := encrypt(Si, Pi)
 
-   Each component could encrypt the same content-encryption key.  This
-   would have the effect of removing the security offered by combining
-   component algorithms but it is recognized that this may offer
-   interesting use cases for migration from one type of key to another
-   without having to re-issue keys.
 
-3.3.  Composite Content Key Encryption using Key Transport with key
-      derivation
+   The decryption process defined in {#sec-com-key-trans_decr_process}
+   applies directly.
 
-   A content-encryption key can be generated when intermediate content-
-   encryption keys are used.  A fresh intermediate value of the same
-   length as the desired content encryption key is given to each
-   component algorithm for encryption.  The final content-encryption key
-   can then be derived as specifed in Section 5.4.
+5.  Composite Key Exchange with a KDF
 
-4.  Composite Content Key Encryption using Key Agreement
+   This mode is the most general in that it supports a composite
+   recipient public key which MAY contain an arbitrary mixture of
+   encryption, key encapsulation machanism (KEM), and key agreement
+   component algorithms.  However, due to the nature of key agreement
+   algorithms, this mode cannot take a content encryption key as input,
+   but instead generates a master shared secret as an output.  As such,
+   the nomenclature in this mode differs from the modes above.  Where
+   the recipient public key has an associated keyUsage as specified in
+   [RFC5280], it MUST have keyUsage: keyEncipherment and or keyUsage:
+   keyAgreement.
 
-   If the underlying component keys support Key Agreement, then a
-   content-encryption key (for example AES) may be derived and used for
-   the encryption of the plaintext.  All of its component algorithms
-   MUST support key agreement for the keyAgreement usage to be used.
-
-   The composite content encryption key is formed by combining multiple
-   shared secrets produced by each component algorithms.
-
-   The id-alg-composite object identifier MUST be used to identify when
-   a content-encryption encrypted key has been created for decryption by
-   a CompositePrivateKey.  Composite encryption uses the following
-   structure:
+   EDNOTE: I think this violates our public key draft where we say that
+   the public key's KU MUST apply to all components. ... we did not want
+   mixing of signatures and encryption keys, but I think in this case we
 
 
 
-Ounsworth (Editor) & GraExpires October 21, 2021                [Page 9]
+Ounsworth & Gray        Expires November 10, 2021              [Page 10]
 
-Internet-Draft             PQ Composite Certs                 April 2021
+Internet-Draft             PQ Composite Certs                   May 2021
 
 
-CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
+   do want to allow mixing of keyEncipherment and keyExchange keys.  Not
+   sure how to fix that.
 
-   EDNOTE: do we need a CompositeParams to denote the list of component
-   algorithms used, or will that be implied when the decryptor tries to
-   use their private key?  Need to take another look at RFC 5652 and CMP
-   to see if there's even a spot to put CompositeParams in an encryption
-   alg.
+   The idea is to generate a component shared secret associated with
+   each recipient public key, concatenate them together, and apply a key
+   derivation function (KDF) to obtain the master shared secret.
+   Implementations MUST use a KDF that is compatible with NIST SP-800
+   56Cr2 <TODO: cite properly>.
 
-   EDNOTE: I Reviewed RFC 5652 and Parameters are carried in the
-   AlgorithmID fields of the contentEncryptionAlgorithm,
-   KeyEncryptionAlgorithm and KeyDerivationAlgorithm OID values, so the
-   OID used for Composite Encryption can contain the list its component
-   AlgorithmID fields along with each component Algorithms ID's
-   parameters.
+5.1.  Encapsulation Process
 
-4.1.  Encoding Rules
+   EDNOTE: I'm not sure that's the right nomenclature.
+
+Input:
+     P1, P2, .., Pn     Public keys for the n component encryption
+                        algorithms, a CompositePublicKey
+
+    SIZE                The size, in bits, for shared secrets to be combined by both
+                        parties into a content encryption key. This value SHOULD correspond
+                        to the size of the content encryption key.
+
+    KDF                 A key derivation function
+
+Output:
+     E1, E2, .., En     EncryptedKey values corresponding to each recipient
+                        component public key
+
+     M                  Master shared secret
+
+
+Ciphertext Generation Procedure:
+   1. Generate a set of key shares of the same length as the
+      content encryption key
+        for i := 1 to n-1
+          if P1 is of type KEM or keyExchange:
+            Si,Ei := encaps(P1)
+          else:
+            Si := random_bits(SIZE)
+
+   2. Generate Z via concatenation
+        Z = S1 || S2 || .. || Sn
+
+   3. Generate the master shared secret via a KDF
+        M = KDF(Z)
+
+  4. Output M
+     Output E1, E2, .., En
+
+
+
+
+Ounsworth & Gray        Expires November 10, 2021              [Page 11]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
+
+5.2.  Decapsulation Process
+
+   EDNOTE: I'm not sure that's the right nomenclature.
+
+   <TODO: needs words>
+
+Input:
+     n                  The number of recipient component public keys
+
+     SK1, SK2, .., SKn  Recipient component secret keys
+
+     E1, E2, .., En     EncryptedKey values corresponding to each recipient
+                        component public key
+
+    KDF                 A key derivation function
+
+
+Intermediate values:
+     S1, S2, .., Sn     Key shares to be encapsulated by each
+                        component algorithm
+
+Output:
+     M                  Master shared secret
+
+
+Ciphertext Generation Procedure:
+   1. Recover each key share
+        for i := 1 to n
+          Si := decrypt_or_decaps(Ei, SKi)
+
+   2. Generate Z via concatenation
+        Z = S1 || S2 || .. || Sn
+
+   3. Generate the master shared secret via a KDF
+        M = KDF(Z)
+
+  4. Output M
+
+6.  Encoding Rules
 
    EDNOTE: this section was copied from the composite-sigs draft.  Does
    it apply here since I've defined it above as an OCTET STRING already?
@@ -531,6 +666,13 @@ CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
    Many protocol specifications will require that the composite public
    key, composite private key, and composite encryption data structures
    be represented by an octet string or bit string.
+
+
+
+Ounsworth & Gray        Expires November 10, 2021              [Page 12]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
 
    When an octet string is required, the DER encoding of the composite
    data structure SHALL be used directly.
@@ -545,155 +687,9 @@ CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
    implementations that parse these structures MAY accept both BER and
    DER.
 
-5.  Composite encryption and decryption Processes
+7.  Composite-OR encryption
 
-   This section specifies the algorithms for encrypting and decrypting
-   using composite encryption.
-
-   This algorithm addresses algorithm strength uncertainty by
-   establishing separate key material using each component algorithm, to
-   be combined into the content encryption key using :: TODO: ref
-   properly :: NIST SP 800-56Cr2.
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 10]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
-5.1.  Generation of CompositeEncryptedKey using Key Transport
-
-   The following algorithm is used to generate composite encrypted key
-   values using Key Transport.
-
-Input:
-     P1, P2, .., Pn     Public keys for the n component encryption
-                        algorithms, a CompositePublicKey
-
-     S1, S2, .., Sn    (Optional) The intermediate content-encryption keys used
-                       to form the final content-encryption key used for the
-                       encryption. Generated internally if not passed in.
-
-Output:
-     E                  The encrypted value, a CompositeEncryptedKey
-
-Ciphertext Generation Procedure:
-   1. Generate a set of intermediate content-encryption keys used method defined in {{sec-composite-keyshare}}
-
-   2. Generate the n component ciphertexts independently using key transport to wrap each intermediate content-encryption key,
-      according to their algorithm specifications.
-
-        for i := 1 to n
-            Ei := Encrypt( Pi, Si )
-
-   3. Encode each component ciphertext E1, E2, .., En into a OCTET STRING
-      according to its algorithm specification.
-
-        E ::= Sequence { E1, E2, .., En }
-
-   4. Output E
-
-5.2.  Composite encryption using Key Agree
-
-   Generation of a CompositeEncryptedKey involves applying each
-   component algorithm's encryption routine to a shared secret value
-   according to its specification, and then placing each component value
-   into the CompositeEncryptedKey structure defined in Section 3.1.
-
-   The following algorithm is used to generate composite encrypted key
-   values.
-
-
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 11]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
-Input:
-     P1, P2, .., Pn     Public keys for the n component encryption
-                        algorithms, a CompositePublicKey
-
-    SIZE                The size, in bits, for shared secrets to be combined by both
-                        parties into a content encryption key. This value SHOULD correspond
-                        to the size of the content encryption key.
-
-Output:
-     E                  The encrypted value, a CompositeEncryptedKey
-
-     SS1, SS2, .., SSn Key material in the form of a set of shared secrets.
-
-Ciphertext Generation Procedure:
-   1. Generate a set of shared secrets
-        for i := 1 to n
-          SSi := random_bits(SIZE)
-
-   2. Generate the n component ciphertexts independently,
-      according to their algorithm specifications.
-
-        for i := 1 to n
-            Ei := Encrypt( Pi, SSi )
-
-   3. Encode each component ciphertext E1, E2, .., En into a OCTET STRING
-      according to its algorithm specification.
-
-        E ::= Sequence { E1, E2, .., En }
-
-   4. Output E
-      Output SS1, SS2, .., SSn
-
-   EDNOTE: In step 2 above, would it make sense to run the random SS
-   values through a KDF (such as a hash function), and then use that
-   output as the Message from the encryption in step2.  So essentially
-   1b) could be SSi' = KDF (SSi) which is done before step 2.  Then Step
-   2 is Ei := Encrypt( Pi, SSi').  If this is agreed, then we can
-   provide a list of accept KDF algorithms as that would be an input.
-
-   EDNOTE: The above process essentially runs through the encryption
-   process N times, and concatenates the results together.  This would
-   produce CipherText output that is at least 2N times as large as a
-   single key encryption process.
-
-   EDNOTE: If we are going to recommend this type of encryption, then I
-   think we should bind each component together so that separate
-   encryption operations cannot be joined together to form a composite
-   encryption, or vice-versa.  This could be done by having each
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 12]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
-   component encrypt a small random value or hash of the pre-encrypted
-   data that could be inserted at the end of the plaintext before being
-   encrypted by each component.  It would be similar to AEAD in GCM or a
-   checksum.
-
-   Since recursive composite public keys are disallowed in ~~ Reference
-   draft-ounsworth-pq-composite-pubkeys sec-composite-pub-keys ~~, no
-   component ciphertext may itself be a composite; ie the composite
-   encryption process MUST fail if one of the public keys K1, K2, .., Kn
-   is a composite with the OID id-alg-composite.
-
-   A composite encryption MUST produce and include in the output a
-   ciphertext value for every component key in the corresponding
-   CompositePublicKey.  For this mode, please see Composite-OR in
-   section Section 5.2.1.
-
-   This process MAY be modified to accept the key material SS1, SS2, ..,
-   SSn as an input rather than generated as part of this process.
-
-5.2.1.  Composite-OR encryption
+   EDNOTE: does this still fit?
 
    If the algorithm ID of the public key associated with this signature
    is id-composite-or-key then the encryptor MAY use only a subset of
@@ -722,139 +718,24 @@ Internet-Draft             PQ Composite Certs                 April 2021
    regular algorithm.  I can see use for systems that recognize the
    composite structure which may not yet support all the component
    encryption algorithms, so a composite with algorithms that are not
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 13]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
    yet understood could be pushed out and one or more of the components
-   could get used.  ## Composite Decryption {#sec-comp-decr}
-
-5.3.  Composite decryption using Key Agree
-
-   The following algorithm is used to decrypt a composite encrypted key
-   values.
-
-Input:
-    E                  The encrypted value, a CompositeEncryptedKey
-
-    K                  Private key for the n component encryption
-                       algorithms, a CompositePrivateKey
-
-Output:
-     SS1, SS2, .., SSn Key material in the form of a set of shared secrets (intermediate content-encryption keys).
-
-Ciphertext Decryption Procedure:
-
-   1. Parse E into the component ciphertexts
-
-      E1, E2, .., En := Desequence( E )
-      K1, K2, .., Kn := Desequence( K )
-
-    If Error during Desequencing, or the three sequences have
-    different numbers of elements, or any of the private keys K1, K2, .., Kn or
-    are composite with the OID id-alg-composite then output "Invalid ciphertext" and stop.
-
-   2. Decrypt each component ciphertext individually, according to its
-       algorithm specification.
-       If any fail, then the entire decryption operation fails.
-
-        for i := 1 to n
-              if not (SSi := decrypt( Ki, Ei ), then
-                output "Invalid ciphertext"
-
-   3. Output SS1, SS2, .., SSn
-
-   Security consideration: for timing-invariance, step 2 may need to
-   process all provided ciphertexsts rather than short-circuiting with
-   an error.
-
-5.3.1.  Composite-OR decryption
-
-   If the decryptor supports using their private key in the Composite-OR
-   mode, then decryption of a null-valued ciphertext in step 2 is not
-   considered an error.  The process should emit a null value for the
+   could get used.
 
 
 
 
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 14]
+
+Ounsworth & Gray        Expires November 10, 2021              [Page 13]
 
-Internet-Draft             PQ Composite Certs                 April 2021
+Internet-Draft             PQ Composite Certs                   May 2021
 
 
-   corresponding shared secret SSi, which MUST be treated as an empty
-   string for the purposes of concatenation.
-
-   EDNOTE: Have not thought about this yet, but interesting use-cases
-   with key transport because the same content-encryption key could be
-   used for each encryption, which means 1 or more could be used meaning
-   it would lend itself to transition or switching from one algorihtm to
-   another more easily.
-
-5.4.  Deriving a content encryption key
-
-   Given a set of shared secrets SS1, SS2, .., SSn as per Section 5.2,
-   they are to be combined into a content encryption key as:
-
-   Z := SS1
-   T := SS2 || .. || SSn
-
- +-------+---+------------------------------------------------+---+----+
- | where |   | denotes concatenation. Z and T are then used   |   | T. |
- |       |   | as input to the key derivation scheme defined  |   |    |
- |       |   | in :: TODO: CITE PROPERLY :: NIST SP 800-56Cr2 |   |    |
- |       |   | as the "hybrid" shared secret of the form Z' = |   |    |
- |       |   | Z                                              |   |    |
- +-------+---+------------------------------------------------+---+----+
- +-------+---+------------------------------------------------+---+----+
-
-   ED NOTE: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
-   NIST.SP.800-56Cr2.pdf section 2.
-
-5.5.  Key Derivation
-
-   NIST SP 800-56C rev 2 section 4 specifies a 1 step Key Derivation
-   process and section 5 specifies a 2 step Key Derivation Process.
-   They both require the shared secret Z and a bit length of the output
-   key.  In this context Z' is the concatenation of the shared secrets
-   obtained from each component of the composite encrypted key.  For
-   One-Step Key Derivation, it is recommended that a FIPS 180 or FIPS
-   202 approved Hash function be used.  For Two-Step Key Derivation an
-   additional salt value is required as part of the input.  Either
-   method may be used to derive the key material.
-
-5.6.  Key encryption
-
-   EDNOTE: Copy from CMS (RFC 5652):
-
-   6.4.  Key-encryption Process
-
-
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 15]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
-   The input to the key-encryption process -- the value supplied to the
-   recipient's key-encryption algorithm -- is just the "value" of the
-   content-encryption key.
-
-   Any of the aforementioned key management techniques can be used for
-   each recipient of the same encrypted content.
-
-6.  In Practice
+8.  In Practice
 
    This section addresses practical issues of how this draft affects
    other protocols and standards.
 
-7.  IANA Considerations
+9.  IANA Considerations
 
    The ASN.1 module OID is TBD.  The id-alg-composite OID is to be
    assigned by IANA.  The authors suggest that IANA assign an OID on the
@@ -864,9 +745,9 @@ Internet-Draft             PQ Composite Certs                 April 2021
        iso(1) identified-organization(3) dod(6) internet(1) security(5)
        mechanisms(5) pkix(7) algorithms(6) composite(??) }
 
-8.  Security Considerations
+10.  Security Considerations
 
-8.1.  Policy for Deprecated and Acceptable Algorithms
+10.1.  Policy for Deprecated and Acceptable Algorithms
 
    Traditionally, a public key, certificate, or signature contains a
    single cryptographic algorithm.  If and when an algorithm becomes
@@ -891,22 +772,23 @@ Internet-Draft             PQ Composite Certs                 April 2021
       if not checkPolicy(A1, A2, ..., An), then
         output "Invalid signature"
 
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 16]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
    While intentionally not specified in this document, implementors
    should put careful thought into implementing a meaningfull policy
    mechinism within the context of their signature verification engines,
    for example only algorithms that provide similar security levels
    should be combined together.
 
-9.  Appendices
 
-9.1.  ASN.1 Module
+
+
+Ounsworth & Gray        Expires November 10, 2021              [Page 14]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
+
+11.  Appendices
+
+11.1.  ASN.1 Module
 
    EDNOTE: TODO: Update this from the signatures ASN.1.
 
@@ -946,20 +828,20 @@ Internet-Draft             PQ Composite Certs                 April 2021
 
    --
    -- Public Key
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 17]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
    --
 
    pk-Composite PUBLIC-KEY ::= {
        IDENTIFIER id-alg-composite
        KEY CompositePublicKey
        PARAMS ARE absent
+
+
+
+Ounsworth & Gray        Expires November 10, 2021              [Page 15]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
+
        PRIVATE-KEY CompositePrivateKey
    }
 
@@ -974,13 +856,13 @@ Internet-Draft             PQ Composite Certs                 April 2021
    <CODE ENDS>
 
 
-9.2.  Intellectual Property Considerations
+11.2.  Intellectual Property Considerations
 
    The following IPR Disclosure relates to this draft:
 
    https://datatracker.ietf.org/ipr/3588/
 
-10.  Contributors and Acknowledgements
+12.  Contributors and Acknowledgements
 
    This document incorporates contributions and comments from a large
    group of experts.  The Editors would especially like to acknowledge
@@ -1001,25 +883,24 @@ Internet-Draft             PQ Composite Certs                 April 2021
    "Copying always makes things easier and less error prone" -
    [RFC8411].
 
-
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 18]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
-10.1.  Making contributions
+12.1.  Making contributions
 
    Additional contributions to this draft are weclome.  Please see the
    working copy of this draft at, as well as open issues at:
 
    https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
 
-11.  References
 
-11.1.  Normative References
+
+
+Ounsworth & Gray        Expires November 10, 2021              [Page 16]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
+
+13.  References
+
+13.1.  Normative References
 
    [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
               Mail: Part I: Message Encryption and Authentication
@@ -1056,16 +937,6 @@ Internet-Draft             PQ Composite Certs                 April 2021
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/info/rfc5652>.
 
-
-
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 19]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
    [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
               DOI 10.17487/RFC5958, August 2010,
               <https://www.rfc-editor.org/info/rfc5958>.
@@ -1073,6 +944,15 @@ Internet-Draft             PQ Composite Certs                 April 2021
    [RFC7468]  Josefsson, S. and S. Leonard, "Textual Encodings of PKIX,
               PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
               April 2015, <https://www.rfc-editor.org/info/rfc7468>.
+
+
+
+
+
+Ounsworth & Gray        Expires November 10, 2021              [Page 17]
+
+Internet-Draft             PQ Composite Certs                   May 2021
+
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1088,7 +968,7 @@ Internet-Draft             PQ Composite Certs                 April 2021
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
-11.2.  Informative References
+13.2.  Informative References
 
    [I-D.pala-composite-crypto]
               Pala, M., "Composite Public Keys and Signatures", draft-
@@ -1112,16 +992,6 @@ Authors' Addresses
    Email: mike.ounsworth@entrust.com
 
 
-
-
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 20]
-
-Internet-Draft             PQ Composite Certs                 April 2021
-
-
    John Gray
    Enrust Limited
 
@@ -1135,42 +1005,4 @@ Internet-Draft             PQ Composite Certs                 April 2021
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth (Editor) & GraExpires October 21, 2021               [Page 21]
+Ounsworth & Gray        Expires November 10, 2021              [Page 18]
