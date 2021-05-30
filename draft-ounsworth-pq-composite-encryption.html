@@ -381,7 +381,7 @@
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Composite Keys">
 <link href="#rfc.section.2.2.1" rel="Chapter" title="2.2.1 Key Usage Bits">
 <link href="#rfc.section.3" rel="Chapter" title="3 Composite Key Transport using Encryption primitives">
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Encrption process">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Encryption process">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Decryption process">
 <link href="#rfc.section.4" rel="Chapter" title="4 Composite Key Transport using Encryption and KEM primitives">
 <link href="#rfc.section.5" rel="Chapter" title="5 Composite Key Exchange">
@@ -409,7 +409,7 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and J. Gray" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-encryption-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2021-05-09" />
+  <meta name="dct.issued" scheme="ISO8601" content="2021-05-30" />
   <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient&#x27;s component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2. " />
   <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient&#x27;s component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2. " />
 
@@ -433,8 +433,8 @@
 <td class="right">Entrust</td>
 </tr>
 <tr>
-<td class="left">Expires: November 10, 2021</td>
-<td class="right">May 09, 2021</td>
+<td class="left">Expires: December 1, 2021</td>
+<td class="right">May 30, 2021</td>
 </tr>
 
     	
@@ -451,7 +451,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 10, 2021.</p>
+<p>This Internet-Draft will expire on December 1, 2021.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2021 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -475,7 +475,7 @@
 </li>
 </ul></ul><li>3.   <a href="#rfc.section.3">Composite Key Transport using Encryption primitives</a>
 </li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">Encrption process</a>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Encryption process</a>
 </li>
 <li>3.2.   <a href="#rfc.section.3.2">Decryption process</a>
 </li>
@@ -544,13 +544,14 @@
 <p id="rfc.section.1.1.p.5">COMPONENT ALGORITHM: A single basic algorithm which is contained within a composite algorithm.</p>
 <p id="rfc.section.1.1.p.6">COMPOSITE ALGORITHM: An algorithm which is a sequence of one or more component algorithms, as defined in <a href="#sec-composite-structs" class="xref">Section 2</a>.</p>
 <p id="rfc.section.1.1.p.7">DER: Distinguished Encoding Rules as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
-<p id="rfc.section.1.1.p.8">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
-<p id="rfc.section.1.1.p.9">PRIMITIVE PUBLIC KEY / SIGNATURE: A public key or signature object of a non-composite algorithm type.</p>
-<p id="rfc.section.1.1.p.10">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
-<p id="rfc.section.1.1.p.11">SHARED SECRET: The output of an exchange of public information between two or more parties that generates a unique shared value for all involved parties.</p>
-<p id="rfc.section.1.1.p.12">KEY DERIVATION FUNCTION: A function used to derive secure secret keys using shared secrets, hashing and other cryptographic primitives.</p>
-<p id="rfc.section.1.1.p.13">COMPOSITE ENCRYPTION KEY: A structure that contains a sequence of content encryption keys, or secrets used to derive a content encryption keys.</p>
-<p id="rfc.section.1.1.p.14">TRIVIAL SECRET SHARING A method to securely share a secret among two or more parties where all parties need to combine their intermediate secret to re-create the secret.</p>
+<p id="rfc.section.1.1.p.8">KEY SHARE: A type of shared secret where a key splitting scheme is used to distribute multiple secrets over different channels such that some or all of the secrets must be re-combined to recover the primary shared secret.</p>
+<p id="rfc.section.1.1.p.9">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
+<p id="rfc.section.1.1.p.10">PRIMITIVE PUBLIC KEY / SIGNATURE: A public key or signature object of a non-composite algorithm type.</p>
+<p id="rfc.section.1.1.p.11">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
+<p id="rfc.section.1.1.p.12">SECRET or SHARED SECRET: Cryptographic material established between two parties.  May be generated by one party and send encrypted to the other, or may be the output of an exchange of public information between two or more parties that generates a unique shared value for all involved parties.</p>
+<p id="rfc.section.1.1.p.13">KEY DERIVATION FUNCTION: A function used to derive secure secret keys using shared secrets, hashing and other cryptographic primitives.</p>
+<p id="rfc.section.1.1.p.14">COMPOSITE ENCRYPTION KEY: A structure that contains a sequence of content encryption keys, or secrets used to derive a content encryption keys.</p>
+<p id="rfc.section.1.1.p.15">TRIVIAL SECRET SHARING A method to securely share a secret among two or more parties where all parties need to combine their intermediate secret to re-create the secret.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#sec-composite-structs" id="sec-composite-structs">Composite Structures</a>
 </h1>
@@ -592,22 +593,21 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#sec-com-key-trans_encr" id="sec-com-key-trans_encr">Composite Key Transport using Encryption primitives</a>
 </h1>
-<p id="rfc.section.3.p.1">In this composite encryption mode, a message to be encrypted is provided by the calling application.</p>
+<p id="rfc.section.3.p.1">In this composite encryption mode, a message to be encrypted is provided by the calling application.  This message to be encrypted is assumed without loss of generality to be a symmetric content encryption key (CEK) which is assumed to have a size less maximum message size of the chosen encryption algorithms.</p>
 <p id="rfc.section.3.p.2">The recipient MUST have a composite public key which supports key transport operations. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are encryption algorithms.</p>
-<p id="rfc.section.3.p.3">This message to be encrypted is assumed without loss of generality to be a symmetric content encryption key (CEK) which is assumed to have a size less than the encryption message sizes &lt;find a better phrasing?&gt; of the chosen encryption algorithms.</p>
-<p id="rfc.section.3.p.4">Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme to split the content encryption key into n parts, where n is the number of recipient component public keys, and encrypt each share under a different recipient component public key such that the recipient is required to use all component private keys in order to recover the content encryption key.</p>
-<p id="rfc.section.3.p.5">The id-alg-composite object identifier MUST be used to identify when a content-encryption key has been encrypted by a CompositePrivateKey. Composite encryption uses the following structure:</p>
-<p id="rfc.section.3.p.6">EDNOTE:  Should a different composite OID be used to determine the type of composite encryption (Key Transport or Key Agreement?).  Probably not because the desired key usage will be described in the underlying protocols.</p>
+<p id="rfc.section.3.p.3">Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme to transport n secrets called key shares, where n is the number of recipient component public keys, and each share is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document.</p>
+<p id="rfc.section.3.p.4">The id-alg-composite object identifier MUST be used to identify when a content-encryption key has been encrypted by a CompositePrivateKey. Composite encryption uses the following structure:</p>
+<p id="rfc.section.3.p.5">EDNOTE:  Should a different composite OID be used to determine the type of composite encryption (Key Transport or Key Agreement?).  Probably not because the desired key usage will be handled in the protocols that uses this privitive.</p>
 <pre>
 CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
 </pre>
-<p id="rfc.section.3.p.7">EDNOTE: This ASN.1 probably does not compile. The intent is that this fits into any EncryptedKey field, but defines some structure within the existing EncryptedKey ::= OCTET STRING, but I'm not sure exactly how to specify that.</p>
-<p id="rfc.section.3.p.8">Where each OCTET STRING within the SEQUENCE contains the encrypted key share encrypted under one of the recipient component public keys. The CompositeEncryptedKey MUST list encrypted values in the same order as the recipient public key's component keys.</p>
+<p id="rfc.section.3.p.6">EDNOTE: This ASN.1 probably does not compile. The intent is that this fits into any EncryptedKey field, but defines some structure within the existing EncryptedKey ::= OCTET STRING, but I'm not sure exactly how to specify that.</p>
+<p id="rfc.section.3.p.7">Where each OCTET STRING within the SEQUENCE contains an encrypted key share encrypted under one of the recipient component public keys. The CompositeEncryptedKey MUST list encrypted values in the same order as the recipient public key's component keys.</p>
 <h1 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#sec-com-key-trans_encr_process" id="sec-com-key-trans_encr_process">Encrption process</a>
+<a href="#rfc.section.3.1">3.1.</a> <a href="#sec-com-key-trans_encr_process" id="sec-com-key-trans_encr_process">Encryption process</a>
 </h1>
 <p id="rfc.section.3.1.p.1">The process for performing Composite Key Transport using Encryption primitives is as follows:</p>
-<p id="rfc.section.3.1.p.2">Random bit strings of the same length as the content encryption key are generated for n-1 component algorithms.  The final bit string is computed by XOR'ing the content encryption key with each of n-1 random bit strings. Each of these bit strings is referred to as a key share.</p>
+<p id="rfc.section.3.1.p.2">The first n-1 key shares are random bit strings of the same length as the content encryption key.  The final key share is computed by XOR'ing the content encryption key with each of n-1 previous key shares.</p>
 <pre>
 Input:
      n                  The number of recipient component public keys
@@ -624,7 +624,7 @@ Intermediate values:
                         component algorithm
 
 Generation Procedure:
-   1. Generate a set of key shares of the same length as the
+   1. Generate a set of n-1 key shares of the same length as the
       content encryption key
         for i := 1 to n-1
           Si := random_bits(SIZE)
@@ -643,8 +643,7 @@ Generation Procedure:
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#sec-com-key-trans_decr_process" id="sec-com-key-trans_decr_process">Decryption process</a>
 </h1>
-<p id="rfc.section.3.2.p.1">To obtain the content-encryption key from a CompositeEncryptedKey, each component algorithm MUST be used to decrypt the set of intermediate shared secrets.  These intermediate shared secrets are then XOR'ed together to obtain the content-encryption key.</p>
-<p id="rfc.section.3.2.p.2">To obtain the content-encryption key from an set of intermediate shared secrets, the following process should be used:</p>
+<p id="rfc.section.3.2.p.1">To obtain the content-encryption key from a CompositeEncryptedKey, each component algorithm MUST be used to decrypt the set of key shares.  The key shares are then XOR'ed together to recover the content encryption key.</p>
 <pre>
 Input:
      n                  The number of recipient component public keys
@@ -656,7 +655,7 @@ Input:
 
 
 Intermediate values:
-     S1, S2, .., Sn     Key shares to be encapsulated by each 
+     S1, S2, .., Sn     Key shares to be decapsulated by each 
                         component algorithm
 
 Output:
@@ -668,7 +667,7 @@ Generation Procedure:
         for i := 1 to n
           Si := decrypt(Ei, SKi)
 
-   2. Combine into the CEK;
+   2. Recover the CEK;
       For each intermediate shared-secret
         CEK = S1
         for i := 2 to n
