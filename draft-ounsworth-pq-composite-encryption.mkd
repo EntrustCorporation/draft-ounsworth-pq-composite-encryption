@@ -222,7 +222,9 @@ This message to be encrypted is assumed without loss of generality to be a symme
 The recipient MUST have a composite public key which supports key transport operations. Where the recipient public key has an associated keyUsage as specified in [RFC5280], it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are encryption algorithms.
 
 
-Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme to transport n secrets called key shares, where n is the number of recipient component public keys, and each share is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document.
+Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme, as defined in {{sec-com-key-trans_encr_process}} to transport n secrets called key shares, where n is the number of recipient component public keys, and each share is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document.
+
+EDNOTE: we have not been able to find a reference and security analysis for the trivial XOR key-sharing scheme. This may need review by CFRG. We could re-frame this process as "a one-time pad with n-1 one-time pad keys, which we transport using the recipients public keys", then this could leverage one-time pad security analysis.
 
 
 The id-alg-composite object identifier MUST be used to identify when a content-encryption key has been encrypted by a CompositePrivateKey. Composite encryption uses the following structure:
@@ -273,7 +275,7 @@ Generation Procedure:
         for i := 1 to n-1
           Si := random_bits(SIZE)
 
-   2. To generate Sn, compute the following
+   2. To generate key share Sn, compute the following
         Sn = CEK
         for i := 1 to n-1
           Sn = Sn XOR Si
@@ -284,6 +286,8 @@ Generation Procedure:
 
    4. Output E1, E2, .., En
 ~~~
+
+Where `random_bits(SIZE)` is a cryptographically-secure random bit generator outputting SIZE bits.
 
 
 ## Decryption process {#sec-com-key-trans_decr_process}
@@ -358,6 +362,8 @@ Generation Procedure:
             Ei := encrypt(Si, Pi)
 
 ~~~
+
+Where `random_bits(SIZE)` is a cryptographically-secure random bit generator outputting SIZE bits.
 
 The decryption process defined in {{sec-com-key-trans_decr_process}} applies directly where `decrypt()` is taken te be a `decaps()` when the underlying primitive is a KEM.
 

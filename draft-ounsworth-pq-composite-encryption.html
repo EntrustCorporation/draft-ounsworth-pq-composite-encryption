@@ -413,7 +413,7 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and J. Gray" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-encryption-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2021-05-30" />
+  <meta name="dct.issued" scheme="ISO8601" content="2021-06-01" />
   <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient&#x27;s component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2. " />
   <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient&#x27;s component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2. " />
 
@@ -437,8 +437,8 @@
 <td class="right">Entrust</td>
 </tr>
 <tr>
-<td class="left">Expires: December 1, 2021</td>
-<td class="right">May 30, 2021</td>
+<td class="left">Expires: December 3, 2021</td>
+<td class="right">June 01, 2021</td>
 </tr>
 
     	
@@ -455,7 +455,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 1, 2021.</p>
+<p>This Internet-Draft will expire on December 3, 2021.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2021 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -611,14 +611,15 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 </h1>
 <p id="rfc.section.3.p.1">In this composite encryption mode, a message to be encrypted is provided by the calling application.  This message to be encrypted is assumed without loss of generality to be a symmetric content encryption key (CEK) which is assumed to have a size less maximum message size of the chosen encryption algorithms.</p>
 <p id="rfc.section.3.p.2">The recipient MUST have a composite public key which supports key transport operations. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are encryption algorithms.</p>
-<p id="rfc.section.3.p.3">Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme to transport n secrets called key shares, where n is the number of recipient component public keys, and each share is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document.</p>
-<p id="rfc.section.3.p.4">The id-alg-composite object identifier MUST be used to identify when a content-encryption key has been encrypted by a CompositePrivateKey. Composite encryption uses the following structure:</p>
-<p id="rfc.section.3.p.5">EDNOTE:  Should a different composite OID be used to determine the type of composite encryption (Key Transport or Key Agreement?).  Probably not because the desired key usage will be handled in the protocols that uses this privitive.</p>
+<p id="rfc.section.3.p.3">Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme, as defined in <a href="#sec-com-key-trans_encr_process" class="xref">Section 3.2</a> to transport n secrets called key shares, where n is the number of recipient component public keys, and each share is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document.</p>
+<p id="rfc.section.3.p.4">EDNOTE: we have not been able to find a reference and security analysis for the trivial XOR key-sharing scheme. This may need review by CFRG. We could re-frame this process as "a one-time pad with n-1 one-time pad keys, which we transport using the recipients public keys", then this could leverage one-time pad security analysis.</p>
+<p id="rfc.section.3.p.5">The id-alg-composite object identifier MUST be used to identify when a content-encryption key has been encrypted by a CompositePrivateKey. Composite encryption uses the following structure:</p>
+<p id="rfc.section.3.p.6">EDNOTE:  Should a different composite OID be used to determine the type of composite encryption (Key Transport or Key Agreement?).  Probably not because the desired key usage will be handled in the protocols that uses this privitive.</p>
 <pre>
 CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
 </pre>
-<p id="rfc.section.3.p.6">EDNOTE: This ASN.1 probably does not compile. The intent is that this fits into any EncryptedKey field, but defines some structure within the existing EncryptedKey ::= OCTET STRING, but I'm not sure exactly how to specify that.</p>
-<p id="rfc.section.3.p.7">Where each OCTET STRING within the SEQUENCE contains an encrypted key share encrypted under one of the recipient component public keys. The CompositeEncryptedKey MUST list encrypted values in the same order as the recipient public key's component keys.</p>
+<p id="rfc.section.3.p.7">EDNOTE: This ASN.1 probably does not compile. The intent is that this fits into any EncryptedKey field, but defines some structure within the existing EncryptedKey ::= OCTET STRING, but I'm not sure exactly how to specify that.</p>
+<p id="rfc.section.3.p.8">Where each OCTET STRING within the SEQUENCE contains an encrypted key share encrypted under one of the recipient component public keys. The CompositeEncryptedKey MUST list encrypted values in the same order as the recipient public key's component keys.</p>
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> <a href="#sec-com-key-trans_encr-params" id="sec-com-key-trans_encr-params">Algorithm parameters</a>
 </h1>
@@ -649,7 +650,7 @@ Generation Procedure:
         for i := 1 to n-1
           Si := random_bits(SIZE)
 
-   2. To generate Sn, compute the following
+   2. To generate key share Sn, compute the following
         Sn = CEK
         for i := 1 to n-1
           Sn = Sn XOR Si
@@ -660,6 +661,7 @@ Generation Procedure:
 
    4. Output E1, E2, .., En
 </pre>
+<p id="rfc.section.3.2.p.3">Where <samp>random_bits(SIZE)</samp> is a cryptographically-secure random bit generator outputting SIZE bits.</p>
 <h1 id="rfc.section.3.3">
 <a href="#rfc.section.3.3">3.3.</a> <a href="#sec-com-key-trans_decr_process" id="sec-com-key-trans_decr_process">Decryption process</a>
 </h1>
@@ -723,7 +725,8 @@ Generation Procedure:
             Ei := encrypt(Si, Pi)
 
 </pre>
-<p id="rfc.section.4.p.6">The decryption process defined in <a href="#sec-com-key-trans_decr_process" class="xref">Section 3.3</a> applies directly where <samp>decrypt()</samp> is taken te be a <samp>decaps()</samp> when the underlying primitive is a KEM.</p>
+<p id="rfc.section.4.p.6">Where <samp>random_bits(SIZE)</samp> is a cryptographically-secure random bit generator outputting SIZE bits.</p>
+<p id="rfc.section.4.p.7">The decryption process defined in <a href="#sec-com-key-trans_decr_process" class="xref">Section 3.3</a> applies directly where <samp>decrypt()</samp> is taken te be a <samp>decaps()</samp> when the underlying primitive is a KEM.</p>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#sec-com-key-trans_kem-params" id="sec-com-key-trans_kem-params">Algorithm parameters</a>
 </h1>
