@@ -81,13 +81,13 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-     1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
+     1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   5
      2.1.  Algorithm Identifier  . . . . . . . . . . . . . . . . . .   6
      2.2.  Algorithm Parameters  . . . . . . . . . . . . . . . . . .   6
      2.3.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   6
        2.3.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   6
-   3.  Composite Key Transport using Encryption primitives . . . . .   7
+   3.  Composite Key Transport using Encryption primitives . . . . .   6
      3.1.  Algorithm parameters  . . . . . . . . . . . . . . . . . .   8
      3.2.  Encryption process  . . . . . . . . . . . . . . . . . . .   8
      3.3.  Decryption process  . . . . . . . . . . . . . . . . . . .   9
@@ -116,9 +116,7 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
    12. Contributors and Acknowledgements . . . . . . . . . . . . . .  18
      12.1.  Making contributions . . . . . . . . . . . . . . . . . .  18
-   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     13.1.  Normative References . . . . . . . . . . . . . . . . . .  19
-     13.2.  Informative References . . . . . . . . . . . . . . . . .  20
+   13. Normative References  . . . . . . . . . . . . . . . . . . . .  19
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
 1.  Introduction
@@ -158,9 +156,11 @@ Internet-Draft             PQ Composite Certs                  June 2021
    This document is intended for general applicability anywhere that
    content encryption is used.
 
+1.1.  Terminology
 
-
-
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
 
 
 
@@ -170,11 +170,6 @@ Ounsworth & Gray        Expires December 8, 2021                [Page 3]
 Internet-Draft             PQ Composite Certs                  June 2021
 
 
-1.1.  Terminology
-
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in BCP
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
@@ -217,6 +212,11 @@ Internet-Draft             PQ Composite Certs                  June 2021
    KEY DERIVATION FUNCTION: A function used to derive secure secret keys
    using shared secrets, hashing and other cryptographic primitives.
 
+   COMPOSITE ENCRYPTION KEY: A structure that contains a sequence of
+   content encryption keys, or secrets used to derive a content
+   encryption keys.
+
+
 
 
 
@@ -225,10 +225,6 @@ Ounsworth & Gray        Expires December 8, 2021                [Page 4]
 
 Internet-Draft             PQ Composite Certs                  June 2021
 
-
-   COMPOSITE ENCRYPTION KEY: A structure that contains a sequence of
-   content encryption keys, or secrets used to derive a content
-   encryption keys.
 
    TRIVIAL SECRET SHARING A method to securely share a secret among two
    or more parties where all parties need to combine their intermediate
@@ -273,6 +269,10 @@ Internet-Draft             PQ Composite Certs                  June 2021
    algorithmIDs.  We would love community feedback on which approach is
    preferred.  See slide 30 of this presentation:
    https://datatracker.ietf.org/meeting/interim-2021-lamps-01/materials/
+   slides-interim-2021-lamps-01-sessa-position-presentation-by-mike-
+   ounsworth-00.pdf
+
+
 
 
 
@@ -281,9 +281,6 @@ Ounsworth & Gray        Expires December 8, 2021                [Page 5]
 
 Internet-Draft             PQ Composite Certs                  June 2021
 
-
-   slides-interim-2021-lamps-01-sessa-position-presentation-by-mike-
-   ounsworth-00.pdf
 
 2.1.  Algorithm Identifier
 
@@ -328,8 +325,11 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
        keyEncipherment; and keyAgreement
 
+3.  Composite Key Transport using Encryption primitives
 
-
+   In this composite encryption mode, a message to be encrypted is
+   provided by the calling application.  This message to be encrypted is
+   assumed without loss of generality to be a symmetric content
 
 
 
@@ -338,11 +338,6 @@ Ounsworth & Gray        Expires December 8, 2021                [Page 6]
 Internet-Draft             PQ Composite Certs                  June 2021
 
 
-3.  Composite Key Transport using Encryption primitives
-
-   In this composite encryption mode, a message to be encrypted is
-   provided by the calling application.  This message to be encrypted is
-   assumed without loss of generality to be a symmetric content
    encryption key (CEK) which is assumed to have a size less maximum
    message size of the chosen encryption algorithms.
 
@@ -381,10 +376,15 @@ Internet-Draft             PQ Composite Certs                  June 2021
    Probably not because the desired key usage will be handled in the
    protocols that uses this privitive.
 
-CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
+CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (2..Max)  OF OCTET STRING}
 
    EDNOTE: This ASN.1 probably does not compile.  The intent is that
    this fits into any EncryptedKey field, but defines some structure
+   within the existing EncryptedKey ::= OCTET STRING, but I'm not sure
+   exactly how to specify that.
+
+   Where each OCTET STRING within the SEQUENCE contains an encrypted key
+   share encrypted under one of the recipient component public keys.
 
 
 
@@ -394,11 +394,6 @@ Ounsworth & Gray        Expires December 8, 2021                [Page 7]
 Internet-Draft             PQ Composite Certs                  June 2021
 
 
-   within the existing EncryptedKey ::= OCTET STRING, but I'm not sure
-   exactly how to specify that.
-
-   Where each OCTET STRING within the SEQUENCE contains an encrypted key
-   share encrypted under one of the recipient component public keys.
    The CompositeEncryptedKey MUST list encrypted values in the same
    order as the recipient public key's component keys.
 
@@ -417,6 +412,11 @@ Internet-Draft             PQ Composite Certs                  June 2021
    the content encryption key.  The final key share is computed by
    XOR'ing the content encryption key with each of n-1 previous key
    shares.
+
+
+
+
+
 
 
 
@@ -954,10 +954,9 @@ Ounsworth & Gray        Expires December 8, 2021               [Page 17]
 Internet-Draft             PQ Composite Certs                  June 2021
 
 
-   CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
+   CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
 
-   CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
-
+   CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 
 
    END
@@ -997,7 +996,8 @@ Internet-Draft             PQ Composite Certs                  June 2021
    Additional contributions to this draft are weclome.  Please see the
    working copy of this draft at, as well as open issues at:
 
-   https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
+   https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-
+   encryption
 
 
 
@@ -1010,14 +1010,7 @@ Ounsworth & Gray        Expires December 8, 2021               [Page 18]
 Internet-Draft             PQ Composite Certs                  June 2021
 
 
-13.  References
-
-13.1.  Normative References
-
-   [RFC1421]  Linn, J., "Privacy Enhancement for Internet Electronic
-              Mail: Part I: Message Encryption and Authentication
-              Procedures", RFC 1421, DOI 10.17487/RFC1421, February
-              1993, <https://www.rfc-editor.org/info/rfc1421>.
+13.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1039,10 +1032,6 @@ Internet-Draft             PQ Composite Certs                  June 2021
               DOI 10.17487/RFC4210, September 2005,
               <https://www.rfc-editor.org/info/rfc4210>.
 
-   [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
-              Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
-              <https://www.rfc-editor.org/info/rfc4648>.
-
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
               Infrastructure Certificate and Certificate Revocation List
@@ -1052,23 +1041,6 @@ Internet-Draft             PQ Composite Certs                  June 2021
    [RFC5652]  Housley, R., "Cryptographic Message Syntax (CMS)", STD 70,
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/info/rfc5652>.
-
-   [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
-              DOI 10.17487/RFC5958, August 2010,
-              <https://www.rfc-editor.org/info/rfc5958>.
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 19]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
-
-   [RFC7468]  Josefsson, S. and S. Leonard, "Textual Encodings of PKIX,
-              PKCS, and CMS Structures", RFC 7468, DOI 10.17487/RFC7468,
-              April 2015, <https://www.rfc-editor.org/info/rfc7468>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1084,18 +1056,15 @@ Internet-Draft             PQ Composite Certs                  June 2021
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
-13.2.  Informative References
 
-   [I-D.pala-composite-crypto]
-              Pala, M., "Composite Public Keys and Signatures", draft-
-              pala-composite-crypto-00 (work in progress), February
-              2019.
 
-   [I-D.truskovsky-lamps-pq-hybrid-x509]
-              Truskovsky, A., Geest, D., Fluhrer, S., Kampanakis, P.,
-              Ounsworth, M., and S. Mister, "Multiple Public-Key
-              Algorithm X.509 Certificates", draft-truskovsky-lamps-pq-
-              hybrid-x509-01 (work in progress), August 2018.
+
+
+
+Ounsworth & Gray        Expires December 8, 2021               [Page 19]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
 
 Authors' Addresses
 
@@ -1112,6 +1081,37 @@ Authors' Addresses
    Enrust Limited
 
    Email: john.gray@entrust.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

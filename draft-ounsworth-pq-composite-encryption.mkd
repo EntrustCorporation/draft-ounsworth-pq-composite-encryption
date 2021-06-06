@@ -36,16 +36,12 @@ author:
       email: john.gray@entrust.com
 
 normative:
-  RFC1421:
   RFC2119:
   RFC2986:
   RFC3211:
   RFC4210:
-  RFC4648:
   RFC5280:
   RFC5652:
-  RFC5958:
-  RFC7468:
   RFC8174:
   RFC8411:
   X.690:
@@ -60,8 +56,6 @@ normative:
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
-  I-D.draft-truskovsky-lamps-pq-hybrid-x509-01:
-  I-D.draft-pala-composite-crypto-00:
 
 <!--updates:
   RFC2986
@@ -234,7 +228,7 @@ The id-alg-composite object identifier MUST be used to identify when a content-e
 EDNOTE:  Should a different composite OID be used to determine the type of composite encryption (Key Transport or Key Agreement?).  Probably not because the desired key usage will be handled in the protocols that uses this privitive.
 
 ~~~ asn.1
-CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (1..Max)  OF OCTET STRING}
+CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (2..Max)  OF OCTET STRING}
 ~~~
 {: artwork-name="CompositeEncryptionStructure"}
 
@@ -625,10 +619,9 @@ pk-Composite PUBLIC-KEY ::= {
     PRIVATE-KEY CompositePrivateKey
 }
 
-CompositePublicKey ::= SEQUENCE SIZE (1..MAX) OF SubjectPublicKeyInfo
+CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
 
-CompositePrivateKey ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
-
+CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 
 
 END
@@ -665,6 +658,6 @@ This document borrows text from similar documents, including those referenced be
 
 Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:
 
-https://github.com/EntrustCorporation/draft-ounsworth-composite-sigs
+https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-encryption
 
 <!-- End of Contributors section -->
