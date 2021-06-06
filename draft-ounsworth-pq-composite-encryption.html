@@ -400,16 +400,15 @@
 <link href="#rfc.section.11" rel="Chapter" title="11 Appendices">
 <link href="#rfc.section.11.1" rel="Chapter" title="11.1 ASN.1 Module">
 <link href="#rfc.section.11.2" rel="Chapter" title="11.2 Intellectual Property Considerations">
-<link href="#rfc.section.12" rel="Chapter" title="12 Contributors and Acknowledgements">
-<link href="#rfc.section.12.1" rel="Chapter" title="12.1 Making contributions">
-<link href="#rfc.references" rel="Chapter" title="13 Normative References">
+<link href="#rfc.section.11.3" rel="Chapter" title="11.3 Making contributions">
+<link href="#rfc.references" rel="Chapter" title="12 Normative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
   <meta name="generator" content="xml2rfc version 2.40.0 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
-  <meta name="dct.creator" content="Ounsworth, M. and J. Gray" />
+  <meta name="dct.creator" content="Ounsworth, M., Gray, J., and S. Mister" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-encryption-00" />
   <meta name="dct.issued" scheme="ISO8601" content="2021-06-06" />
   <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by masking it with an XOR key which is split into key shares and each share encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2. " />
@@ -432,10 +431,14 @@
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">Entrust</td>
+<td class="right">S. Mister</td>
 </tr>
 <tr>
 <td class="left">Expires: December 8, 2021</td>
+<td class="right">Entrust</td>
+</tr>
+<tr>
+<td class="left"></td>
 <td class="right">June 06, 2021</td>
 </tr>
 
@@ -515,11 +518,9 @@
 </li>
 <li>11.2.   <a href="#rfc.section.11.2">Intellectual Property Considerations</a>
 </li>
-</ul><li>12.   <a href="#rfc.section.12">Contributors and Acknowledgements</a>
+<li>11.3.   <a href="#rfc.section.11.3">Making contributions</a>
 </li>
-<ul><li>12.1.   <a href="#rfc.section.12.1">Making contributions</a>
-</li>
-</ul><li>13.   <a href="#rfc.references">Normative References</a>
+</ul><li>12.   <a href="#rfc.references">Normative References</a>
 </li>
 <li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
@@ -939,20 +940,15 @@ END
 </h1>
 <p id="rfc.section.11.2.p.1">The following IPR Disclosure relates to this draft:</p>
 <p id="rfc.section.11.2.p.2">https://datatracker.ietf.org/ipr/3588/</p>
-<h1 id="rfc.section.12">
-<a href="#rfc.section.12">12.</a> <a href="#contributors-and-acknowledgements" id="contributors-and-acknowledgements">Contributors and Acknowledgements</a>
+<p id="rfc.section.11.2.p.3">We are grateful to all, including any contributors who may have been inadvertently omitted from this list.</p>
+<p id="rfc.section.11.2.p.4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those documents.  "Copying always makes things easier and less error prone" - <a href="#RFC8411" class="xref">[RFC8411]</a>.</p>
+<h1 id="rfc.section.11.3">
+<a href="#rfc.section.11.3">11.3.</a> <a href="#making-contributions" id="making-contributions">Making contributions</a>
 </h1>
-<p id="rfc.section.12.p.1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:</p>
-<p id="rfc.section.12.p.2">John Gray (Entrust), Serge Mister (Entrust), Scott Fluhrer (Cisco Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA), and Tim Hollebeek (Digicert).</p>
-<p id="rfc.section.12.p.3">We are grateful to all, including any contributors who may have been inadvertently omitted from this list.</p>
-<p id="rfc.section.12.p.4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those documents.  "Copying always makes things easier and less error prone" - <a href="#RFC8411" class="xref">[RFC8411]</a>.</p>
-<h1 id="rfc.section.12.1">
-<a href="#rfc.section.12.1">12.1.</a> <a href="#making-contributions" id="making-contributions">Making contributions</a>
-</h1>
-<p id="rfc.section.12.1.p.1">Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:</p>
-<p id="rfc.section.12.1.p.2">https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-encryption</p>
+<p id="rfc.section.11.3.p.1">Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:</p>
+<p id="rfc.section.11.3.p.2">https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-encryption</p>
 <h1 id="rfc.references">
-<a href="#rfc.references">13.</a> Normative References</h1>
+<a href="#rfc.references">12.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -1042,6 +1038,27 @@ END
 	  <span class="country-name vcardline"></span>
 	</span>
 	<span class="vcardline">EMail: <a href="mailto:john.gray@entrust.com">john.gray@entrust.com</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Serge Mister</span> 
+	  <span class="n hidden">
+		<span class="family-name">Mister</span>
+	  </span>
+	</span>
+	<span class="org vcardline">Enrust Limited</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:serge.mister@entrust.com">serge.mister@entrust.com</a></span>
 
   </address>
 </div>

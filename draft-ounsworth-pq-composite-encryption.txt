@@ -4,8 +4,9 @@
 
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
-Intended status: Standards Track                                 Entrust
-Expires: December 8, 2021                                  June 06, 2021
+Intended status: Standards Track                               S. Mister
+Expires: December 8, 2021                                        Entrust
+                                                           June 06, 2021
 
 
               Composite Encryption For Use In Internet PKI
@@ -52,8 +53,7 @@ Status of This Memo
 
 
 
-
-Ounsworth & Gray        Expires December 8, 2021                [Page 1]
+Ounsworth, et al.       Expires December 8, 2021                [Page 1]
 
 Internet-Draft             PQ Composite Certs                  June 2021
 
@@ -83,7 +83,7 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Composite Structures  . . . . . . . . . . . . . . . . . . . .   5
-     2.1.  Algorithm Identifier  . . . . . . . . . . . . . . . . . .   6
+     2.1.  Algorithm Identifier  . . . . . . . . . . . . . . . . . .   5
      2.2.  Algorithm Parameters  . . . . . . . . . . . . . . . . . .   6
      2.3.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   6
        2.3.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   6
@@ -91,33 +91,32 @@ Table of Contents
      3.1.  Algorithm parameters  . . . . . . . . . . . . . . . . . .   8
      3.2.  Encryption process  . . . . . . . . . . . . . . . . . . .   8
      3.3.  Decryption process  . . . . . . . . . . . . . . . . . . .   9
-   4.  Composite Key Transport using Encryption and KEM primitives .  10
+   4.  Composite Key Transport using Encryption and KEM primitives .   9
      4.1.  Algorithm parameters  . . . . . . . . . . . . . . . . . .  11
-   5.  Composite Key Exchange  . . . . . . . . . . . . . . . . . . .  12
-     5.1.  Algorithm parameters  . . . . . . . . . . . . . . . . . .  12
+   5.  Composite Key Exchange  . . . . . . . . . . . . . . . . . . .  11
+     5.1.  Algorithm parameters  . . . . . . . . . . . . . . . . . .  11
      5.2.  Encapsulation Process . . . . . . . . . . . . . . . . . .  12
      5.3.  Decapsulation Process . . . . . . . . . . . . . . . . . .  13
-   6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . . . .  14
-   7.  Composite-OR encryption . . . . . . . . . . . . . . . . . . .  15
+   6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . . . .  13
+   7.  Composite-OR encryption . . . . . . . . . . . . . . . . . . .  14
    8.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  15
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
-   10. Security Considerations . . . . . . . . . . . . . . . . . . .  16
-     10.1.  Policy for Deprecated and Acceptable Algorithms  . . . .  16
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  15
+     10.1.  Policy for Deprecated and Acceptable Algorithms  . . . .  15
    11. Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     11.1.  ASN.1 Module . . . . . . . . . . . . . . . . . . . . . .  17
-     11.2.  Intellectual Property Considerations . . . . . . . . . .  18
+     11.1.  ASN.1 Module . . . . . . . . . . . . . . . . . . . . . .  16
+     11.2.  Intellectual Property Considerations . . . . . . . . . .  17
 
 
 
-Ounsworth & Gray        Expires December 8, 2021                [Page 2]
+Ounsworth, et al.       Expires December 8, 2021                [Page 2]
 
 Internet-Draft             PQ Composite Certs                  June 2021
 
 
-   12. Contributors and Acknowledgements . . . . . . . . . . . . . .  18
-     12.1.  Making contributions . . . . . . . . . . . . . . . . . .  18
-   13. Normative References  . . . . . . . . . . . . . . . . . . . .  19
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
+     11.3.  Making contributions . . . . . . . . . . . . . . . . . .  17
+   12. Normative References  . . . . . . . . . . . . . . . . . . . .  17
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 1.  Introduction
 
@@ -161,17 +160,15 @@ Internet-Draft             PQ Composite Certs                  June 2021
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
 
 
-
-Ounsworth & Gray        Expires December 8, 2021                [Page 3]
+Ounsworth, et al.       Expires December 8, 2021                [Page 3]
 
 Internet-Draft             PQ Composite Certs                  June 2021
 
-
-   14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
 
    The following terms are used in this document:
 
@@ -216,19 +213,18 @@ Internet-Draft             PQ Composite Certs                  June 2021
    content encryption keys, or secrets used to derive a content
    encryption keys.
 
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021                [Page 4]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
-
    TRIVIAL SECRET SHARING A method to securely share a secret among two
    or more parties where all parties need to combine their intermediate
    secret to re-create the secret.
+
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021                [Page 4]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
 
 2.  Composite Structures
 
@@ -272,21 +268,19 @@ Internet-Draft             PQ Composite Certs                  June 2021
    slides-interim-2021-lamps-01-sessa-position-presentation-by-mike-
    ounsworth-00.pdf
 
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021                [Page 5]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
-
 2.1.  Algorithm Identifier
 
    The same algorithm identifier is used for identifying a public key, a
    private key, and a signature.  Additional encoding information is
    provided below for each of these objects.
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021                [Page 5]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
 
    id-alg-composite OBJECT IDENTIFIER ::= {
        iso(1)  identified-organization(3) dod(6) internet(1) private(4)
@@ -330,20 +324,20 @@ Internet-Draft             PQ Composite Certs                  June 2021
    In this composite encryption mode, a message to be encrypted is
    provided by the calling application.  This message to be encrypted is
    assumed without loss of generality to be a symmetric content
-
-
-
-Ounsworth & Gray        Expires December 8, 2021                [Page 6]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
-
    encryption key (CEK) which is assumed to have a size less maximum
    message size of the chosen encryption algorithms.
 
    The recipient MUST have a composite public key which supports key
    transport operations.  Where the recipient public key has an
    associated keyUsage as specified in [RFC5280], it MUST have keyUsage:
+
+
+
+Ounsworth, et al.       Expires December 8, 2021                [Page 6]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
+
    keyEncipherment.  In other words, the mechanism specified in this
    section applies only if all of the recipient's public keys are
    encryption algorithms.
@@ -385,17 +379,20 @@ CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (2..Max)  OF OCTET STRING}
 
    Where each OCTET STRING within the SEQUENCE contains an encrypted key
    share encrypted under one of the recipient component public keys.
+   The CompositeEncryptedKey MUST list encrypted values in the same
+   order as the recipient public key's component keys.
 
 
 
 
-Ounsworth & Gray        Expires December 8, 2021                [Page 7]
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021                [Page 7]
 
 Internet-Draft             PQ Composite Certs                  June 2021
 
-
-   The CompositeEncryptedKey MUST list encrypted values in the same
-   order as the recipient public key's component keys.
 
 3.1.  Algorithm parameters
 
@@ -412,43 +409,6 @@ Internet-Draft             PQ Composite Certs                  June 2021
    the content encryption key.  The final key share is computed by
    XOR'ing the content encryption key with each of n-1 previous key
    shares.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021                [Page 8]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
 
 Input:
      n                  The number of recipient component public keys
@@ -481,6 +441,15 @@ Generation Procedure:
 
    4. Output E1, E2, .., En
 
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021                [Page 8]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
+
    Where "random_bits(SIZE)" is a cryptographically-secure random bit
    generator outputting SIZE bits.
 
@@ -490,21 +459,6 @@ Generation Procedure:
    each component algorithm MUST be used to decrypt the set of key
    shares.  The key shares are then XOR'ed together to recover the
    content encryption key.
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021                [Page 9]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
 
 Input:
      n                  The number of recipient component public keys
@@ -543,6 +497,15 @@ Generation Procedure:
    which MAY contain an arbitrary mixture of encryption and key
    encapsulation mechanism (KEM) component algorithms.
 
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021                [Page 9]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
+
    For a recipient composite public key to be applicable to this mode,
    all component KEMs MUST be capable of producing a shared secret of
    SIZE bits, where SIZE is the length in bits of the content encryption
@@ -554,14 +517,6 @@ Generation Procedure:
    secret whose bits are independent and uniformly distributed (aka
    "uniformly IID" or "uniformly random" or "full entropy") and
    therefore the shared secret is safe to use direcly as a symmetric
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 10]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
-
    key.  If a recipient public key contains component KEMs which are not
    know to have this property, then implementors SHOULD use the more
    general mode described in section XXXX which incorporates the use of
@@ -597,6 +552,16 @@ Internet-Draft             PQ Composite Certs                  June 2021
    Where "random_bits(SIZE)" is a cryptographically-secure random bit
    generator outputting SIZE bits.
 
+
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021               [Page 10]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
+
    The decryption process defined in Section 3.3 applies directly where
    "decrypt()" is substituted for "decaps()" when the underlying
    primitive is a KEM.
@@ -606,17 +571,6 @@ Internet-Draft             PQ Composite Certs                  June 2021
    The composite key transport using encryption and KEM primitives mode
    does not require additional parameters, and therefore any associated
    Params are ABSENT.
-
-
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 11]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
 
 5.  Composite Key Exchange
 
@@ -657,22 +611,16 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
    KeyDerivationAlgorithmIdentifier ::= AlgorithmIdentifier
 
-5.2.  Encapsulation Process
-
-   EDNOTE: I'm not sure that's the right nomenclature.
 
 
-
-
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 12]
+Ounsworth, et al.       Expires December 8, 2021               [Page 11]
 
 Internet-Draft             PQ Composite Certs                  June 2021
 
+
+5.2.  Encapsulation Process
+
+   EDNOTE: I'm not sure that's the right nomenclature.
 
 Input:
      P1, P2, .., Pn     Public keys for the n component encryption
@@ -714,21 +662,23 @@ Ciphertext Generation Procedure:
    must be carried in the KeyDerivationAlgorithmIdentifier defined in
    Section 5.1.
 
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021               [Page 12]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
+
 5.3.  Decapsulation Process
 
    EDNOTE: I'm not sure that's the right nomenclature.
 
    <TODO: needs words>
-
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 13]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
 
 Input:
      n                  The number of recipient component public keys
@@ -773,19 +723,18 @@ Ciphertext Generation Procedure:
    key, composite private key, and composite encryption data structures
    be represented by an octet string or bit string.
 
+
+
+Ounsworth, et al.       Expires December 8, 2021               [Page 13]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
+
    When an octet string is required, the DER encoding of the composite
    data structure SHALL be used directly.
 
    When a bit string is required, the octets of the DER encoded
    composite data structure SHALL be used as the bits of the bit string,
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 14]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
-
    with the most significant bit of the first octet becoming the first
    bit, and so on, ending with the least significant bit of the last
    octet becoming the last bit of the bit string.
@@ -828,19 +777,19 @@ Internet-Draft             PQ Composite Certs                  June 2021
    yet understood could be pushed out and one or more of the components
    could get used.
 
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021               [Page 14]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
+
 8.  In Practice
 
    This section addresses practical issues of how this draft affects
    other protocols and standards.
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 15]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
 
 9.  IANA Considerations
 
@@ -885,18 +834,15 @@ Internet-Draft             PQ Composite Certs                  June 2021
    for example only algorithms that provide similar security levels
    should be combined together.
 
-11.  Appendices
 
 
 
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 16]
+Ounsworth, et al.       Expires December 8, 2021               [Page 15]
 
 Internet-Draft             PQ Composite Certs                  June 2021
 
+
+11.  Appendices
 
 11.1.  ASN.1 Module
 
@@ -944,15 +890,16 @@ Internet-Draft             PQ Composite Certs                  June 2021
        IDENTIFIER id-alg-composite
        KEY CompositePublicKey
        PARAMS ARE absent
-       PRIVATE-KEY CompositePrivateKey
-   }
 
 
 
-Ounsworth & Gray        Expires December 8, 2021               [Page 17]
+Ounsworth, et al.       Expires December 8, 2021               [Page 16]
 
 Internet-Draft             PQ Composite Certs                  June 2021
 
+
+       PRIVATE-KEY CompositePrivateKey
+   }
 
    CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
 
@@ -970,19 +917,6 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
    https://datatracker.ietf.org/ipr/3588/
 
-12.  Contributors and Acknowledgements
-
-   This document incorporates contributions and comments from a large
-   group of experts.  The Editors would especially like to acknowledge
-   the expertise and tireless dedication of the following people, who
-   attended many long meetings and generated millions of bytes of
-   electronic mail and VOIP traffic over the past year in pursuit of
-   this document:
-
-   John Gray (Entrust), Serge Mister (Entrust), Scott Fluhrer (Cisco
-   Systems), Panos Kampanakis (Cisco Systems), Daniel Van Geest (ISARA),
-   and Tim Hollebeek (Digicert).
-
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
 
@@ -991,7 +925,7 @@ Internet-Draft             PQ Composite Certs                  June 2021
    "Copying always makes things easier and less error prone" -
    [RFC8411].
 
-12.1.  Making contributions
+11.3.  Making contributions
 
    Additional contributions to this draft are weclome.  Please see the
    working copy of this draft at, as well as open issues at:
@@ -999,18 +933,7 @@ Internet-Draft             PQ Composite Certs                  June 2021
    https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-
    encryption
 
-
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 18]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
-
-13.  Normative References
+12.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1021,6 +944,15 @@ Internet-Draft             PQ Composite Certs                  June 2021
               Request Syntax Specification Version 1.7", RFC 2986,
               DOI 10.17487/RFC2986, November 2000,
               <https://www.rfc-editor.org/info/rfc2986>.
+
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021               [Page 17]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
 
    [RFC3211]  Gutmann, P., "Password-based Encryption for CMS",
               RFC 3211, DOI 10.17487/RFC3211, December 2001,
@@ -1056,16 +988,6 @@ Internet-Draft             PQ Composite Certs                  June 2021
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
-
-
-
-
-
-Ounsworth & Gray        Expires December 8, 2021               [Page 19]
-
-Internet-Draft             PQ Composite Certs                  June 2021
-
-
 Authors' Addresses
 
    Mike Ounsworth
@@ -1077,12 +999,27 @@ Authors' Addresses
    Email: mike.ounsworth@entrust.com
 
 
+
+
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021               [Page 18]
+
+Internet-Draft             PQ Composite Certs                  June 2021
+
+
    John Gray
    Enrust Limited
 
    Email: john.gray@entrust.com
 
 
+   Serge Mister
+   Enrust Limited
+
+   Email: serge.mister@entrust.com
 
 
 
@@ -1117,4 +1054,11 @@ Authors' Addresses
 
 
 
-Ounsworth & Gray        Expires December 8, 2021               [Page 20]
+
+
+
+
+
+
+
+Ounsworth, et al.       Expires December 8, 2021               [Page 19]
