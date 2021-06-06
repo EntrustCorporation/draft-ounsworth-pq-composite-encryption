@@ -413,9 +413,9 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and J. Gray" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-encryption-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2021-06-01" />
-  <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient&#x27;s component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2. " />
-  <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient&#x27;s component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2. " />
+  <meta name="dct.issued" scheme="ISO8601" content="2021-06-06" />
+  <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by masking it with an XOR key which is split into key shares and each share encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2. " />
+  <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by masking it with an XOR key which is split into key shares and each share encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2. " />
 
 </head>
 
@@ -437,8 +437,8 @@
 <td class="right">Entrust</td>
 </tr>
 <tr>
-<td class="left">Expires: December 3, 2021</td>
-<td class="right">June 01, 2021</td>
+<td class="left">Expires: December 8, 2021</td>
+<td class="right">June 06, 2021</td>
 </tr>
 
     	
@@ -450,12 +450,12 @@
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
 <p>With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data.</p>
-<p>This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines id-composite-encryption which encrypts for a recipient with a composite public key by generating a shared secret for each of the recipient's component public keys and combining them into a single content encryption key using NIST SP 800-56Cr2.</p>
+<p>This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by masking it with an XOR key which is split into key shares and each share encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 3, 2021.</p>
+<p>This Internet-Draft will expire on December 8, 2021.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2021 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -590,6 +590,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 </pre>
 <p id="rfc.section.2.1.p.2">EDNOTE 3: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see <a href="#sec-iana" class="xref">Section 9</a>.</p>
 <p id="rfc.section.2.1.p.3">EDNOTE: should this be an instance of RFC 5652's KeyEncryptionAlgorithmIdentifier ?</p>
+<p id="rfc.section.2.1.p.4">EDNOTE: we probably need a different OID for each of the three modes.</p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#algorithm-parameters" id="algorithm-parameters">Algorithm Parameters</a>
 </h1>
@@ -700,33 +701,36 @@ Generation Procedure:
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#sec-com-key-trans_kem" id="sec-com-key-trans_kem">Composite Key Transport using Encryption and KEM primitives</a>
 </h1>
-<p id="rfc.section.4.p.1">This composite encryption mode is the generalization of the mode defined in <a href="#sec-com-key-trans_encr" class="xref">Section 3</a> to support a composite recipient public key which MAY contain an arbitrary mixture of encryption and key encapsulation machanism (KEM) component algorithms.</p>
+<p id="rfc.section.4.p.1">This composite encryption mode is the generalization of the mode defined in <a href="#sec-com-key-trans_encr" class="xref">Section 3</a> to support a composite recipient public key which MAY contain an arbitrary mixture of encryption and key encapsulation mechanism (KEM) component algorithms.</p>
 <p id="rfc.section.4.p.2">For a recipient composite public key to be applicable to this mode, all component KEMs MUST be capable of producing a shared secret of SIZE bits, where SIZE is the length in bits of the content encryption key (CEK) to be transported. This is assumed for the remainer of this section.</p>
 <p id="rfc.section.4.p.3">Security consideration: for a recipient composite public key to be applicable to this mode, all component KEMs SHOULD produce a shared secret whose bits are independent and uniformly distributed (aka "uniformly IID" or "uniformly random" or "full entropy") and therefore the shared secret is safe to use direcly as a symmetric key. If a recipient public key contains component KEMs which are not know to have this property, then implementors SHOULD use the more general mode described in section XXXX which incorporates the use of a key derivation function.</p>
 <p id="rfc.section.4.p.4">EDNOTE: also put this in the Security considerations section.</p>
-<p id="rfc.section.4.p.5">Given these conditions are met, the encryption process defined in <a href="#sec-com-key-trans_encr_process" class="xref">Section 3.2</a> applies almost directly with the following modifications:</p>
+<p id="rfc.section.4.p.5">Given these conditions are met, the encryption process defined in <a href="#sec-com-key-trans_encr_process" class="xref">Section 3.2</a> is modified as follows:</p>
 <pre>
 Generation Procedure:
    1. Generate a set of key shares of the same length as the
-      content encryption key
+      content encryption key and encapsulate or encrypt them
+      under a recipient public key.      
         for i := 1 to n-1
           if P1 is of type KEM:
             Si,Ei := encaps(P1)
           else:
             Si := random_bits(SIZE)
-
-   ...
-
-   3. Encrypt each key share under a recipient public key
-        for i := 1 to n
-          if P1 is of type KEM:
-            skip  // Ei was already produced above
-          else
             Ei := encrypt(Si, Pi)
+
+   2. To generate key share Sn, compute the following
+        Sn = CEK
+        for i := 1 to n-1
+          Sn = Sn XOR Si
+
+   3. Encrypt key share Sn under recipient public key Pn
+        En := encrypt(Sn, Pn)
+
+   4. Output E1, E2, .., En
 
 </pre>
 <p id="rfc.section.4.p.6">Where <samp>random_bits(SIZE)</samp> is a cryptographically-secure random bit generator outputting SIZE bits.</p>
-<p id="rfc.section.4.p.7">The decryption process defined in <a href="#sec-com-key-trans_decr_process" class="xref">Section 3.3</a> applies directly where <samp>decrypt()</samp> is taken te be a <samp>decaps()</samp> when the underlying primitive is a KEM.</p>
+<p id="rfc.section.4.p.7">The decryption process defined in <a href="#sec-com-key-trans_decr_process" class="xref">Section 3.3</a> applies directly where <samp>decrypt()</samp> is substituted for <samp>decaps()</samp> when the underlying primitive is a KEM.</p>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#sec-com-key-trans_kem-params" id="sec-com-key-trans_kem-params">Algorithm parameters</a>
 </h1>
@@ -734,7 +738,7 @@ Generation Procedure:
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#sec-com-key-exchange" id="sec-com-key-exchange">Composite Key Exchange</a>
 </h1>
-<p id="rfc.section.5.p.1">This mode is the most general in that it supports a composite recipient public key which MAY contain an arbitrary mixture of encryption, key encapsulation machanism (KEM), and key agreement component algorithms. However, due to the nature of key agreement algorithms, this mode cannot take a content encryption key as input, but instead generates a master shared secret as an output. As such, the nomenclature in this mode differs from the modes above. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment and or keyUsage: keyAgreement.</p>
+<p id="rfc.section.5.p.1">This mode is the most general in that it supports a composite recipient public key which MAY contain an arbitrary mixture of encryption, key encapsulation mechanism (KEM), and key agreement component algorithms. However, due to the nature of key agreement algorithms, this mode cannot take a content encryption key as input, but instead generates a master shared secret as an output. As such, the nomenclature in this mode differs from the modes above. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment and or keyUsage: keyAgreement.</p>
 <p id="rfc.section.5.p.2">EDNOTE: I think this violates our public key draft where we say that the public key's KU MUST apply to all components. ... we did not want mixing of signatures and encryption keys, but I think in this case we do want to allow mixing of keyEncipherment and keyExchange keys. Not sure how to fix that.</p>
 <p id="rfc.section.5.p.3">The idea is to generate a component shared secret associated with each recipient public key, concatenate them together, and apply a key derivation function (KDF) to obtain the master shared secret. Implementations MUST use a KDF that is compatible with NIST SP-800 56Cr2 &lt;TODO: cite properly&gt;.</p>
 <h1 id="rfc.section.5.1">
@@ -787,6 +791,7 @@ Ciphertext Generation Procedure:
      Output E1, E2, .., En
 
 </pre>
+<p id="rfc.section.5.2.p.2">In cases where KDF is extensible output function, the length of M must be carried in the KeyDerivationAlgorithmIdentifier defined in <a href="#sec-com-key-exchange-params" class="xref">Section 5.1</a>.</p>
 <h1 id="rfc.section.5.3">
 <a href="#rfc.section.5.3">5.3.</a> <a href="#decapsulation-process" id="decapsulation-process">Decapsulation Process</a>
 </h1>
