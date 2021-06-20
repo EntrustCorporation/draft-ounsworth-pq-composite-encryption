@@ -94,7 +94,7 @@ The deployment of composite public keys and composite encryption using post-quan
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
-This document provides mechanisms to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for both wrapping a content encryption key using multiple public key encryption mechanisms, or performing key exchange using a combination of encryption, Key encapsulation, and key exchange primitives. The issue of backwards compatibility is is addressed with Composite-OR encryption modes defined in {{sec-comp-or}}.
+This document provides mechanisms to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for both wrapping a content encryption key using multiple public key encryption mechanisms, or performing key exchange using a combination of encryption, Key encapsulation, and key exchange primitives. The issue of backwards compatibility is is addressed with support for Composite Or recipient keys in each mode.
 
 This document is intended for general applicability anywhere that content encryption or key exchange is used.
 
@@ -170,7 +170,7 @@ This message to be encrypted is assumed without loss of generality to be a symme
 
 This mode is compatible with protocols requiring a key transport primitive, such as CMS' KeyTransRecipientInfo [RFC5652].
 
-Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme, as defined in {{sec-com-key-trans_encr_process}} to transport n secrets called key shares, where n is the number of recipient component public keys, and each share is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document; see section {{sec-comp-or-thresh-encr}} for further discussion.
+Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme, as defined in {{sec-com-key-trans_encr_process}} to transport n secrets called key shares, where n is the number of recipient component public keys, and each share is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document.
 
 EDNOTE: we have not been able to find a reference and security analysis for the trivial XOR key-sharing scheme. This may need review by CFRG. We could re-frame this process as "a one-time pad with n-1 one-time pad keys, which we transport using the recipients public keys", then this could leverage one-time pad security analysis.
 
@@ -205,6 +205,12 @@ EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust a
 
 The recipient MUST have a composite public key which supports key transport operations. Where the recipient public key has an associated keyUsage as specified in [RFC5280], it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are encryption algorithms.
 
+### Composite-OR
+
+The design intent of this mode is to support migration scenarios where a recipient has been provisioned with a composite key containing algorithms that its peers may not yet support. This mode allows the sender to encrypt for a subset of the recipient's public keys. Support for Composite OR subset encryption is indicated by the recipient at key generation time by marking its composite key with the id-composite-or-key algorithm identifier as defined in ~~~cite properly draft-ounsworth-pq-composite-keys~~~.
+
+Policy mechanisms defining allowed subets of algorithms could be applied here, but are out of scope of this document. As defined in this document, a recipient marking their public key as id-composite-or-key must accept the risk that a sender may encrypt sensitive data for it using any one of its component keys in isolation. Composite Or is a direct tradeoff of lower security for increased migration flexibility.
+
 
 ## Algorithm parameters {#sec-com-key-trans_encr-params}
 
@@ -236,24 +242,41 @@ Intermediate values:
                         component algorithm
 
 Generation Procedure:
-   1. Generate a set of n-1 key shares of the same length as the
-      content encryption key
-        for i := 1 to n-1
-          Si := random_bits(SIZE)
+
+   1. If recipient public key is of type id-composite-or-key, determine the
+      index of the last recipient public key to be encrypted for
+        i_last := index of last Pi to be encrypted for
+      Else,
+        i_last = n
+
 
    2. To generate key share Sn, compute the following
-        Sn = CEK
-        for i := 1 to n-1
-          Sn = Sn XOR Si
 
-   3. Encrypt each key share under a recipient public key
-        for i := 1 to n
-          Ei := encrypt(Si, Pi)
+      for i := 1 to n
+
+        a. If id-composite-or-key and Pi is to be skipped
+          Ei := null
+          continue to next i
+
+        b. If i == i_last
+            Ei = encrypt(CEK, Pi)
+          Else,
+            Si := randem_bits(SIZE)
+            CEK := CEK XOR Si
+            Ei = encrypt(Si, Pi)
+
+          Sn = CEK
+          for i := 1 to n-1
+            Sn = Sn XOR Si
 
    4. Output E1, E2, .., En
 ~~~
 
 Where `random_bits(SIZE)` is a cryptographically-secure random bit generator outputting SIZE bits.
+
+If the sender does not support Composite Or encryption, this algorithm may be simplified by omitting step 1, 2a, and the if i == i_last statement in 2b.
+
+The design intent is that Composite Or encryption with a single recipient key collapses to direct encryption of the CEK, and is binary compatible with legacy non-composite encryption.
 
 
 ## Decryption process {#sec-com-key-trans_decr_process}
@@ -282,7 +305,10 @@ Output:
 Generation Procedure:
    1. Recover each key share
         for i := 1 to n
-          Si := decrypt(Ei, SKi)
+          if Ei == null
+            Si := 0
+          Else,
+            Si := decrypt(Ei, SKi)
 
    2. Recover the CEK;
       For each intermediate shared-secret
@@ -293,6 +319,7 @@ Generation Procedure:
    3. Output CEK
 ~~~
 
+The if statement in step 1 (and ensuring its proper bit length for the XOR in step 2) is the only modification required to support Composite Or encryption. The designers have intentionally omitted a check that the recipient key is of type id-composite-or-key because even if the sender erroneously used composite or subset encryption for a recipient key which is not of type id-composite-or-key, the damage has already been done by encrypting and transmitting the data, no further harm can be done by decrypting it. However, where appropriate, clients SHOULD indicate a warning to users that this data was transmitted with weaker encrypting than their public key allows.
 
 
 # Composite Key Transport using Encryption and KEM primitives {#sec-com-key-trans_kem}
@@ -325,6 +352,12 @@ The recipient MUST have a composite public key which supports key transport or k
 
 In addition, for a recipient composite public key to be applicable to this mode, all component KEMs MUST be capable of producing a shared secret of SIZE bits, where SIZE is the length in bits of the content encryption key (CEK) to be transported. This is assumed for the remainer of this section.
 
+### Composite-OR
+
+The design intent of this mode is to support migration scenarios where a recipient has been provisioned with a composite key containing algorithms that its peers may not yet support. This mode allows the sender to encrypt for a subset of the recipient's public keys. Support for Composite OR subset encryption is indicated by the recipient at key generation time by marking its composite key with the id-composite-or-key algorithm identifier as defined in ~~~cite properly draft-ounsworth-pq-composite-keys~~~.
+
+Policy mechanisms defining allowed subets of algorithms could be applied here, but are out of scope of this document. As defined in this document, a recipient marking their public key as id-composite-or-key must accept the risk that a sender may encrypt sensitive data for it using any one of its component keys in isolation. Composite Or is a direct tradeoff of lower security for increased migration flexibility.
+
 ## Algorithm parameters {#sec-com-key-trans_kem-params}
 
 The composite key transport using encryption and KEM mode does not require additional parameters, and therefore any associated Params are ABSENT.
@@ -335,30 +368,54 @@ Given these conditions are met, the encryption process defined in {{sec-com-key-
 
 
 ~~~
+Input:
+     n                  The number of recipient component public keys
+     P1, P2, .., Pn     Recipient component public keys
+     CEK                The Content Encryption Key
+     SIZE               The size of the Content Encryption Key in bits
+
+Output:
+     E1, E2, .., En     EncryptedKey values corresponding to each recipient
+                        component public key
+
+Intermediate values:
+     S1, S2, .., Sn     Key shares to be encapsulated by each 
+                        component algorithm
+
 Generation Procedure:
-   1. Generate a set of key shares of the same length as the
-      content encryption key and encapsulate or encrypt them
-      under a recipient public key.      
-        for i := 1 to n-1
-          if P1 is of type KEM:
+
+   1. If recipient public key is of type id-composite-or-key, determine the
+      index of the last recipient public key to be encrypted for
+        i_last := index of last Pi to be encrypted for
+      Else,
+        i_last = n
+
+  
+   2. 
+      for i := 1 to n
+        a. if id-composite-or-key and Pi is to be skipped
+            Ei := null
+            continue to next i
+
+        b. If i == i_last
+            Ei = encrypt(CEK, Pi)
+          Else, if Pi is of type KEM:
             Si,Ei := encaps(P1)
-          else:
+            CEK := CEK XOR Si
+          Else:
             Si := random_bits(SIZE)
+            CEK := CEK XOR Si
             Ei := encrypt(Si, Pi)
-
-   2. To generate key share Sn, compute the following
-        Sn = CEK
-        for i := 1 to n-1
-          Sn = Sn XOR Si
-
-   3. Encrypt key share Sn under recipient public key Pn
-        En := encrypt(Sn, Pn)
 
    4. Output E1, E2, .., En
 
 ~~~
 
 Where `random_bits(SIZE)` is a cryptographically-secure random bit generator outputting SIZE bits.
+
+If the sender does not support Composite Or encryption, this algorithm may be simplified by omitting step 1, 2a, and the if i == i_last statement in 2b.
+
+The design intent is that Composite Or encryption with a single recipient key collapses to direct encryption of the CEK, and is binary compatible with legacy non-composite encryption or key encapsulation.
 
 
 ## Decryption process 
@@ -399,14 +456,21 @@ The recipient MUST have a composite public key which supports key transport, key
 EDNOTE: I think this violates our public key draft where we say that the public key's KU MUST apply to all components. ... we did not want mixing of signatures and encryption keys, but I think in this case we do want to allow mixing of keyEncipherment and keyExchange keys. Not sure how to fix that.
 
 
+### Composite-OR
+
+The design intent of this mode is to support migration scenarios where a recipient has been provisioned with a composite key containing algorithms that its peers may not yet support. This mode allows the sender to encrypt for a subset of the recipient's public keys. Support for Composite OR subset encryption is indicated by the recipient at key generation time by marking its composite key with the id-composite-or-key algorithm identifier as defined in ~~~cite properly draft-ounsworth-pq-composite-keys~~~.
+
+Policy mechanisms defining allowed subets of algorithms could be applied here, but are out of scope of this document. As defined in this document, a recipient marking their public key as id-composite-or-key must accept the risk that a sender may encrypt sensitive data for it using any one of its component keys in isolation. Composite Or is a direct tradeoff of lower security for increased migration flexibility.
+
+
 
 ## Algorithm parameters {#sec-com-key-exchange-params}
 
 The composite key exchange mode requires additional parameters to specify the KDF used to combine key shares into a master shared secret. 
 
-   Params ::= KeyDerivationAlgorithmIdentifier
+    Params ::= KeyDerivationAlgorithmIdentifier
 
-The KeyDerivationAlgorithmIdentifier type is specified in [RFC3211] and [RFC5652]. The KeyDerivationAlgorithmIdentifier definition is repeated
+The KeyDerivationAlgorithmIdentifier type is specified in [RFC5652]. The KeyDerivationAlgorithmIdentifier definition is repeated
 here for completeness.
 
     KeyDerivationAlgorithmIdentifier ::= AlgorithmIdentifier
@@ -437,19 +501,19 @@ Output:
      M                  Master shared secret
     
 
-Ciphertext Generation Procedure:
-   1. Generate a set of key shares of the same length as the
+Ciphertext and master secret Generation Procedure:
+     1. Generate a set of key shares of the same length as the
       content encryption key
-        for i := 1 to n-1
-          if P1 is of type KEM or keyExchange:
-            Si,Ei := encaps(P1)
-          else:
-            Si := random_bits(SIZE)
+        for i := 1 to n
 
-        for i := 1 to n-1
-          if P1 is of type KEM or KeyAgree:
+      a. if id-composite-or-key and Pi is to be skipped
+            Si = EMPTY_STRING
+            Ei := null
+            continue to next i
+
+      b. if P1 is of type KEM or keyExchange:
             Si,Ei := encaps(P1)
-          else:
+        else:
             Si := random_bits(SIZE)
             Ei := encrypt(Si, Pi)
 
@@ -459,14 +523,19 @@ Ciphertext Generation Procedure:
    3. Generate the master shared secret via a KDF
         M = KDF(Z)
 
-  4. Output M
-     Output E1, E2, .., En
+   4. Output M
+        Output E1, E2, .., En
 
 ~~~
 {: artwork-name="alg-composite-encaps"}
 
+"EMPTY_STRING" indicates a string or byte array of length zero so that that value as essentially omitted from the concatenation in step 2.
+
 In cases where KDF is extensible output function, the length of M must be carried in the KeyDerivationAlgorithmIdentifier defined in {{sec-com-key-exchange-params}}.
 
+If the sender does not support Composite Or encryption, this algorithm may be simplified by omitting step 2a.
+
+The design intent is that Composite Or key exchange with a single recipient key collapses to direct key exchange with a single algorithm, and is binary compatible with legacy non-composite encryption, key encapsulation, or key exchange.
 
 ## Decapsulation Process
 
@@ -479,7 +548,7 @@ Input:
      E1, E2, .., En     EncryptedKey values corresponding to each recipient
                         component public key
 
-    KDF                 A key derivation function
+     KDF                A key derivation function
 
 
 Intermediate values:
@@ -490,9 +559,11 @@ Output:
      M                  Master shared secret
     
 
-Ciphertext Generation Procedure:
+ Master Secret Recovery Procedure:
    1. Recover each key share
         for i := 1 to n
+          if Ei == null
+            Si = EMPTY_STRING
           Si := decrypt_or_decaps(Ei, SKi)
 
    2. Generate Z via concatenation
@@ -505,41 +576,9 @@ Ciphertext Generation Procedure:
 ~~~
 {: artwork-name="alg-composite-decaps"}
 
+"EMPTY_STRING" indicates a string or byte array of length zero so that that value as essentially omitted from the concatenation in step 2.
 
-# Composite-OR variants {#sec-comp-or}
-
-In order to ease migration, two variants of the key transport encryption modes defined in {{sec-com-key-trans_encr}}} and {{sec-com-key-trans_kem}} are defined that allow the sender to construct the cipher text in such a way that either the sender or the recipient can use a subset of the recipient's component algorithms.
-
-Composite-OR subset encryption is intended for migration scenarios where the sender does not support all of the recipient's component algorithms. This variant allows the sender to emit a null ciphertext for unsupported component algorithms.
-
-Composite-OR threshold encryption is intended for migration scenarios where the sender supports all of the recipient's component algorithms, but the recipient may not. This variant allows the sender to use an "n of m" or threshold secret sharing scheme, such as Shamir's secret sharing, instead of the XOR secret sharing scheme used above. 
-
-
-The Composite-OR variants MAY be used if the algorithm ID of the recipient public key is id-composite-or-key. Those variants MUST NOT be used if the algorithm ID of the recipient public key is id-composite-key.
-
-Security consideration: Composite-OR eases migration at the expense of security. In the subset encryption variant the security of the composite ciphertext is weakened to the algorithms used. In the threshold encryption variant with a threshold of n key shares, the security of the ciphertext is to be evaluated as if the recipient's weakest n algorithms were used.
-
-EDNOTE: at present these are not fully specified; if the IETF community thinks they are worth standardizing, then they will need their own OIDs, and the threshold scheme will need params.
-
-## Composite-OR subset encryption {#sec-comp-or-sub-encr}
-
-If the algorithm ID of the recipient public key is id-composite-or-key then the encryptor MAY use either key trasnport mode ({{sec-com-key-trans_encr}}} and {{sec-com-key-trans_kem}}) with only a subset of the component keys and therefore produce fewer ciphertexts than the number of recipient component keys.
-
-Composite-OR subset encryption uses the same structures and processes as {{sec-com-key-trans_encr}}} or {{sec-com-key-trans_kem}}, with the difference that the encryption process may emit a null instead of a ciphertext one or more component algorithms and the corresponding shared secret is taken to be 0 for the purposes of the XOR computation. A Composite-OR CompositeEncryptedKey MUST NOT be entirely null; it must contain at least one ciphertext.
-
-The design intent of this mode is to support migration scenarios where an entity is encrypting for a peer which has been issued keys on algorithms that either the encryptor or the recipient do not (yet) support.
-
-EDNOTE: Do we want to allow a Composite-OR with only a single ciphertext to produce non-composite EncryptedKey[RFC5652]? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a encrypted key is traditional or composite until you look at the corresponding key.   
-
-EDNOTE:  I do not think we get a lot of value with Composite-OR with a single key because it is essentially just a wrapper around the regular algorithm.  I can see use for systems that recognize the composite structure which may not yet support all the component encryption algorithms, so a composite with algorithms that are not yet understood could be pushed out and one or more of the components could get used.
-
-## Composite-OR threshold encryption {#sec-comp-or-thresh-encr}
-
-If the algorithm ID of the recipient public key is id-composite-or-key then the encryptor MAY use either key trasnport mode ({{sec-com-key-trans_encr}}} and {{sec-com-key-trans_kem}}) with only a subset of the component keys and therefore produce fewer ciphertexts than the number of recipient component keys.
-
-Composite-OR subset encryption uses the same structures and processes as {{sec-com-key-trans_encr}}} or {{sec-com-key-trans_kem}}, with the difference that the encryption process may emit a null instead of a ciphertext one or more component algorithms. A Composite-OR CompositeEncryptedKey MUST NOT be entirely null; it must contain at least one ciphertext.
-
-The design intent of this mode is to support migration scenarios where an entity is encrypting for a peer which has been issued keys on algorithms that either the encryptor or the recipient do not (yet) support.
+The if statement in step 1 is the only modification required to support Composite Or encryption. The designers have intentionally omitted a check that the recipient key is of type id-composite-or-key because even if the sender erroneously used composite or subset for a recipient key which is not of type id-composite-or-key, the damage has already been done by generating a master secret and potentially transmitting data encrypted with it, no further harm can be done by decrypting it. However, where appropriate, clients SHOULD indicate a warning to users that this data was transmitted with weaker encrypting than their public key allows.
 
 
 # In Practice {#sec-in-pract}
@@ -562,7 +601,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 
 # Security Considerations
 
-## Policy for Deprecated and Acceptable Algorithms
+## Policy for Deprecated or Unacceptable Algorithms
 
 Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.
 
@@ -582,7 +621,9 @@ While intentionally not specified in this document, implementors should put care
 
 ## Composite-OR modes
 
-Composite-OR eases migration at the expense of security. In the subset encryption variant the security of the composite ciphertext is weakened to the algorithms used. In the threshold encryption variant with a threshold of n key shares, the security of the ciphertext is to be evaluated as if the recipient's weakest n algorithms were used.
+Composite-OR eases migration at the expense of security. For composite encryption and key encapsulation, the weakining of security is entirely at the discretion of the sender, since once data has been encrpted and transmitted with weak ciphers, there is nothing the recipient can do to protect the data against record & decrypt attacks. Clients performing Composite Or encryption operations MUST ensure that the recipient's public key is of type id-composite-or-key before procuding a ciphertext with a subset of the recipient's public keys.
+
+For some cases of composite key exchange, notably fwhen the underlying key exchange primitive is used in a fully interactive (aka "ephemeral-ephemeral") mode, the sender cannot begin encrypting data until the recipient has completed the key exachenge. The recipient SHOULD reject the connection if one of more null ciphertexts are encountered when the recipient's public key is not of type id-composite-or-key.
 
 <!-- End of Security Considerations section -->
 
