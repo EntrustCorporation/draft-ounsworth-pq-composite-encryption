@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                               S. Mister
-Expires: December 22, 2021                                       Entrust
-                                                           June 20, 2021
+Expires: January 8, 2022                                         Entrust
+                                                           July 07, 2021
 
 
               Composite Encryption For Use In Internet PKI
@@ -53,15 +53,15 @@ Status of This Memo
 
 
 
-Ounsworth, et al.       Expires December 22, 2021               [Page 1]
+Ounsworth, et al.        Expires January 8, 2022                [Page 1]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 22, 2021.
+   This Internet-Draft will expire on January 8, 2022.
 
 Copyright Notice
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Ounsworth, et al.       Expires December 22, 2021               [Page 2]
+Ounsworth, et al.        Expires January 8, 2022                [Page 2]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
      7.1.  Policy for Deprecated or Unacceptable Algorithms  . . . .  18
@@ -151,12 +151,12 @@ Internet-Draft             PQ Composite Certs                  June 2021
       quantum algorithms will not be supported by all clients.
 
    This document provides mechanisms to address algorithm strength
-   uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-
+   uncertainty by building on ~~ reference draft-ounsworth-pq-composite-
    pubkeys ~~ by providing formats for both wrapping a content
    encryption key using multiple public key encryption mechanisms, or
-   performing key exchange using a combination of encryption, Key
+   performing key exchange using a combination of encryption, key
    encapsulation, and key exchange primitives.  The issue of backwards
-   compatibility is is addressed with support for Composite Or recipient
+   compatibility is addressed with support for Composite Or recipient
    keys in each mode.
 
    This document is intended for general applicability anywhere that
@@ -165,9 +165,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021               [Page 3]
+Ounsworth, et al.        Expires January 8, 2022                [Page 3]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
 1.1.  Terminology
@@ -221,9 +221,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021               [Page 4]
+Ounsworth, et al.        Expires January 8, 2022                [Page 4]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    COMPOSITE ENCRYPTION KEY: A structure that contains a sequence of
@@ -277,9 +277,9 @@ CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (2..Max)  OF OCTET STRING}
 
 
 
-Ounsworth, et al.       Expires December 22, 2021               [Page 5]
+Ounsworth, et al.        Expires January 8, 2022                [Page 5]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    EDNOTE: This ASN.1 probably does not compile.  The intent is that
@@ -333,9 +333,9 @@ id-alg-composite-encryption OBJECT IDENTIFIER ::= {
 
 
 
-Ounsworth, et al.       Expires December 22, 2021               [Page 6]
+Ounsworth, et al.        Expires January 8, 2022                [Page 6]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    or-key must accept the risk that a sender may encrypt sensitive data
@@ -389,9 +389,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021               [Page 7]
+Ounsworth, et al.        Expires January 8, 2022                [Page 7]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
 Input:
@@ -428,7 +428,7 @@ Generation Procedure:
         b. If i == i_last
             Ei = encrypt(CEK, Pi)
           Else,
-            Si := randem_bits(SIZE)
+            Si := random_bits(SIZE)
             CEK := CEK XOR Si
             Ei = encrypt(Si, Pi)
 
@@ -445,9 +445,9 @@ Generation Procedure:
 
 
 
-Ounsworth, et al.       Expires December 22, 2021               [Page 8]
+Ounsworth, et al.        Expires January 8, 2022                [Page 8]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    If the sender does not support Composite Or encryption, this
@@ -501,9 +501,9 @@ Generation Procedure:
 
 
 
-Ounsworth, et al.       Expires December 22, 2021               [Page 9]
+Ounsworth, et al.        Expires January 8, 2022                [Page 9]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    The if statement in step 1 (and ensuring its proper bit length for
@@ -557,9 +557,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 10]
+Ounsworth, et al.        Expires January 8, 2022               [Page 10]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
 3.2.  Public key and key usage
@@ -575,7 +575,7 @@ Internet-Draft             PQ Composite Certs                  June 2021
    this mode, all component KEMs MUST be capable of producing a shared
    secret of SIZE bits, where SIZE is the length in bits of the content
    encryption key (CEK) to be transported.  This is assumed for the
-   remainer of this section.
+   remainder of this section.
 
 3.2.1.  Composite-OR
 
@@ -613,9 +613,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 11]
+Ounsworth, et al.        Expires January 8, 2022               [Page 11]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
 Input:
@@ -650,7 +650,7 @@ Generation Procedure:
         b. If i == i_last
             Ei = encrypt(CEK, Pi)
           Else, if Pi is of type KEM:
-            Si,Ei := encaps(P1)
+            Si,Ei := encaps(Pi)
             CEK := CEK XOR Si
           Else:
             Si := random_bits(SIZE)
@@ -669,9 +669,9 @@ Generation Procedure:
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 12]
+Ounsworth, et al.        Expires January 8, 2022               [Page 12]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    The design intent is that Composite Or encryption with a single
@@ -725,9 +725,9 @@ id-alg-composite-keyex OBJECT IDENTIFIER ::= {
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 13]
+Ounsworth, et al.        Expires January 8, 2022               [Page 13]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
 4.2.  Public key and key usage
@@ -781,9 +781,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 14]
+Ounsworth, et al.        Expires January 8, 2022               [Page 14]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
 4.4.  Encapsulation Process
@@ -837,9 +837,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 15]
+Ounsworth, et al.        Expires January 8, 2022               [Page 15]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
 Input:
@@ -870,7 +870,7 @@ Ciphertext and master secret Generation Procedure:
             continue to next i
 
       b. if P1 is of type KEM or keyExchange:
-            Si,Ei := encaps(P1)
+            Si,Ei := encaps(Pi)
         else:
             Si := random_bits(SIZE)
             Ei := encrypt(Si, Pi)
@@ -893,9 +893,9 @@ Ciphertext and master secret Generation Procedure:
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 16]
+Ounsworth, et al.        Expires January 8, 2022               [Page 16]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    In cases where KDF is extensible output function, the length of M
@@ -949,9 +949,9 @@ Output:
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 17]
+Ounsworth, et al.        Expires January 8, 2022               [Page 17]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    "EMPTY_STRING" indicates a string or byte array of length zero so
@@ -1005,9 +1005,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 18]
+Ounsworth, et al.        Expires January 8, 2022               [Page 18]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    as the subject of an application profile document, or to be up to the
@@ -1020,7 +1020,7 @@ Internet-Draft             PQ Composite Certs                  June 2021
         output "Invalid signature"
 
    While intentionally not specified in this document, implementors
-   should put careful thought into implementing a meaningfull policy
+   should put careful thought into implementing a meaningful policy
    mechinism within the context of their signature verification engines,
    for example only algorithms that provide similar security levels
    should be combined together.
@@ -1028,20 +1028,20 @@ Internet-Draft             PQ Composite Certs                  June 2021
 7.2.  Composite-OR modes
 
    Composite-OR eases migration at the expense of security.  For
-   composite encryption and key encapsulation, the weakining of security
+   composite encryption and key encapsulation, the weakening of security
    is entirely at the discretion of the sender, since once data has been
-   encrpted and transmitted with weak ciphers, there is nothing the
+   encrypted and transmitted with weak ciphers, there is nothing the
    recipient can do to protect the data against record & decrypt
    attacks.  Clients performing Composite Or encryption operations MUST
    ensure that the recipient's public key is of type id-composite-or-key
-   before procuding a ciphertext with a subset of the recipient's public
+   before producing a ciphertext with a subset of the recipient's public
    keys.
 
-   For some cases of composite key exchange, notably fwhen the
-   underlying key exchange primitive is used in a fully interactive (aka
+   For some cases of composite key exchange, notably when the underlying
+   key exchange primitive is used in a fully interactive (aka
    "ephemeral-ephemeral") mode, the sender cannot begin encrypting data
-   until the recipient has completed the key exachenge.  The recipient
-   SHOULD reject the connection if one of more null ciphertexts are
+   until the recipient has completed the key exchange.  The recipient
+   SHOULD reject the connection if one or more null ciphertexts are
    encountered when the recipient's public key is not of type id-
    composite-or-key.
 
@@ -1061,9 +1061,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 19]
+Ounsworth, et al.        Expires January 8, 2022               [Page 19]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    We are grateful to all, including any contributors who may have been
@@ -1117,9 +1117,9 @@ Internet-Draft             PQ Composite Certs                  June 2021
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 20]
+Ounsworth, et al.        Expires January 8, 2022               [Page 20]
 
-Internet-Draft             PQ Composite Certs                  June 2021
+Internet-Draft             PQ Composite Certs                  July 2021
 
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
@@ -1173,4 +1173,4 @@ Authors' Addresses
 
 
 
-Ounsworth, et al.       Expires December 22, 2021              [Page 21]
+Ounsworth, et al.        Expires January 8, 2022               [Page 21]

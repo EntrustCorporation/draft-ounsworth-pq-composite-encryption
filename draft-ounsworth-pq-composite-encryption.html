@@ -415,7 +415,7 @@
 
   <meta name="dct.creator" content="Ounsworth, M., Gray, J., and S. Mister" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-encryption-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2021-06-20" />
+  <meta name="dct.issued" scheme="ISO8601" content="2021-07-07" />
   <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by masking it with an XOR key which is split into key shares and each share encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2. " />
   <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by masking it with an XOR key which is split into key shares and each share encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2. " />
 
@@ -439,12 +439,12 @@
 <td class="right">S. Mister</td>
 </tr>
 <tr>
-<td class="left">Expires: December 22, 2021</td>
+<td class="left">Expires: January 8, 2022</td>
 <td class="right">Entrust</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 20, 2021</td>
+<td class="right">July 07, 2021</td>
 </tr>
 
     	
@@ -461,7 +461,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 22, 2021.</p>
+<p>This Internet-Draft will expire on January 8, 2022.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2021 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -554,7 +554,7 @@
 <li>Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.</li>
 <li>Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.</li>
 </ul>
-<p id="rfc.section.1.p.4">This document provides mechanisms to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for both wrapping a content encryption key using multiple public key encryption mechanisms, or performing key exchange using a combination of encryption, Key encapsulation, and key exchange primitives. The issue of backwards compatibility is is addressed with support for Composite Or recipient keys in each mode.</p>
+<p id="rfc.section.1.p.4">This document provides mechanisms to address algorithm strength uncertainty by building on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for both wrapping a content encryption key using multiple public key encryption mechanisms, or performing key exchange using a combination of encryption, key encapsulation, and key exchange primitives. The issue of backwards compatibility is addressed with support for Composite Or recipient keys in each mode.</p>
 <p id="rfc.section.1.p.5">This document is intended for general applicability anywhere that content encryption or key exchange is used.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#sec-terminology" id="sec-terminology">Terminology</a>
@@ -652,7 +652,7 @@ Generation Procedure:
         b. If i == i_last
             Ei = encrypt(CEK, Pi)
           Else,
-            Si := randem_bits(SIZE)
+            Si := random_bits(SIZE)
             CEK := CEK XOR Si
             Ei = encrypt(Si, Pi)
 
@@ -726,7 +726,7 @@ id-alg-composite-kem OBJECT IDENTIFIER ::= {
 <a href="#rfc.section.3.2">3.2.</a> <a href="#public-key-and-key-usage-1" id="public-key-and-key-usage-1">Public key and key usage</a>
 </h1>
 <p id="rfc.section.3.2.p.1">The recipient MUST have a composite public key which supports key transport or key encapsulation operations. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are encryption or KEM algorithms.</p>
-<p id="rfc.section.3.2.p.2">In addition, for a recipient composite public key to be applicable to this mode, all component KEMs MUST be capable of producing a shared secret of SIZE bits, where SIZE is the length in bits of the content encryption key (CEK) to be transported. This is assumed for the remainer of this section.</p>
+<p id="rfc.section.3.2.p.2">In addition, for a recipient composite public key to be applicable to this mode, all component KEMs MUST be capable of producing a shared secret of SIZE bits, where SIZE is the length in bits of the content encryption key (CEK) to be transported. This is assumed for the remainder of this section.</p>
 <h1 id="rfc.section.3.2.1">
 <a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#composite-or-1" id="composite-or-1">Composite-OR</a>
 </h1>
@@ -773,7 +773,7 @@ Generation Procedure:
         b. If i == i_last
             Ei = encrypt(CEK, Pi)
           Else, if Pi is of type KEM:
-            Si,Ei := encaps(P1)
+            Si,Ei := encaps(Pi)
             CEK := CEK XOR Si
           Else:
             Si := random_bits(SIZE)
@@ -861,7 +861,7 @@ Ciphertext and master secret Generation Procedure:
             continue to next i
 
       b. if P1 is of type KEM or keyExchange:
-            Si,Ei := encaps(P1)
+            Si,Ei := encaps(Pi)
         else:
             Si := random_bits(SIZE)
             Ei := encrypt(Si, Pi)
@@ -949,12 +949,12 @@ id-alg-composite OBJECT IDENTIFIER ::= {
    if not checkPolicy(A1, A2, ..., An), then
      output "Invalid signature"
 </pre>
-<p id="rfc.section.7.1.p.4">While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.</p>
+<p id="rfc.section.7.1.p.4">While intentionally not specified in this document, implementors should put careful thought into implementing a meaningful policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.</p>
 <h1 id="rfc.section.7.2">
 <a href="#rfc.section.7.2">7.2.</a> <a href="#composite-or-modes" id="composite-or-modes">Composite-OR modes</a>
 </h1>
-<p id="rfc.section.7.2.p.1">Composite-OR eases migration at the expense of security. For composite encryption and key encapsulation, the weakining of security is entirely at the discretion of the sender, since once data has been encrpted and transmitted with weak ciphers, there is nothing the recipient can do to protect the data against record &amp; decrypt attacks. Clients performing Composite Or encryption operations MUST ensure that the recipient's public key is of type id-composite-or-key before procuding a ciphertext with a subset of the recipient's public keys.</p>
-<p id="rfc.section.7.2.p.2">For some cases of composite key exchange, notably fwhen the underlying key exchange primitive is used in a fully interactive (aka "ephemeral-ephemeral") mode, the sender cannot begin encrypting data until the recipient has completed the key exachenge. The recipient SHOULD reject the connection if one of more null ciphertexts are encountered when the recipient's public key is not of type id-composite-or-key.</p>
+<p id="rfc.section.7.2.p.1">Composite-OR eases migration at the expense of security. For composite encryption and key encapsulation, the weakening of security is entirely at the discretion of the sender, since once data has been encrypted and transmitted with weak ciphers, there is nothing the recipient can do to protect the data against record &amp; decrypt attacks. Clients performing Composite Or encryption operations MUST ensure that the recipient's public key is of type id-composite-or-key before producing a ciphertext with a subset of the recipient's public keys.</p>
+<p id="rfc.section.7.2.p.2">For some cases of composite key exchange, notably when the underlying key exchange primitive is used in a fully interactive (aka "ephemeral-ephemeral") mode, the sender cannot begin encrypting data until the recipient has completed the key exchange. The recipient SHOULD reject the connection if one or more null ciphertexts are encountered when the recipient's public key is not of type id-composite-or-key.</p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#appendices" id="appendices">Appendices</a>
 </h1>

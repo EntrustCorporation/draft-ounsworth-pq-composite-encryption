@@ -94,7 +94,7 @@ The deployment of composite public keys and composite encryption using post-quan
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.
 
-This document provides mechanisms to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for both wrapping a content encryption key using multiple public key encryption mechanisms, or performing key exchange using a combination of encryption, Key encapsulation, and key exchange primitives. The issue of backwards compatibility is is addressed with support for Composite Or recipient keys in each mode.
+This document provides mechanisms to address algorithm strength uncertainty by building on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for both wrapping a content encryption key using multiple public key encryption mechanisms, or performing key exchange using a combination of encryption, key encapsulation, and key exchange primitives. The issue of backwards compatibility is addressed with support for Composite Or recipient keys in each mode.
 
 This document is intended for general applicability anywhere that content encryption or key exchange is used.
 
@@ -261,7 +261,7 @@ Generation Procedure:
         b. If i == i_last
             Ei = encrypt(CEK, Pi)
           Else,
-            Si := randem_bits(SIZE)
+            Si := random_bits(SIZE)
             CEK := CEK XOR Si
             Ei = encrypt(Si, Pi)
 
@@ -350,7 +350,7 @@ EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust a
 
 The recipient MUST have a composite public key which supports key transport or key encapsulation operations. Where the recipient public key has an associated keyUsage as specified in [RFC5280], it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are encryption or KEM algorithms.
 
-In addition, for a recipient composite public key to be applicable to this mode, all component KEMs MUST be capable of producing a shared secret of SIZE bits, where SIZE is the length in bits of the content encryption key (CEK) to be transported. This is assumed for the remainer of this section.
+In addition, for a recipient composite public key to be applicable to this mode, all component KEMs MUST be capable of producing a shared secret of SIZE bits, where SIZE is the length in bits of the content encryption key (CEK) to be transported. This is assumed for the remainder of this section.
 
 ### Composite-OR
 
@@ -400,7 +400,7 @@ Generation Procedure:
         b. If i == i_last
             Ei = encrypt(CEK, Pi)
           Else, if Pi is of type KEM:
-            Si,Ei := encaps(P1)
+            Si,Ei := encaps(Pi)
             CEK := CEK XOR Si
           Else:
             Si := random_bits(SIZE)
@@ -512,7 +512,7 @@ Ciphertext and master secret Generation Procedure:
             continue to next i
 
       b. if P1 is of type KEM or keyExchange:
-            Si,Ei := encaps(P1)
+            Si,Ei := encaps(Pi)
         else:
             Si := random_bits(SIZE)
             Ei := encrypt(Si, Pi)
@@ -617,13 +617,13 @@ Specifying a modified verification algorithm to handle these situations is beyon
      output "Invalid signature"
 ~~~
 
-While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.
+While intentionally not specified in this document, implementors should put careful thought into implementing a meaningful policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.
 
 ## Composite-OR modes
 
-Composite-OR eases migration at the expense of security. For composite encryption and key encapsulation, the weakining of security is entirely at the discretion of the sender, since once data has been encrpted and transmitted with weak ciphers, there is nothing the recipient can do to protect the data against record & decrypt attacks. Clients performing Composite Or encryption operations MUST ensure that the recipient's public key is of type id-composite-or-key before procuding a ciphertext with a subset of the recipient's public keys.
+Composite-OR eases migration at the expense of security. For composite encryption and key encapsulation, the weakening of security is entirely at the discretion of the sender, since once data has been encrypted and transmitted with weak ciphers, there is nothing the recipient can do to protect the data against record & decrypt attacks. Clients performing Composite Or encryption operations MUST ensure that the recipient's public key is of type id-composite-or-key before producing a ciphertext with a subset of the recipient's public keys.
 
-For some cases of composite key exchange, notably fwhen the underlying key exchange primitive is used in a fully interactive (aka "ephemeral-ephemeral") mode, the sender cannot begin encrypting data until the recipient has completed the key exachenge. The recipient SHOULD reject the connection if one of more null ciphertexts are encountered when the recipient's public key is not of type id-composite-or-key.
+For some cases of composite key exchange, notably when the underlying key exchange primitive is used in a fully interactive (aka "ephemeral-ephemeral") mode, the sender cannot begin encrypting data until the recipient has completed the key exchange. The recipient SHOULD reject the connection if one or more null ciphertexts are encountered when the recipient's public key is not of type id-composite-or-key.
 
 <!-- End of Security Considerations section -->
 
