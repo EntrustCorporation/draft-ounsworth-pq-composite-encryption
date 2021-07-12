@@ -22,10 +22,10 @@ author:
       name: Mike Ounsworth
       org: Entrust Limited
       abbrev: Entrust
-      street: 1000 Innovation Drive
+      street: 2500 Solandt Road – Suite 100
       city: Ottawa, Ontario
       country: Canada
-      code: K2K 1E3
+      code: K2K 3G5
       email: mike.ounsworth@entrust.com
 
     -
@@ -127,12 +127,6 @@ COMPOSITE ALGORITHM:
 DER:
           Distinguished Encoding Rules as defined in [X.690].
 
-KEY SHARE:
-          A type of shared secret where a key splitting scheme is used to 
-          distribute multiple secrets over different channels such that 
-          some or all of the secrets must be re-combined to recover the 
-          primary shared secret.
-
 PUBLIC / PRIVATE KEY:
           The public and private portion of an asymmetric cryptographic
             key, making no assumptions about which algorithm.
@@ -158,9 +152,6 @@ KEY DERIVATION FUNCTION:
 COMPOSITE ENCRYPTION KEY:
         A structure that contains a sequence of content encryption keys, or secrets used to derive a content encryption keys.
 
-TRIVIAL SECRET SHARING
-        A method to securely share a secret among two or more parties where all parties need to combine their 
-        intermediate secret to re-create the secret.
 
 
 # Composite Key Transport using Encryption primitives {#sec-com-key-trans_encr}
@@ -170,7 +161,7 @@ This message to be encrypted is assumed to have length less than the maximum mes
 
 This mode is compatible with protocols requiring a key transport primitive, such as CMS' KeyTransRecipientInfo [RFC5652].
 
-Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme, as defined in {{sec-com-key-trans_encr_process}} to transport n secrets called key shares, where n is the number of recipient component public keys, and each share is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document.
+Composite Key Transport using Encryption primitives uses a trivial XOR one-time-pad scheme, as defined in {{sec-com-key-trans_encr_process}}. It transports n one-time-pad secret keys of the same length as the content to be encryption, where n is the number of recipient component public keys, and each one-time-pad secret key is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document.
 
 EDNOTE: we have not been able to find a reference and security analysis for the trivial XOR key-sharing scheme. This may need review by CFRG. We could re-frame this process as "a one-time pad with n-1 one-time pad keys, which we transport using the recipients public keys", then this could leverage one-time pad security analysis.
 
@@ -185,7 +176,7 @@ CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (2..Max)  OF OCTET STRING}
 
 EDNOTE: This ASN.1 probably does not compile. The intent is that this fits into any EncryptedKey field, but defines some structure within the existing EncryptedKey ::= OCTET STRING, but I'm not sure exactly how to specify that.
 
-Where each OCTET STRING within the SEQUENCE contains an encrypted key share encrypted under one of the recipient component public keys. The CompositeEncryptedKey MUST list encrypted values in the same order as the recipient public key's component keys.
+Where each OCTET STRING within the SEQUENCE contains an encrypted one-time-pad secret key encrypted under one of the recipient component public keys. The CompositeEncryptedKey MUST list encrypted values in the same order as the recipient public key's component keys.
 
 ## Algorithm Identifier
 
@@ -193,11 +184,13 @@ The id-alg-composite-encryption object identifier MUST be used to identify the u
 
 ~~~ asn.1
 id-alg-composite-encryption OBJECT IDENTIFIER ::= {
-    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite-encryption(1) }
+    id-alg-composite-encryption OBJECT IDENTIFIER ::= {
+    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+    Algorithm(80) Composite(4) id-alg-composite-encryption(4) }
 ~~~
 
-EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
+
+EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see {{sec-iana}}.
 
 EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.
 
@@ -221,25 +214,31 @@ The composite key transport using encryption mode does not require additional pa
 The process for performing Composite Key Transport using Encryption primitives is as follows:
 
 
-The first n-1 key shares are random bit strings of the same length as 
-the content encryption key.  The final key share is 
-computed by XOR'ing the content encryption key with each of n-1 previous key shares.
+The first n-1 one-time-pad keys are random bit strings of the same length as 
+the content encryption key.  The final one-time-pad key is 
+computed by XOR'ing the content encryption key with each of n-1 previous keys.
 
 
 ~~~
 Input:
      n                  The number of recipient component public keys
+
      P1, P2, .., Pn     Recipient component public keys
+
+     A1, A2, .., An     Cryptographic algorithms to be used with 
+                          public keys P1, P2, .., Pn
+
      CEK                The Content Encryption Key
+
      SIZE               The size of the Content Encryption Key in bits
 
 Output:
      E1, E2, .., En     EncryptedKey values corresponding to each recipient
-                        component public key
+                          component public key
 
 Intermediate values:
-     S1, S2, .., Sn-1   One-time-pad keys to be encapsulated by each 
-                        component algorithm
+     S1, S2, .., Sn-1   One-time-pad secret keys to be encapsulated by each 
+                          component algorithm
      C                  One-time-pad ciphertext of the CEK under S1, S2, .., Sn-1
 
 Generation Procedure:
@@ -251,7 +250,7 @@ Generation Procedure:
         i_last = n
 
 
-   2. To generate key share Sn, compute the following
+   2. To generate secret keys Sn, compute the following
 
       C = CEK
       for i := 1 to n
@@ -261,17 +260,19 @@ Generation Procedure:
           continue to next i
 
         b. If i == i_last
-            Ei = encrypt(C, Pi)
+            Ei = encrypt(C, Pi, Ai)
             break
           Else,
             Si := random_bits(SIZE)
             C := C XOR Si
-            Ei = encrypt(Si, Pi)
+            Ei = encrypt(Si, Pi, Ai)
 
    4. Output E1, E2, .., En
 ~~~
 
 Where `random_bits(SIZE)` is a cryptographically-secure random bit generator outputting SIZE bits, and where `emptyOctetString` is the octet string of length 0.
+
+EDNOTE: we currently do not define a composite algorithmID type to carry A1, A2, .., An. We may need to add one analogously to the CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier that we have in the composite signutares draft.
 
 If the sender does not support Composite Or encryption, this algorithm may be simplified by omitting step 1, 2a, and the if i == i_last statement in 2b.
 
@@ -281,13 +282,17 @@ The design intent is that Composite Or encryption with a single recipient key co
 ## Decryption process {#sec-com-key-trans_decr_process}
 
 To obtain the content-encryption key from a CompositeEncryptedKey, each component 
-algorithm MUST be used to decrypt the set of key shares.  The key shares are then XOR'ed together to recover the content encryption key.
+algorithm MUST be used to decrypt the set of one-time-pad keys.  The keys are then XOR'ed together to recover the content encryption key.
 
 ~~~
 Input:
      n                  The number of recipient component public keys
 
      SK1, SK2, .., SKn  Recipient component secret keys
+
+
+     A1, A2, .., An     Cryptographic algorithms to be used with 
+                          public keys P1, P2, .., Pn
      
      E1, E2, .., En     EncryptedKey values corresponding to each recipient
                         component public key
@@ -302,7 +307,7 @@ Output:
 
 
 Generation Procedure:
-   1. Recover each key share
+   1. Recover each one-time-pad key
         for i := 1 to n
           if Ei == emptyOctetString
             Si := emptyOctetString
@@ -310,7 +315,7 @@ Generation Procedure:
             Si := decrypt(Ei, SKi)
 
    2. Recover the CEK;
-      For each intermediate shared-secret
+      For each one-time-pad key
         CEK = S1
         for i := 2 to n
            if Si != emptyOctetString
@@ -340,11 +345,12 @@ The id-alg-composite-kem object identifier MUST be used to identify the usage of
 
 ~~~ asn.1
 id-alg-composite-kem OBJECT IDENTIFIER ::= {
-    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite-kem(1) }
+    id-alg-composite-encryption OBJECT IDENTIFIER ::= {
+    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+    Algorithm(80) Composite(4) id-alg-composite-kem(5)} 
 ~~~
 
-EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
+EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see {{sec-iana}}.
 
 EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.
 
@@ -381,7 +387,7 @@ Output:
                         component public key
 
 Intermediate values:
-     S1, S2, .., Sn     Key shares to be encapsulated by each 
+     S1, S2, .., Sn     One-time-pad secret keys to be encapsulated by each 
                         component algorithm
 
 Generation Procedure:
@@ -446,11 +452,12 @@ The id-alg-composite-keyex object identifier MUST be used to identify the usage 
 
 ~~~ asn.1
 id-alg-composite-keyex OBJECT IDENTIFIER ::= {
-    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite-keyex(1) }
+    id-alg-composite-encryption OBJECT IDENTIFIER ::= {
+    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+    Algorithm(80) Composite(4) id-alg-composite-encryption(6) }
 ~~~
 
-EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
+EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see {{sec-iana}}.
 
 EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.
 
@@ -472,7 +479,7 @@ Policy mechanisms defining allowed subets of algorithms could be applied here, b
 
 ## Algorithm parameters {#sec-com-key-exchange-params}
 
-The composite key exchange mode requires additional parameters to specify the KDF used to combine key shares into a master shared secret. 
+The composite key exchange mode requires additional parameters to specify the KDF used to combine shared secrets into a master shared secret. 
 
     Params ::= KeyDerivationAlgorithmIdentifier
 
@@ -508,8 +515,8 @@ Output:
     
 
 Ciphertext and master secret Generation Procedure:
-     1. Generate a set of key shares of the same length as the
-      content encryption key
+     1. Generate a set of one-time-pad secret keys of 
+      the same length as the content encryption key
         for i := 1 to n
 
       a. if id-composite-or-key and Pi is to be skipped
@@ -556,21 +563,21 @@ Input:
      SK1, SK2, .., SKn  Recipient component secret keys
 
      E1, E2, .., En     EncryptedKey values corresponding to each recipient
-                        component public key
+                          component public key
 
      KDF                A key derivation function
 
 
 Intermediate values:
-     S1, S2, .., Sn     Key shares to be encapsulated by each 
-                        component algorithm
+     S1, S2, .., Sn     Shared secrets to be encapsulated by 
+                          each component algorithm
 
 Output:
      M                  Master shared secret
     
 
  Master Secret Recovery Procedure:
-   1. Recover each key share
+   1. Recover each shared secret
         for i := 1 to n
           if Ei == null
             Si = EMPTY_STRING
@@ -598,36 +605,34 @@ This section addresses practical issues of how this draft affects other protocol
 <!-- End of In Practice section -->
 
 # IANA Considerations {#sec-iana}
-The ASN.1 module OID is TBD.  The id-alg-composite OID is to be assigned by IANA.  The authors suggest that IANA assign an OID on the id-pkix arc:
+The following OIDs are to be assigned by IANA.  The authors suggest that IANA assign OIDs for composite encryption on the id-pkix arc:
 
-~~~
+~~~ asn.1
 id-alg-composite OBJECT IDENTIFIER ::= {
     iso(1) identified-organization(3) dod(6) internet(1) security(5)
-    mechanisms(5) pkix(7) algorithms(6) composite(??) }
+    mechanisms(5) pkix(7) algorithms(6) composite(??) id-alg-composite-encryption(??)}
 ~~~
+
+~~~ asn.1
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+    iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) algorithms(6) composite(??) id-alg-composite-kem(??)}
+~~~
+
+~~~ asn.1
+
+
+id-alg-composite-keyex OBJECT IDENTIFIER ::= {
+    iOBJECT IDENTIFIER ::= {
+    iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) algorithms(6) composite(??) id-alg-composite-encryption(??)}
+~~~
+
 
 <!-- End of IANA Considerations section -->
 
 
 # Security Considerations
-
-## Policy for Deprecated or Unacceptable Algorithms
-
-Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.
-
-In the composite model this is less obvious since a single public key, certificate, or signature may contain a mixture of deprecated and non-deprecated algorithms. Moreover, implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though neither algorithm is acceptable by itself.
-
-Specifying a modified verification algorithm to handle these situations is beyond the scope of this draft, but could be desirable as the subject of an application profile document, or to be up to the discretion of implementers.
-
-~~~
-2. Check policy to see whether A1, A2, ..., An constitutes a valid
-   combination of algorithms.
-
-   if not checkPolicy(A1, A2, ..., An), then
-     output "Invalid signature"
-~~~
-
-While intentionally not specified in this document, implementors should put careful thought into implementing a meaningful policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.
 
 ## IID property of KEM primitives {#sec-consider-iid}
 
@@ -641,6 +646,13 @@ EDNOTE: Should this be brough to CFRG to decide which KEMs are appropriate to us
 Composite-OR eases migration at the expense of security. For composite encryption and key encapsulation, the weakening of security is entirely at the discretion of the sender, since once data has been encrypted and transmitted with weak ciphers, there is nothing the recipient can do to protect the data against record & decrypt attacks. Clients performing Composite Or encryption operations MUST ensure that the recipient's public key is of type id-composite-or-key before producing a ciphertext with a subset of the recipient's public keys.
 
 For some cases of composite key exchange, notably when the underlying key exchange primitive is used in a fully interactive (aka "ephemeral-ephemeral") mode, the sender cannot begin encrypting data until the recipient has completed the key exchange. The recipient SHOULD reject the connection if one or more null ciphertexts are encountered when the recipient's public key is not of type id-composite-or-key.
+
+## Policy for Deprecated or Unacceptable Algorithms
+
+Within the context of composite encryption, the sender holds the responsibility to ensure that chosen algorithms are of sufficient strength prior to encrypting and transmitting sensitive data under them. Composite is designed to provide security redundancy and to remain strong as long as at least one of the component algorithms remains strong.
+
+When encrypting for a Composite-OR public key and using a subset of the recipient's public key, then these redundancy guarantees no longer apply. The sender SHOULD employ a policy mechanism to ensure that they are using a combination of algorithms of sufficient strength. Even though this document does not define such a policy mechanism, but implementors making use of Composite-OR encryption are strongly encouraged to implement a policy mechanism.
+
 
 <!-- End of Security Considerations section -->
 
