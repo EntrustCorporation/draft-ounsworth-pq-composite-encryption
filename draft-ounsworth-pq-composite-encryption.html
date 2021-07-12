@@ -379,34 +379,35 @@
 <link href="#rfc.section.2" rel="Chapter" title="2 Composite Key Transport using Encryption primitives">
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Algorithm Identifier">
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Public key and key usage">
+<link href="#rfc.section.2.2.1" rel="Chapter" title="2.2.1 Composite-OR">
 <link href="#rfc.section.2.3" rel="Chapter" title="2.3 Algorithm parameters">
 <link href="#rfc.section.2.4" rel="Chapter" title="2.4 Encryption process">
 <link href="#rfc.section.2.5" rel="Chapter" title="2.5 Decryption process">
 <link href="#rfc.section.3" rel="Chapter" title="3 Composite Key Transport using Encryption and KEM primitives">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Algorithm Identifier">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Public key and key usage">
+<link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 Composite-OR">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 Algorithm parameters">
 <link href="#rfc.section.3.4" rel="Chapter" title="3.4 Encryption process">
 <link href="#rfc.section.3.5" rel="Chapter" title="3.5 Decryption process">
 <link href="#rfc.section.4" rel="Chapter" title="4 Composite Key Exchange">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Algorithm Identifier">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Public key and key usage">
+<link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Composite-OR">
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 Algorithm parameters">
 <link href="#rfc.section.4.4" rel="Chapter" title="4.4 Encapsulation Process">
 <link href="#rfc.section.4.5" rel="Chapter" title="4.5 Decapsulation Process">
-<link href="#rfc.section.5" rel="Chapter" title="5 Composite-OR variants">
-<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Composite-OR subset encryption">
-<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Composite-OR threshold encryption">
-<link href="#rfc.section.6" rel="Chapter" title="6 In Practice">
-<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
-<link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations">
-<link href="#rfc.section.8.1" rel="Chapter" title="8.1 Policy for Deprecated and Acceptable Algorithms">
-<link href="#rfc.section.8.2" rel="Chapter" title="8.2 Composite-OR modes">
-<link href="#rfc.section.9" rel="Chapter" title="9 Appendices">
-<link href="#rfc.section.9.1" rel="Chapter" title="9.1 ASN.1 Module">
-<link href="#rfc.section.9.2" rel="Chapter" title="9.2 Intellectual Property Considerations">
-<link href="#rfc.section.9.3" rel="Chapter" title="9.3 Making contributions">
-<link href="#rfc.references" rel="Chapter" title="10 Normative References">
+<link href="#rfc.section.5" rel="Chapter" title="5 In Practice">
+<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations">
+<link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations">
+<link href="#rfc.section.7.1" rel="Chapter" title="7.1 IID property of KEM primitives">
+<link href="#rfc.section.7.2" rel="Chapter" title="7.2 Composite-OR modes">
+<link href="#rfc.section.7.3" rel="Chapter" title="7.3 Policy for Deprecated or Unacceptable Algorithms">
+<link href="#rfc.section.8" rel="Chapter" title="8 Appendices">
+<link href="#rfc.section.8.1" rel="Chapter" title="8.1 ASN.1 Module">
+<link href="#rfc.section.8.2" rel="Chapter" title="8.2 Intellectual Property Considerations">
+<link href="#rfc.section.8.3" rel="Chapter" title="8.3 Making contributions">
+<link href="#rfc.references" rel="Chapter" title="9 Normative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -415,9 +416,9 @@
 
   <meta name="dct.creator" content="Ounsworth, M., Gray, J., and S. Mister" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-encryption-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2021-06-06" />
-  <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by masking it with an XOR key which is split into key shares and each share encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2. " />
-  <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by masking it with an XOR key which is split into key shares and each share encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2. " />
+  <meta name="dct.issued" scheme="ISO8601" content="2021-07-12" />
+  <meta name="dct.abstract" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by encrypting it with multiple one-time-pad keys, each encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2. " />
+  <meta name="description" content="With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data. This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by encrypting it with multiple one-time-pad keys, each encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2. " />
 
 </head>
 
@@ -439,12 +440,12 @@
 <td class="right">S. Mister</td>
 </tr>
 <tr>
-<td class="left">Expires: December 8, 2021</td>
+<td class="left">Expires: January 13, 2022</td>
 <td class="right">Entrust</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 06, 2021</td>
+<td class="right">July 12, 2021</td>
 </tr>
 
     	
@@ -456,12 +457,12 @@
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
 <p>With the widespread adoption of post-quantum cryptography will come the need for an entity to possess multiple public keys on different cryptographic algorithms. Since the trustworthiness of individual post-quantum algorithms is at question, a multi-key cryptographic operation will need to be performed in such a way that breaking it requires breaking each of the component algorithms individually. This requires defining new structures for holding composite encryption data.</p>
-<p>This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by masking it with an XOR key which is split into key shares and each share encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2.</p>
+<p>This document defines a content encryption process following the hybrid model as described in the NIST Post-Quantum Crypto FAQ. This draft defines three composite encryption modes. First, Composite Key Transport using Encryption primitives which encrypts a message (typically a content encryption key) for a recipient with a composite public key composed entirely of encryption keys by encrypting it with multiple one-time-pad keys, each encrypted under a different recipient public key. Second, Composite Key Transport using Encryption and KEM primitives is the generalization of the previous mode to support a mixture of encryption and KEM algorithms. Third, Composite Key Exchange is the most general and supports establishing a shared secret using any combination of encryption, KEM, and key exchange primitives where a master shared secret is generated using NIST SP 800-56Cr2.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 8, 2021.</p>
+<p>This Internet-Draft will expire on January 13, 2022.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2021 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -481,7 +482,9 @@
 </li>
 <li>2.2.   <a href="#rfc.section.2.2">Public key and key usage</a>
 </li>
-<li>2.3.   <a href="#rfc.section.2.3">Algorithm parameters</a>
+<ul><li>2.2.1.   <a href="#rfc.section.2.2.1">Composite-OR</a>
+</li>
+</ul><li>2.3.   <a href="#rfc.section.2.3">Algorithm parameters</a>
 </li>
 <li>2.4.   <a href="#rfc.section.2.4">Encryption process</a>
 </li>
@@ -493,7 +496,9 @@
 </li>
 <li>3.2.   <a href="#rfc.section.3.2">Public key and key usage</a>
 </li>
-<li>3.3.   <a href="#rfc.section.3.3">Algorithm parameters</a>
+<ul><li>3.2.1.   <a href="#rfc.section.3.2.1">Composite-OR</a>
+</li>
+</ul><li>3.3.   <a href="#rfc.section.3.3">Algorithm parameters</a>
 </li>
 <li>3.4.   <a href="#rfc.section.3.4">Encryption process</a>
 </li>
@@ -505,37 +510,35 @@
 </li>
 <li>4.2.   <a href="#rfc.section.4.2">Public key and key usage</a>
 </li>
-<li>4.3.   <a href="#rfc.section.4.3">Algorithm parameters</a>
+<ul><li>4.2.1.   <a href="#rfc.section.4.2.1">Composite-OR</a>
+</li>
+</ul><li>4.3.   <a href="#rfc.section.4.3">Algorithm parameters</a>
 </li>
 <li>4.4.   <a href="#rfc.section.4.4">Encapsulation Process</a>
 </li>
 <li>4.5.   <a href="#rfc.section.4.5">Decapsulation Process</a>
 </li>
-</ul><li>5.   <a href="#rfc.section.5">Composite-OR variants</a>
+</ul><li>5.   <a href="#rfc.section.5">In Practice</a>
 </li>
-<ul><li>5.1.   <a href="#rfc.section.5.1">Composite-OR subset encryption</a>
+<li>6.   <a href="#rfc.section.6">IANA Considerations</a>
 </li>
-<li>5.2.   <a href="#rfc.section.5.2">Composite-OR threshold encryption</a>
+<li>7.   <a href="#rfc.section.7">Security Considerations</a>
 </li>
-</ul><li>6.   <a href="#rfc.section.6">In Practice</a>
+<ul><li>7.1.   <a href="#rfc.section.7.1">IID property of KEM primitives</a>
 </li>
-<li>7.   <a href="#rfc.section.7">IANA Considerations</a>
+<li>7.2.   <a href="#rfc.section.7.2">Composite-OR modes</a>
 </li>
-<li>8.   <a href="#rfc.section.8">Security Considerations</a>
+<li>7.3.   <a href="#rfc.section.7.3">Policy for Deprecated or Unacceptable Algorithms</a>
 </li>
-<ul><li>8.1.   <a href="#rfc.section.8.1">Policy for Deprecated and Acceptable Algorithms</a>
+</ul><li>8.   <a href="#rfc.section.8">Appendices</a>
 </li>
-<li>8.2.   <a href="#rfc.section.8.2">Composite-OR modes</a>
+<ul><li>8.1.   <a href="#rfc.section.8.1">ASN.1 Module</a>
 </li>
-</ul><li>9.   <a href="#rfc.section.9">Appendices</a>
+<li>8.2.   <a href="#rfc.section.8.2">Intellectual Property Considerations</a>
 </li>
-<ul><li>9.1.   <a href="#rfc.section.9.1">ASN.1 Module</a>
+<li>8.3.   <a href="#rfc.section.8.3">Making contributions</a>
 </li>
-<li>9.2.   <a href="#rfc.section.9.2">Intellectual Property Considerations</a>
-</li>
-<li>9.3.   <a href="#rfc.section.9.3">Making contributions</a>
-</li>
-</ul><li>10.   <a href="#rfc.references">Normative References</a>
+</ul><li>9.   <a href="#rfc.references">Normative References</a>
 </li>
 <li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
@@ -546,7 +549,7 @@
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#sec-intro" id="sec-intro">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.</p>
+<p id="rfc.section.1.p.1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of key pairs associated with different public-key algorithms.</p>
 <p id="rfc.section.1.p.2">The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges:</p>
 <p></p>
 
@@ -554,7 +557,7 @@
 <li>Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.</li>
 <li>Backwards compatibility: During the transition period, post-quantum algorithms will not be supported by all clients.</li>
 </ul>
-<p id="rfc.section.1.p.4">This document provides mechanisms to address algorithm strength uncertainty by buliding on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for both wrapping a content encryption key using multiple public key encryption mechanisms, or performing key exchange using a combination of encryption, Key encapsulation, and key exchange primitives. The issue of backwards compatibility is is addressed with Composite-OR encryption modes defined in <a href="#sec-comp-or" class="xref">Section 5</a>.</p>
+<p id="rfc.section.1.p.4">This document provides mechanisms to address algorithm strength uncertainty by building on ~~ reference draft-ounsworth-pq-composite-pubkeys ~~ by providing formats for both wrapping a content encryption key using multiple public key encryption mechanisms, or performing key exchange using a combination of encryption, key encapsulation, and key exchange primitives. The issue of backwards compatibility is addressed with support for Composite Or recipient keys in each mode.</p>
 <p id="rfc.section.1.p.5">This document is intended for general applicability anywhere that content encryption or key exchange is used.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#sec-terminology" id="sec-terminology">Terminology</a>
@@ -566,20 +569,18 @@
 <p id="rfc.section.1.1.p.5">COMPONENT ALGORITHM: A single basic algorithm which is contained within a composite algorithm.</p>
 <p id="rfc.section.1.1.p.6">COMPOSITE ALGORITHM: An algorithm which is a sequence of one or more component algorithms..</p>
 <p id="rfc.section.1.1.p.7">DER: Distinguished Encoding Rules as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
-<p id="rfc.section.1.1.p.8">KEY SHARE: A type of shared secret where a key splitting scheme is used to distribute multiple secrets over different channels such that some or all of the secrets must be re-combined to recover the primary shared secret.</p>
-<p id="rfc.section.1.1.p.9">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
-<p id="rfc.section.1.1.p.10">PRIMITIVE PUBLIC KEY / SIGNATURE: A public key or signature object of a non-composite algorithm type.</p>
-<p id="rfc.section.1.1.p.11">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
-<p id="rfc.section.1.1.p.12">SECRET or SHARED SECRET: Cryptographic material established between two parties.  May be generated by one party and send encrypted to the other, or may be the output of an exchange of public information between two or more parties that generates a unique shared value for all involved parties.</p>
-<p id="rfc.section.1.1.p.13">KEY DERIVATION FUNCTION: A function used to derive secure secret keys using shared secrets, hashing and other cryptographic primitives.</p>
-<p id="rfc.section.1.1.p.14">COMPOSITE ENCRYPTION KEY: A structure that contains a sequence of content encryption keys, or secrets used to derive a content encryption keys.</p>
-<p id="rfc.section.1.1.p.15">TRIVIAL SECRET SHARING A method to securely share a secret among two or more parties where all parties need to combine their intermediate secret to re-create the secret.</p>
+<p id="rfc.section.1.1.p.8">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
+<p id="rfc.section.1.1.p.9">PRIMITIVE PUBLIC KEY / SIGNATURE: A public key or signature object of a non-composite algorithm type.</p>
+<p id="rfc.section.1.1.p.10">SIGNATURE: A digital cryptographic signature, making no assumptions about which algorithm.</p>
+<p id="rfc.section.1.1.p.11">SECRET or SHARED SECRET: Cryptographic material established between two parties.  May be generated by one party and send encrypted to the other, or may be the output of an exchange of public information between two or more parties that generates a unique shared value for all involved parties.</p>
+<p id="rfc.section.1.1.p.12">KEY DERIVATION FUNCTION: A function used to derive secure secret keys using shared secrets, hashing and other cryptographic primitives.</p>
+<p id="rfc.section.1.1.p.13">COMPOSITE ENCRYPTION KEY: A structure that contains a sequence of content encryption keys, or secrets used to derive a content encryption keys.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#sec-com-key-trans_encr" id="sec-com-key-trans_encr">Composite Key Transport using Encryption primitives</a>
 </h1>
-<p id="rfc.section.2.p.1">In this composite encryption mode, a message to be encrypted is provided by the calling application.  This message to be encrypted is assumed without loss of generality to be a symmetric content encryption key (CEK) which is assumed to have a size less maximum message size of the chosen encryption algorithms.</p>
+<p id="rfc.section.2.p.1">In this composite encryption mode, a message to be encrypted is provided by the calling application.  This message to be encrypted is assumed to have length less than the maximum message size of the chosen encryption algorithms, as is the case when a suitably-sized symmetric key is encrypted.</p>
 <p id="rfc.section.2.p.2">This mode is compatible with protocols requiring a key transport primitive, such as CMS' KeyTransRecipientInfo <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
-<p id="rfc.section.2.p.3">Composite Key Transport using Encryption primitives uses a trivial XOR key-sharing scheme, as defined in <a href="#sec-com-key-trans_encr_process" class="xref">Section 2.4</a> to transport n secrets called key shares, where n is the number of recipient component public keys, and each share is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document; see section <a href="#sec-comp-or-thresh-encr" class="xref">Section 5.2</a> for further discussion.</p>
+<p id="rfc.section.2.p.3">Composite Key Transport using Encryption primitives uses a trivial XOR one-time-pad scheme, as defined in <a href="#sec-com-key-trans_encr_process" class="xref">Section 2.4</a>. It transports n one-time-pad secret keys of the same length as the content to be encryption, where n is the number of recipient component public keys, and each one-time-pad secret key is encrypted under a different recipient component public key. The trivial XOR key-sharing scheme requires the recipient to use all component private keys in order to recover the content encryption key. Note that it would be possible to use an "n of m" or "threshold" secret sharing scheme if it was desired for the recipient to be able to complete the key transport using a subset of their private keys, but that mechanism is not defined in this document.</p>
 <p id="rfc.section.2.p.4">EDNOTE: we have not been able to find a reference and security analysis for the trivial XOR key-sharing scheme. This may need review by CFRG. We could re-frame this process as "a one-time pad with n-1 one-time pad keys, which we transport using the recipients public keys", then this could leverage one-time pad security analysis.</p>
 <p id="rfc.section.2.p.5">Composite encryption uses the following structure:</p>
 <p id="rfc.section.2.p.6">EDNOTE:  Should a different composite OID be used to determine the type of composite encryption (Key Transport or Key Agreement?).  Probably not because the desired key usage will be handled in the protocols that uses this privitive.</p>
@@ -587,22 +588,27 @@
 CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (2..Max)  OF OCTET STRING}
 </pre>
 <p id="rfc.section.2.p.7">EDNOTE: This ASN.1 probably does not compile. The intent is that this fits into any EncryptedKey field, but defines some structure within the existing EncryptedKey ::= OCTET STRING, but I'm not sure exactly how to specify that.</p>
-<p id="rfc.section.2.p.8">Where each OCTET STRING within the SEQUENCE contains an encrypted key share encrypted under one of the recipient component public keys. The CompositeEncryptedKey MUST list encrypted values in the same order as the recipient public key's component keys.</p>
+<p id="rfc.section.2.p.8">Where each OCTET STRING within the SEQUENCE contains an encrypted one-time-pad secret key encrypted under one of the recipient component public keys. The CompositeEncryptedKey MUST list encrypted values in the same order as the recipient public key's component keys.</p>
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#algorithm-identifier" id="algorithm-identifier">Algorithm Identifier</a>
 </h1>
 <p id="rfc.section.2.1.p.1">The id-alg-composite-encryption object identifier MUST be used to identify the usage of this mode</p>
 <pre>
 id-alg-composite-encryption OBJECT IDENTIFIER ::= {
-    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite-encryption(1) }
+    id-alg-composite-encryption OBJECT IDENTIFIER ::= {
+    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+    Algorithm(80) Composite(4) id-alg-composite-encryption(4) }
 </pre>
-<p id="rfc.section.2.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see <a href="#sec-iana" class="xref">Section 7</a>.</p>
-<p id="rfc.section.2.1.p.3">EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.</p>
+<p id="rfc.section.2.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see <a href="#sec-iana" class="xref">Section 6</a>.</p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#public-key-and-key-usage" id="public-key-and-key-usage">Public key and key usage</a>
 </h1>
-<p id="rfc.section.2.2.p.1">The recipient MUST have a composite public key which supports key transport operations. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are encryption algorithms.</p>
+<p id="rfc.section.2.2.p.1">The recipient MUST have a composite public key which supports key transport operations. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are associated with encryption algorithms.</p>
+<h1 id="rfc.section.2.2.1">
+<a href="#rfc.section.2.2.1">2.2.1.</a> <a href="#composite-or" id="composite-or">Composite-OR</a>
+</h1>
+<p id="rfc.section.2.2.1.p.1">The design intent of this mode is to support migration scenarios where a recipient has been provisioned with a composite key containing algorithms that its peers may not yet support. This mode allows the sender to encrypt for a subset of the recipient's public keys. Support for Composite OR subset encryption is indicated by the recipient at key generation time by marking its composite key with the id-composite-or-key algorithm identifier as defined in ~~~cite properly draft-ounsworth-pq-composite-keys~~~. To maximize security strength of the ciphertext, clients SHOULD encrypt for as many keys as they support and as the migration and compatibility situation allow.</p>
+<p id="rfc.section.2.2.1.p.2">Policy mechanisms defining allowed subets of algorithms could be applied here, but are out of scope of this document. As defined in this document, a recipient marking their public key as id-composite-or-key must accept the risk that a sender may encrypt sensitive data for it using any one of its component keys in isolation. Composite Or is a direct tradeoff of lower security for increased migration flexibility.</p>
 <h1 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#sec-com-key-trans_encr-params" id="sec-com-key-trans_encr-params">Algorithm parameters</a>
 </h1>
@@ -611,7 +617,142 @@ id-alg-composite-encryption OBJECT IDENTIFIER ::= {
 <a href="#rfc.section.2.4">2.4.</a> <a href="#sec-com-key-trans_encr_process" id="sec-com-key-trans_encr_process">Encryption process</a>
 </h1>
 <p id="rfc.section.2.4.p.1">The process for performing Composite Key Transport using Encryption primitives is as follows:</p>
-<p id="rfc.section.2.4.p.2">The first n-1 key shares are random bit strings of the same length as the content encryption key.  The final key share is computed by XOR'ing the content encryption key with each of n-1 previous key shares.</p>
+<p id="rfc.section.2.4.p.2">The first n-1 one-time-pad keys are random bit strings of the same length as the content encryption key.  The final one-time-pad key is computed by XOR'ing the content encryption key with each of n-1 previous keys.</p>
+<pre>
+Input:
+     n                  The number of recipient component public keys
+
+     P1, P2, .., Pn     Recipient component public keys
+
+     A1, A2, .., An     Cryptographic algorithms to be used with 
+                          public keys P1, P2, .., Pn
+
+     CEK                The Content Encryption Key
+
+     SIZE               The size of the Content Encryption Key in bits
+
+Output:
+     E1, E2, .., En     EncryptedKey values corresponding to each recipient
+                          component public key
+
+Intermediate values:
+     S1, S2, .., Sn-1   One-time-pad secret keys to be encapsulated by each 
+                          component algorithm
+     C                  One-time-pad ciphertext of the CEK under S1, S2, .., Sn-1
+
+Generation Procedure:
+
+   1. If recipient public key is of type id-composite-or-key, determine the
+      index of the last recipient public key to be encrypted for
+        i_last := index of last Pi to be encrypted for
+      Else,
+        i_last = n
+
+
+   2. To generate secret keys Sn, compute the following
+
+      C = CEK
+      for i := 1 to n
+
+        a. If id-composite-or-key and Pi is to be skipped
+          Ei := emptyOctetString
+          continue to next i
+
+        b. If i == i_last
+            Ei = encrypt(C, Pi, Ai)
+            break
+          Else,
+            Si := random_bits(SIZE)
+            C := C XOR Si
+            Ei = encrypt(Si, Pi, Ai)
+
+   3. Output E1, E2, .., En
+</pre>
+<p id="rfc.section.2.4.p.3">Where <samp>random_bits(SIZE)</samp> is a cryptographically-secure random bit generator outputting SIZE bits, and where <samp>emptyOctetString</samp> is the octet string of length 0.</p>
+<p id="rfc.section.2.4.p.4">EDNOTE: we currently do not define a composite algorithmID type to carry A1, A2, .., An. We may need to add one analogously to the CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier that we have in the composite signutares draft.</p>
+<p id="rfc.section.2.4.p.5">If the sender does not support Composite Or encryption, this algorithm may be simplified by omitting step 1, 2a, and the if i == i_last statement in 2b.</p>
+<p id="rfc.section.2.4.p.6">The design intent is that Composite Or encryption with a single recipient key collapses to being equivalent to direct encryption of the CEK.</p>
+<h1 id="rfc.section.2.5">
+<a href="#rfc.section.2.5">2.5.</a> <a href="#sec-com-key-trans_decr_process" id="sec-com-key-trans_decr_process">Decryption process</a>
+</h1>
+<p id="rfc.section.2.5.p.1">To obtain the content-encryption key from a CompositeEncryptedKey, each component algorithm MUST be used to decrypt the set of one-time-pad keys.  The keys are then XOR'ed together to recover the content encryption key.</p>
+<pre>
+Input:
+     n                  The number of recipient component public keys
+
+     SK1, SK2, .., SKn  Recipient component secret keys
+
+
+     A1, A2, .., An     Cryptographic algorithms to be used with 
+                          public keys P1, P2, .., Pn
+     
+     E1, E2, .., En     EncryptedKey values corresponding to each recipient
+                        component public key
+
+
+Intermediate values:
+     S1, S2, .., Sn     One-time-pad keys and ciphertext to be decapsulated
+                        by each component algorithm
+
+Output:
+     CEK  The Content Encryption Key
+
+
+Generation Procedure:
+   1. Recover each one-time-pad key
+        for i := 1 to n
+          if Ei == emptyOctetString
+            Si := emptyOctetString
+          Else,
+            Si := decrypt(Ei, SKi)
+
+   2. Recover the CEK;
+      For each one-time-pad key
+        CEK = S1
+        for i := 2 to n
+           if Si != emptyOctetString
+             CEK = CEK XOR Si
+
+   3. Output CEK
+</pre>
+<p id="rfc.section.2.5.p.2">The if statement in step 1 (and ensuring its proper bit length for the XOR in step 2) is the only modification required to support Composite Or encryption. The designers have intentionally omitted a check that the recipient key is of type id-composite-or-key because even if the sender erroneously used composite or subset encryption for a recipient key which is not of type id-composite-or-key, the damage has already been done by encrypting and transmitting the data, no further harm can be done by decrypting it. However, where appropriate, clients SHOULD indicate a warning to users that this data was transmitted with weaker encrypting than their public key allows.</p>
+<p id="rfc.section.2.5.p.3">EDNOTE: investigate whether this is actually a special case of the next mechanism, and therefore both sections can be folded together.</p>
+<h1 id="rfc.section.3">
+<a href="#rfc.section.3">3.</a> <a href="#sec-com-key-trans_kem" id="sec-com-key-trans_kem">Composite Key Transport using Encryption and KEM primitives</a>
+</h1>
+<p id="rfc.section.3.p.1">This composite encryption mode is the generalization of the mode defined in <a href="#sec-com-key-trans_encr" class="xref">Section 2</a> to support a composite recipient public key which may contain a mixture of one or more encryption component algorithms with zero or more key encapsulation mechanism (KEM) component algorithms.</p>
+<p id="rfc.section.3.p.2">This mode is compatible with protocols requiring a key transport primitive, such as CMS' KeyTransRecipientInfo <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
+<p id="rfc.section.3.p.3">Security consideration: for a recipient composite public key to be applicable to this mode, all component KEMs MUST produce a shared secret whose bits are independent and uniformly distributed (aka "uniformly IID" or "uniformly random" or "full entropy") and therefore the shared secret is safe to use direcly as a symmetric key. If a recipient public key contains component KEMs which are not know to have this property, then implementors SHOULD use the more general mode described in <a href="#sec-com-key-exchange" class="xref">Section 4</a> which incorporates the use of a key derivation function. See <a href="#sec-consider-iid" class="xref">Section 7.1</a> for a further discussion of this security consideration.</p>
+<p id="rfc.section.3.p.4">EDNOTE: also put this in the Security considerations section.</p>
+<h1 id="rfc.section.3.1">
+<a href="#rfc.section.3.1">3.1.</a> <a href="#algorithm-identifier-1" id="algorithm-identifier-1">Algorithm Identifier</a>
+</h1>
+<p id="rfc.section.3.1.p.1">The id-alg-composite-kem object identifier MUST be used to identify the usage of this mode</p>
+<pre>
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+    id-alg-composite-encryption OBJECT IDENTIFIER ::= {
+    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+    Algorithm(80) Composite(4) id-alg-composite-kem(5)} 
+</pre>
+<p id="rfc.section.3.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see <a href="#sec-iana" class="xref">Section 6</a>.</p>
+<h1 id="rfc.section.3.2">
+<a href="#rfc.section.3.2">3.2.</a> <a href="#public-key-and-key-usage-1" id="public-key-and-key-usage-1">Public key and key usage</a>
+</h1>
+<p id="rfc.section.3.2.p.1">The recipient MUST have a composite public key which supports key transport or key encapsulation operations. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are encryption or KEM algorithms.</p>
+<p id="rfc.section.3.2.p.2">In addition, for a recipient composite public key to be applicable to this mode, all component KEMs MUST be capable of producing a shared secret of SIZE bits, where SIZE is the length in bits of the content encryption key (CEK) to be transported. This is assumed for the remainder of this section.</p>
+<h1 id="rfc.section.3.2.1">
+<a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#composite-or-1" id="composite-or-1">Composite-OR</a>
+</h1>
+<p id="rfc.section.3.2.1.p.1">The design intent of this mode is to support migration scenarios where a recipient has been provisioned with a composite key containing algorithms that its peers may not yet support. This mode allows the sender to encrypt for a subset of the recipient's public keys. Support for Composite OR subset encryption is indicated by the recipient at key generation time by marking its composite key with the id-composite-or-key algorithm identifier as defined in ~~~cite properly draft-ounsworth-pq-composite-keys~~~.</p>
+<p id="rfc.section.3.2.1.p.2">Policy mechanisms defining allowed subets of algorithms could be applied here, but are out of scope of this document. As defined in this document, a recipient marking their public key as id-composite-or-key must accept the risk that a sender may encrypt sensitive data for it using any one of its component keys in isolation. Composite Or is a direct tradeoff of lower security for increased migration flexibility.</p>
+<h1 id="rfc.section.3.3">
+<a href="#rfc.section.3.3">3.3.</a> <a href="#sec-com-key-trans_kem-params" id="sec-com-key-trans_kem-params">Algorithm parameters</a>
+</h1>
+<p id="rfc.section.3.3.p.1">The composite key transport using encryption and KEM mode does not require additional parameters, and therefore any associated Params are ABSENT.</p>
+<h1 id="rfc.section.3.4">
+<a href="#rfc.section.3.4">3.4.</a> <a href="#encryption-process" id="encryption-process">Encryption process</a>
+</h1>
+<p id="rfc.section.3.4.p.1">Given these conditions are met, the encryption process defined in <a href="#sec-com-key-trans_encr_process" class="xref">Section 2.4</a> is modified as follows:</p>
 <pre>
 Input:
      n                  The number of recipient component public keys
@@ -624,117 +765,44 @@ Output:
                         component public key
 
 Intermediate values:
-     S1, S2, .., Sn     Key shares to be encapsulated by each 
+     S1, S2, .., Sn     One-time-pad secret keys to be encapsulated by each 
                         component algorithm
 
 Generation Procedure:
-   1. Generate a set of n-1 key shares of the same length as the
-      content encryption key
-        for i := 1 to n-1
-          Si := random_bits(SIZE)
 
-   2. To generate key share Sn, compute the following
-        Sn = CEK
-        for i := 1 to n-1
-          Sn = Sn XOR Si
+   1. If recipient public key is of type id-composite-or-key, determine the
+      index of the last recipient public key to be encrypted for
+        i_last := index of last Pi to be encrypted for
+      Else,
+        i_last = n
 
-   3. Encrypt each key share under a recipient public key
-        for i := 1 to n
-          Ei := encrypt(Si, Pi)
+  
+   2. 
+      for i := 1 to n
+        a. if id-composite-or-key and Pi is to be skipped
+            Ei := emptyOctetString
+            continue to next i
 
-   4. Output E1, E2, .., En
-</pre>
-<p id="rfc.section.2.4.p.3">Where <samp>random_bits(SIZE)</samp> is a cryptographically-secure random bit generator outputting SIZE bits.</p>
-<h1 id="rfc.section.2.5">
-<a href="#rfc.section.2.5">2.5.</a> <a href="#sec-com-key-trans_decr_process" id="sec-com-key-trans_decr_process">Decryption process</a>
-</h1>
-<p id="rfc.section.2.5.p.1">To obtain the content-encryption key from a CompositeEncryptedKey, each component algorithm MUST be used to decrypt the set of key shares.  The key shares are then XOR'ed together to recover the content encryption key.</p>
-<pre>
-Input:
-     n                  The number of recipient component public keys
-
-     SK1, SK2, .., SKn  Recipient component secret keys
-     
-     E1, E2, .., En     EncryptedKey values corresponding to each recipient
-                        component public key
-
-
-Intermediate values:
-     S1, S2, .., Sn     Key shares to be decapsulated by each 
-                        component algorithm
-
-Output:
-     CEK  The Content Encryption Key
-
-
-Generation Procedure:
-   1. Recover each key share
-        for i := 1 to n
-          Si := decrypt(Ei, SKi)
-
-   2. Recover the CEK;
-      For each intermediate shared-secret
-        CEK = S1
-        for i := 2 to n
-           CEK = CEK XOR Si
-
-   3. Output CEK
-</pre>
-<h1 id="rfc.section.3">
-<a href="#rfc.section.3">3.</a> <a href="#sec-com-key-trans_kem" id="sec-com-key-trans_kem">Composite Key Transport using Encryption and KEM primitives</a>
-</h1>
-<p id="rfc.section.3.p.1">This composite encryption mode is the generalization of the mode defined in <a href="#sec-com-key-trans_encr" class="xref">Section 2</a> to support a composite recipient public key which MAY contain an arbitrary mixture of encryption and key encapsulation mechanism (KEM) component algorithms.</p>
-<p id="rfc.section.3.p.2">This mode is compatible with protocols requiring a key transport primitive, such as CMS' KeyTransRecipientInfo <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
-<p id="rfc.section.3.p.3">Security consideration: for a recipient composite public key to be applicable to this mode, all component KEMs SHOULD produce a shared secret whose bits are independent and uniformly distributed (aka "uniformly IID" or "uniformly random" or "full entropy") and therefore the shared secret is safe to use direcly as a symmetric key. If a recipient public key contains component KEMs which are not know to have this property, then implementors SHOULD use the more general mode described in <a href="#sec-com-key-exchange" class="xref">Section 4</a> which incorporates the use of a key derivation function.</p>
-<p id="rfc.section.3.p.4">EDNOTE: also put this in the Security considerations section.</p>
-<h1 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#algorithm-identifier-1" id="algorithm-identifier-1">Algorithm Identifier</a>
-</h1>
-<p id="rfc.section.3.1.p.1">The id-alg-composite-kem object identifier MUST be used to identify the usage of this mode</p>
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite-kem(1) }
-</pre>
-<p id="rfc.section.3.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see <a href="#sec-iana" class="xref">Section 7</a>.</p>
-<p id="rfc.section.3.1.p.3">EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.</p>
-<h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#public-key-and-key-usage-1" id="public-key-and-key-usage-1">Public key and key usage</a>
-</h1>
-<p id="rfc.section.3.2.p.1">The recipient MUST have a composite public key which supports key transport or key encapsulation operations. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment. In other words, the mechanism specified in this section applies only if all of the recipient's public keys are encryption or KEM algorithms.</p>
-<p id="rfc.section.3.2.p.2">In addition, for a recipient composite public key to be applicable to this mode, all component KEMs MUST be capable of producing a shared secret of SIZE bits, where SIZE is the length in bits of the content encryption key (CEK) to be transported. This is assumed for the remainer of this section.</p>
-<h1 id="rfc.section.3.3">
-<a href="#rfc.section.3.3">3.3.</a> <a href="#sec-com-key-trans_kem-params" id="sec-com-key-trans_kem-params">Algorithm parameters</a>
-</h1>
-<p id="rfc.section.3.3.p.1">The composite key transport using encryption and KEM mode does not require additional parameters, and therefore any associated Params are ABSENT.</p>
-<h1 id="rfc.section.3.4">
-<a href="#rfc.section.3.4">3.4.</a> <a href="#encryption-process" id="encryption-process">Encryption process</a>
-</h1>
-<p id="rfc.section.3.4.p.1">Given these conditions are met, the encryption process defined in <a href="#sec-com-key-trans_encr_process" class="xref">Section 2.4</a> is modified as follows:</p>
-<pre>
-Generation Procedure:
-   1. Generate a set of key shares of the same length as the
-      content encryption key and encapsulate or encrypt them
-      under a recipient public key.      
-        for i := 1 to n-1
-          if P1 is of type KEM:
-            Si,Ei := encaps(P1)
-          else:
+        b. If i == i_last
+            continue to next i
+          Else, if Pi is of type KEM:
+            Si,Ei := encaps(Pi)
+            CEK := CEK XOR Si
+          Else:
             Si := random_bits(SIZE)
+            CEK := CEK XOR Si
             Ei := encrypt(Si, Pi)
 
-   2. To generate key share Sn, compute the following
-        Sn = CEK
-        for i := 1 to n-1
-          Sn = Sn XOR Si
 
-   3. Encrypt key share Sn under recipient public key Pn
-        En := encrypt(Sn, Pn)
+   3. Encrypt the final CEK value 
+            Ei_last = encrypt(CEK, Pi_last)
 
    4. Output E1, E2, .., En
 
 </pre>
-<p id="rfc.section.3.4.p.2">Where <samp>random_bits(SIZE)</samp> is a cryptographically-secure random bit generator outputting SIZE bits.</p>
+<p id="rfc.section.3.4.p.2">Where <samp>random_bits(SIZE)</samp> is a cryptographically-secure random bit generator outputting SIZE bits, and where <samp>emptyOctetString</samp> is the octet string of length 0.</p>
+<p id="rfc.section.3.4.p.3">If the sender does not support Composite Or encryption, this algorithm may be simplified by omitting step 1, 2a, and the if i == i_last statement in 2b.</p>
+<p id="rfc.section.3.4.p.4">The design intent is that Composite Or encryption with a single recipient key collapses to being equivalent to direct encryption of the CEK.</p>
 <h1 id="rfc.section.3.5">
 <a href="#rfc.section.3.5">3.5.</a> <a href="#decryption-process" id="decryption-process">Decryption process</a>
 </h1>
@@ -744,36 +812,43 @@ Generation Procedure:
 </h1>
 <p id="rfc.section.4.p.1">This mode is the most general in that it supports a composite recipient public key which MAY contain an arbitrary mixture of encryption, key encapsulation mechanism (KEM), and key agreement component algorithms. Due to the nature of key agreement algorithms, this mode cannot take a content encryption key as input, but instead generates a master shared secret as an output. As such, the nomenclature in this mode differs from the modes above.</p>
 <p id="rfc.section.4.p.2">This mode is compatible with protocols requiring a key agreement primitive, such as CMS' KeyAgreeRecipientInfo <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
-<p id="rfc.section.4.p.3">Composite key exchange uses the underlying primitive to either encrypt for, encapsulate, or interactively do key agreement with each of the recipient's public keys, then all shared secrets are concatenated together and a KDF is applies as prescribed by NIST SP-800 56Cr2 &lt;TODO: cite properly&gt;.</p>
+<p id="rfc.section.4.p.3">Composite key exchange uses the underlying primitive to either encrypt for, encapsulate, or interactively do key agreement with each of the recipient's public keys, then all shared secrets are concatenated together and a KDF is applies as prescribed by NIST SP 800-56Cr2 <a href="#SP80056cr2" class="xref">[SP80056cr2]</a>.</p>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#algorithm-identifier-2" id="algorithm-identifier-2">Algorithm Identifier</a>
 </h1>
 <p id="rfc.section.4.1.p.1">The id-alg-composite-keyex object identifier MUST be used to identify the usage of this mode</p>
 <pre>
 id-alg-composite-keyex OBJECT IDENTIFIER ::= {
-    iso(1)  identified-organization(3) dod(6) internet(1) private(4)
-    enterprise(1) OpenCA(18227) Algorithms(2) id-alg-composite-keyex(1) }
+    id-alg-composite-encryption OBJECT IDENTIFIER ::= {
+    joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+    Algorithm(80) Composite(4) id-alg-composite-encryption(6) }
 </pre>
-<p id="rfc.section.4.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see <a href="#sec-iana" class="xref">Section 7</a>.</p>
-<p id="rfc.section.4.1.p.3">EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.</p>
+<p id="rfc.section.4.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see <a href="#sec-iana" class="xref">Section 6</a>.</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#public-key-and-key-usage-2" id="public-key-and-key-usage-2">Public key and key usage</a>
 </h1>
 <p id="rfc.section.4.2.p.1">The recipient MUST have a composite public key which supports key transport, key encapsulation, or key exchange operations. Where the recipient public key has an associated keyUsage as specified in <a href="#RFC5280" class="xref">[RFC5280]</a>, it MUST have keyUsage: keyEncipherment, keyAgreement. This mode is the most general and places the fewest restrictions on the recipient public key.</p>
 <p id="rfc.section.4.2.p.2">EDNOTE: I think this violates our public key draft where we say that the public key's KU MUST apply to all components. ... we did not want mixing of signatures and encryption keys, but I think in this case we do want to allow mixing of keyEncipherment and keyExchange keys. Not sure how to fix that.</p>
+<h1 id="rfc.section.4.2.1">
+<a href="#rfc.section.4.2.1">4.2.1.</a> <a href="#composite-or-2" id="composite-or-2">Composite-OR</a>
+</h1>
+<p id="rfc.section.4.2.1.p.1">The design intent of this mode is to support migration scenarios where a recipient has been provisioned with a composite key containing algorithms that its peers may not yet support. This mode allows the sender to encrypt for a subset of the recipient's public keys. Support for Composite OR subset encryption is indicated by the recipient at key generation time by marking its composite key with the id-composite-or-key algorithm identifier as defined in ~~~cite properly draft-ounsworth-pq-composite-keys~~~.</p>
+<p id="rfc.section.4.2.1.p.2">Policy mechanisms defining allowed subets of algorithms could be applied here, but are out of scope of this document. As defined in this document, a recipient marking their public key as id-composite-or-key must accept the risk that a sender may encrypt sensitive data for it using any one of its component keys in isolation. Composite Or is a direct tradeoff of lower security for increased migration flexibility.</p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#sec-com-key-exchange-params" id="sec-com-key-exchange-params">Algorithm parameters</a>
 </h1>
-<p id="rfc.section.4.3.p.1">The composite key exchange mode requires additional parameters to specify the KDF used to combine key shares into a master shared secret.</p>
-<p id="rfc.section.4.3.p.2">Params ::= KeyDerivationAlgorithmIdentifier</p>
-<p id="rfc.section.4.3.p.3">The KeyDerivationAlgorithmIdentifier type is specified in <a href="#RFC3211" class="xref">[RFC3211]</a> and <a href="#RFC5652" class="xref">[RFC5652]</a>. The KeyDerivationAlgorithmIdentifier definition is repeated here for completeness.</p>
+<p id="rfc.section.4.3.p.1">The composite key exchange mode requires additional parameters to specify the KDF used to combine shared secrets into a master shared secret.</p>
+<pre>
+Params ::= KeyDerivationAlgorithmIdentifier
+</pre>
+<p id="rfc.section.4.3.p.2">The KeyDerivationAlgorithmIdentifier type is specified in <a href="#RFC5652" class="xref">[RFC5652]</a>. The KeyDerivationAlgorithmIdentifier definition is repeated here for completeness.</p>
 <pre>
 KeyDerivationAlgorithmIdentifier ::= AlgorithmIdentifier
 </pre>
 <h1 id="rfc.section.4.4">
 <a href="#rfc.section.4.4">4.4.</a> <a href="#encapsulation-process" id="encapsulation-process">Encapsulation Process</a>
 </h1>
-<p id="rfc.section.4.4.p.1">Composite key exchange uses the underlying primitive to either encrypt for, encapsulate, or interactively do key agreement with each of the recipient's public keys, then all shared secrets are concatenated together and a KDF is applies as prescribed by NIST SP-800 56Cr2 &lt;TODO: cite properly&gt;.</p>
+<p id="rfc.section.4.4.p.1">Composite key exchange uses the underlying primitive to either encrypt for, encapsulate, or interactively do key agreement with each of the recipient's public keys, then all shared secrets are concatenated together and a KDF is applies as prescribed by NIST SP 800-56Cr2 <a href="#SP80056cr2" class="xref">[SP80056cr2]</a>.</p>
 <pre>
 Input:
      P1, P2, .., Pn     Public keys for the n component encryption
@@ -792,19 +867,19 @@ Output:
      M                  Master shared secret
     
 
-Ciphertext Generation Procedure:
-   1. Generate a set of key shares of the same length as the
-      content encryption key
-        for i := 1 to n-1
-          if P1 is of type KEM or keyExchange:
-            Si,Ei := encaps(P1)
-          else:
-            Si := random_bits(SIZE)
+Ciphertext and master secret Generation Procedure:
+     1. Generate a set of one-time-pad secret keys of 
+      the same length as the content encryption key
+        for i := 1 to n
 
-        for i := 1 to n-1
-          if P1 is of type KEM or KeyAgree:
-            Si,Ei := encaps(P1)
-          else:
+      a. if id-composite-or-key and Pi is to be skipped
+            Si = emptyOctetString
+            Ei := emptyOctetString
+            continue to next i
+
+      b. if P1 is of type KEM or keyExchange:
+            Si,Ei := encaps(Pi)
+        else:
             Si := random_bits(SIZE)
             Ei := encrypt(Si, Pi)
 
@@ -814,11 +889,15 @@ Ciphertext Generation Procedure:
    3. Generate the master shared secret via a KDF
         M = KDF(Z)
 
-  4. Output M
-     Output E1, E2, .., En
+   4. Output M
+        Output E1, E2, .., En
 
 </pre>
-<p id="rfc.section.4.4.p.2">In cases where KDF is extensible output function, the length of M must be carried in the KeyDerivationAlgorithmIdentifier defined in <a href="#sec-com-key-exchange-params" class="xref">Section 4.3</a>.</p>
+<p id="rfc.section.4.4.p.2">Where <samp>emptyOctetString</samp> is the octet string of length 0 that serves as a no-op or identity element for the concatenation in step 2.</p>
+<p id="rfc.section.4.4.p.3">In cases where KDF is extensible output function, the length of M must be carried in the KeyDerivationAlgorithmIdentifier defined in <a href="#sec-com-key-exchange-params" class="xref">Section 4.3</a>.</p>
+<p id="rfc.section.4.4.p.4">EDNOTE: It isn't clear to us how one uses the defined HKDF algorithmid (RFC 8619) here. Those OIDs specify a hash, but no output length or seed or info parameter either implicitely or explicitely. But we also don't see how it would be used with CMS either, for the same reason. ..?</p>
+<p id="rfc.section.4.4.p.5">If the sender does not support Composite Or encryption, this algorithm may be simplified by omitting step 2a.</p>
+<p id="rfc.section.4.4.p.6">EDNOTE: investigate whether step 3 really belongs here, or whether the surrounding protocol (ex. CMS EnvelopedData) will perform a final KDF anyways. We believe that outputting an IID master secret is consistent with modern KEM behaviour.</p>
 <h1 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#decapsulation-process" id="decapsulation-process">Decapsulation Process</a>
 </h1>
@@ -829,22 +908,24 @@ Input:
      SK1, SK2, .., SKn  Recipient component secret keys
 
      E1, E2, .., En     EncryptedKey values corresponding to each recipient
-                        component public key
+                          component public key
 
-    KDF                 A key derivation function
+     KDF                A key derivation function
 
 
 Intermediate values:
-     S1, S2, .., Sn     Key shares to be encapsulated by each 
-                        component algorithm
+     S1, S2, .., Sn     Shared secrets to be encapsulated by 
+                          each component algorithm
 
 Output:
      M                  Master shared secret
     
 
-Ciphertext Generation Procedure:
-   1. Recover each key share
+ Master Secret Recovery Procedure:
+   1. Recover each shared secret
         for i := 1 to n
+          if Ei == null
+            Si = EMPTY_STRING
           Si := decrypt_or_decaps(Ei, SKi)
 
    2. Generate Z via concatenation
@@ -855,85 +936,72 @@ Ciphertext Generation Procedure:
 
   4. Output M
 </pre>
+<p id="rfc.section.4.5.p.1">"EMPTY_STRING" indicates a string or byte array of length zero so that that value as essentially omitted from the concatenation in step 2.</p>
+<p id="rfc.section.4.5.p.2">The if statement in step 1 is the only modification required to support Composite Or encryption. The designers have intentionally omitted a check that the recipient key is of type id-composite-or-key because even if the sender erroneously used composite or subset for a recipient key which is not of type id-composite-or-key, the damage has already been done by generating a master secret and potentially transmitting data encrypted with it, no further harm can be done by decrypting it. However, where appropriate, clients SHOULD indicate a warning to users that this data was transmitted with weaker encrypting than their public key allows.</p>
 <h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#sec-comp-or" id="sec-comp-or">Composite-OR variants</a>
+<a href="#rfc.section.5">5.</a> <a href="#sec-in-pract" id="sec-in-pract">In Practice</a>
 </h1>
-<p id="rfc.section.5.p.1">In order to ease migration, two variants of the key transport encryption modes defined in <a href="#sec-com-key-trans_encr" class="xref">Section 2</a>} and <a href="#sec-com-key-trans_kem" class="xref">Section 3</a> are defined that allow the sender to construct the cipher text in such a way that either the sender or the recipient can use a subset of the recipient's component algorithms.</p>
-<p id="rfc.section.5.p.2">Composite-OR subset encryption is intended for migration scenarios where the sender does not support all of the recipient's component algorithms. This variant allows the sender to emit a null ciphertext for unsupported component algorithms.</p>
-<p id="rfc.section.5.p.3">Composite-OR threshold encryption is intended for migration scenarios where the sender supports all of the recipient's component algorithms, but the recipient may not. This variant allows the sender to use an "n of m" or threshold secret sharing scheme, such as Shamir's secret sharing, instead of the XOR secret sharing scheme used above.</p>
-<p id="rfc.section.5.p.4">The Composite-OR variants MAY be used if the algorithm ID of the recipient public key is id-composite-or-key. Those variants MUST NOT be used if the algorithm ID of the recipient public key is id-composite-key.</p>
-<p id="rfc.section.5.p.5">Security consideration: Composite-OR eases migration at the expense of security. In the subset encryption variant the security of the composite ciphertext is weakened to the algorithms used. In the threshold encryption variant with a threshold of n key shares, the security of the ciphertext is to be evaluated as if the recipient's weakest n algorithms were used.</p>
-<p id="rfc.section.5.p.6">EDNOTE: at present these are not fully specified; if the IETF community thinks they are worth standardizing, then they will need their own OIDs, and the threshold scheme will need params.</p>
-<h1 id="rfc.section.5.1">
-<a href="#rfc.section.5.1">5.1.</a> <a href="#sec-comp-or-sub-encr" id="sec-comp-or-sub-encr">Composite-OR subset encryption</a>
-</h1>
-<p id="rfc.section.5.1.p.1">If the algorithm ID of the recipient public key is id-composite-or-key then the encryptor MAY use either key trasnport mode (<a href="#sec-com-key-trans_encr" class="xref">Section 2</a>} and <a href="#sec-com-key-trans_kem" class="xref">Section 3</a>) with only a subset of the component keys and therefore produce fewer ciphertexts than the number of recipient component keys.</p>
-<p id="rfc.section.5.1.p.2">Composite-OR subset encryption uses the same structures and processes as <a href="#sec-com-key-trans_encr" class="xref">Section 2</a>} or <a href="#sec-com-key-trans_kem" class="xref">Section 3</a>, with the difference that the encryption process may emit a null instead of a ciphertext one or more component algorithms and the corresponding shared secret is taken to be 0 for the purposes of the XOR computation. A Composite-OR CompositeEncryptedKey MUST NOT be entirely null; it must contain at least one ciphertext.</p>
-<p id="rfc.section.5.1.p.3">The design intent of this mode is to support migration scenarios where an entity is encrypting for a peer which has been issued keys on algorithms that either the encryptor or the recipient do not (yet) support.</p>
-<p id="rfc.section.5.1.p.4">EDNOTE: Do we want to allow a Composite-OR with only a single ciphertext to produce non-composite EncryptedKey<a href="#RFC5652" class="xref">[RFC5652]</a>? Advantages: bandwidth savings of an extra OID and some sequences with one element. Disadvantages: ambiguous whether a encrypted key is traditional or composite until you look at the corresponding key.</p>
-<p id="rfc.section.5.1.p.5">EDNOTE:  I do not think we get a lot of value with Composite-OR with a single key because it is essentially just a wrapper around the regular algorithm.  I can see use for systems that recognize the composite structure which may not yet support all the component encryption algorithms, so a composite with algorithms that are not yet understood could be pushed out and one or more of the components could get used.</p>
-<h1 id="rfc.section.5.2">
-<a href="#rfc.section.5.2">5.2.</a> <a href="#sec-comp-or-thresh-encr" id="sec-comp-or-thresh-encr">Composite-OR threshold encryption</a>
-</h1>
-<p id="rfc.section.5.2.p.1">If the algorithm ID of the recipient public key is id-composite-or-key then the encryptor MAY use either key trasnport mode (<a href="#sec-com-key-trans_encr" class="xref">Section 2</a>} and <a href="#sec-com-key-trans_kem" class="xref">Section 3</a>) with only a subset of the component keys and therefore produce fewer ciphertexts than the number of recipient component keys.</p>
-<p id="rfc.section.5.2.p.2">Composite-OR subset encryption uses the same structures and processes as <a href="#sec-com-key-trans_encr" class="xref">Section 2</a>} or <a href="#sec-com-key-trans_kem" class="xref">Section 3</a>, with the difference that the encryption process may emit a null instead of a ciphertext one or more component algorithms. A Composite-OR CompositeEncryptedKey MUST NOT be entirely null; it must contain at least one ciphertext.</p>
-<p id="rfc.section.5.2.p.3">The design intent of this mode is to support migration scenarios where an entity is encrypting for a peer which has been issued keys on algorithms that either the encryptor or the recipient do not (yet) support.</p>
+<p id="rfc.section.5.p.1">This section addresses practical issues of how this draft affects other protocols and standards.</p>
 <h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#sec-in-pract" id="sec-in-pract">In Practice</a>
+<a href="#rfc.section.6">6.</a> <a href="#sec-iana" id="sec-iana">IANA Considerations</a>
 </h1>
-<p id="rfc.section.6.p.1">This section addresses practical issues of how this draft affects other protocols and standards.</p>
-<h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#sec-iana" id="sec-iana">IANA Considerations</a>
-</h1>
-<p id="rfc.section.7.p.1">The ASN.1 module OID is TBD.  The id-alg-composite OID is to be assigned by IANA.  The authors suggest that IANA assign an OID on the id-pkix arc:</p>
+<p id="rfc.section.6.p.1">The following OIDs are to be assigned by IANA.  The authors suggest that IANA assign OIDs for composite encryption on the id-pkix arc:</p>
 <pre>
 id-alg-composite OBJECT IDENTIFIER ::= {
     iso(1) identified-organization(3) dod(6) internet(1) security(5)
-    mechanisms(5) pkix(7) algorithms(6) composite(??) }
+    mechanisms(5) pkix(7) algorithms(6) composite(??) id-alg-composite-encryption(??)}
 </pre>
+<pre>
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+    iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) algorithms(6) composite(??) id-alg-composite-kem(??)}
+</pre>
+<pre>
+
+id-alg-composite-keyex OBJECT IDENTIFIER ::= {
+    iOBJECT IDENTIFIER ::= {
+    iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) algorithms(6) composite(??) id-alg-composite-encryption(??)}
+</pre>
+<h1 id="rfc.section.7">
+<a href="#rfc.section.7">7.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
+</h1>
+<h1 id="rfc.section.7.1">
+<a href="#rfc.section.7.1">7.1.</a> <a href="#sec-consider-iid" id="sec-consider-iid">IID property of KEM primitives</a>
+</h1>
+<p id="rfc.section.7.1.p.1">Composite Key Transport using Encryption and KEM primitives defined in <a href="#sec-com-key-trans_kem" class="xref">Section 3</a> directly uses the shared secret output from the underlying KEM primitevas as a one-time-pad key to encrypt the CEK. Therefore the output of the KEM primitive of needs to meet the security properties of a one-time-pad key, namely that its bits are independent and identically distributed (IID). In particular, key agreement schemes such as ECDH or SIKE do not produce shared secrets that meet this requirement and therefore MUST use the fully general mechanism Composite Key Exchange defined in <a href="#sec-com-key-exchange" class="xref">Section 4</a>.</p>
+<p id="rfc.section.7.1.p.2">EDNOTE: Should this be brough to CFRG to decide which KEMs are appropriate to use with this mechanism? It may be possible that we need to run the KEM output through a KDF; but we're trying to avoid needing to carry a KDF AlgID here.</p>
+<h1 id="rfc.section.7.2">
+<a href="#rfc.section.7.2">7.2.</a> <a href="#composite-or-modes" id="composite-or-modes">Composite-OR modes</a>
+</h1>
+<p id="rfc.section.7.2.p.1">Composite-OR eases migration at the expense of security. For composite encryption and key encapsulation, the weakening of security is entirely at the discretion of the sender, since once data has been encrypted and transmitted with weak ciphers, there is nothing the recipient can do to protect the data against record &amp; decrypt attacks. Clients performing Composite Or encryption operations MUST ensure that the recipient's public key is of type id-composite-or-key before producing a ciphertext with a subset of the recipient's public keys.</p>
+<p id="rfc.section.7.2.p.2">For some cases of composite key exchange, notably when the underlying key exchange primitive is used in a fully interactive (aka "ephemeral-ephemeral") mode, the sender cannot begin encrypting data until the recipient has completed the key exchange. The recipient SHOULD reject the connection if one or more null ciphertexts are encountered when the recipient's public key is not of type id-composite-or-key.</p>
+<h1 id="rfc.section.7.3">
+<a href="#rfc.section.7.3">7.3.</a> <a href="#policy-for-deprecated-or-unacceptable-algorithms" id="policy-for-deprecated-or-unacceptable-algorithms">Policy for Deprecated or Unacceptable Algorithms</a>
+</h1>
+<p id="rfc.section.7.3.p.1">Within the context of composite encryption, the sender holds the responsibility to ensure that chosen algorithms are of sufficient strength prior to encrypting and transmitting sensitive data under them. Composite is designed to provide security redundancy and to remain strong as long as at least one of the component algorithms remains strong.</p>
+<p id="rfc.section.7.3.p.2">When encrypting for a Composite-OR public key and using a subset of the recipient's public key, then these redundancy guarantees no longer apply. The sender SHOULD employ a policy mechanism to ensure that they are using a combination of algorithms of sufficient strength. Even though this document does not define such a policy mechanism, but implementors making use of Composite-OR encryption are strongly encouraged to implement a policy mechanism.</p>
 <h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
+<a href="#rfc.section.8">8.</a> <a href="#appendices" id="appendices">Appendices</a>
 </h1>
 <h1 id="rfc.section.8.1">
-<a href="#rfc.section.8.1">8.1.</a> <a href="#policy-for-deprecated-and-acceptable-algorithms" id="policy-for-deprecated-and-acceptable-algorithms">Policy for Deprecated and Acceptable Algorithms</a>
+<a href="#rfc.section.8.1">8.1.</a> <a href="#asn1-module" id="asn1-module">ASN.1 Module</a>
 </h1>
-<p id="rfc.section.8.1.p.1">Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.</p>
-<p id="rfc.section.8.1.p.2">In the composite model this is less obvious since a single public key, certificate, or signature may contain a mixture of deprecated and non-deprecated algorithms. Moreover, implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though neither algorithm is acceptable by itself.</p>
-<p id="rfc.section.8.1.p.3">Specifying a modified verification algorithm to handle these situations is beyond the scope of this draft, but could be desirable as the subject of an application profile document, or to be up to the discretion of implementers.</p>
-<pre>
-2. Check policy to see whether A1, A2, ..., An constitutes a valid
-   combination of algorithms.
-
-   if not checkPolicy(A1, A2, ..., An), then
-     output "Invalid signature"
-</pre>
-<p id="rfc.section.8.1.p.4">While intentionally not specified in this document, implementors should put careful thought into implementing a meaningfull policy mechinism within the context of their signature verification engines, for example only algorithms that provide similar security levels should be combined together.</p>
+<p id="rfc.section.8.1.p.1">~~ TODO ~~</p>
 <h1 id="rfc.section.8.2">
-<a href="#rfc.section.8.2">8.2.</a> <a href="#composite-or-modes" id="composite-or-modes">Composite-OR modes</a>
+<a href="#rfc.section.8.2">8.2.</a> <a href="#intellectual-property-considerations" id="intellectual-property-considerations">Intellectual Property Considerations</a>
 </h1>
-<p id="rfc.section.8.2.p.1">Composite-OR eases migration at the expense of security. In the subset encryption variant the security of the composite ciphertext is weakened to the algorithms used. In the threshold encryption variant with a threshold of n key shares, the security of the ciphertext is to be evaluated as if the recipient's weakest n algorithms were used.</p>
-<h1 id="rfc.section.9">
-<a href="#rfc.section.9">9.</a> <a href="#appendices" id="appendices">Appendices</a>
+<p id="rfc.section.8.2.p.1">The following IPR Disclosure relates to this draft:</p>
+<p id="rfc.section.8.2.p.2">https://datatracker.ietf.org/ipr/3588/</p>
+<p id="rfc.section.8.2.p.3">We are grateful to all, including any contributors who may have been inadvertently omitted from this list.</p>
+<p id="rfc.section.8.2.p.4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those documents.  "Copying always makes things easier and less error prone" - <a href="#RFC8411" class="xref">[RFC8411]</a>.</p>
+<h1 id="rfc.section.8.3">
+<a href="#rfc.section.8.3">8.3.</a> <a href="#making-contributions" id="making-contributions">Making contributions</a>
 </h1>
-<h1 id="rfc.section.9.1">
-<a href="#rfc.section.9.1">9.1.</a> <a href="#asn1-module" id="asn1-module">ASN.1 Module</a>
-</h1>
-<p id="rfc.section.9.1.p.1">~~ TODO ~~</p>
-<p id="rfc.section.9.1.p.2">~~~</p>
-<h1 id="rfc.section.9.2">
-<a href="#rfc.section.9.2">9.2.</a> <a href="#intellectual-property-considerations" id="intellectual-property-considerations">Intellectual Property Considerations</a>
-</h1>
-<p id="rfc.section.9.2.p.1">The following IPR Disclosure relates to this draft:</p>
-<p id="rfc.section.9.2.p.2">https://datatracker.ietf.org/ipr/3588/</p>
-<p id="rfc.section.9.2.p.3">We are grateful to all, including any contributors who may have been inadvertently omitted from this list.</p>
-<p id="rfc.section.9.2.p.4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those documents.  "Copying always makes things easier and less error prone" - <a href="#RFC8411" class="xref">[RFC8411]</a>.</p>
-<h1 id="rfc.section.9.3">
-<a href="#rfc.section.9.3">9.3.</a> <a href="#making-contributions" id="making-contributions">Making contributions</a>
-</h1>
-<p id="rfc.section.9.3.p.1">Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:</p>
-<p id="rfc.section.9.3.p.2">https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-encryption</p>
+<p id="rfc.section.8.3.p.1">Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:</p>
+<p id="rfc.section.8.3.p.2">https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-encryption</p>
 <h1 id="rfc.references">
-<a href="#rfc.references">10.</a> Normative References</h1>
+<a href="#rfc.references">9.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -976,6 +1044,11 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 <a>Schaad, J.</a> and <a>R. Andrews</a>, "<a href="https://tools.ietf.org/html/rfc8411">IANA Registration for the Cryptographic Algorithm Object Identifier Range</a>", RFC 8411, DOI 10.17487/RFC8411, August 2018.</td>
 </tr>
 <tr>
+<td class="reference"><b id="SP80056cr2">[SP80056cr2]</b></td>
+<td class="top">
+<a>NIST</a>, "<a>SP 800-56c Rev. 2: Recommendation for Key-Derivation Methods in Key-Establishment Schemes</a>", August 2020.</td>
+</tr>
+<tr>
 <td class="reference"><b id="X.690">[X.690]</b></td>
 <td class="top">
 <a>ITU-T</a>, "<a>Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)</a>", ISO/IEC 8825-1:2015, November 2015.</td>
@@ -992,12 +1065,12 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 	</span>
 	<span class="org vcardline">Entrust Limited</span>
 	<span class="adr">
-	  <span class="vcardline">1000 Innovation Drive</span>
+	  <span class="vcardline">2500 Solandt Road -- Suite 100</span>
 
 	  <span class="vcardline">
 		<span class="locality">Ottawa, Ontario</span>,  
 		<span class="region"></span>
-		<span class="code">K2K 1E3</span>
+		<span class="code">K2K 3G5</span>
 	  </span>
 	  <span class="country-name vcardline">Canada</span>
 	</span>
@@ -1012,7 +1085,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 		<span class="family-name">Gray</span>
 	  </span>
 	</span>
-	<span class="org vcardline">Enrust Limited</span>
+	<span class="org vcardline">Entrust Limited</span>
 	<span class="adr">
 	  
 	  <span class="vcardline">
@@ -1033,7 +1106,7 @@ id-alg-composite OBJECT IDENTIFIER ::= {
 		<span class="family-name">Mister</span>
 	  </span>
 	</span>
-	<span class="org vcardline">Enrust Limited</span>
+	<span class="org vcardline">Entrust Limited</span>
 	<span class="adr">
 	  
 	  <span class="vcardline">
