@@ -1160,8 +1160,6 @@ Internet-Draft             PQ Composite Certs                  July 2021
 
    ~~ TODO ~~
 
-   ~~~
-
 8.2.  Intellectual Property Considerations
 
    The following IPR Disclosure relates to this draft:
@@ -1170,6 +1168,8 @@ Internet-Draft             PQ Composite Certs                  July 2021
 
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
+
+
 
 
 
@@ -1261,13 +1261,13 @@ Authors' Addresses
 
 
    John Gray
-   Enrust Limited
+   Entrust Limited
 
    Email: john.gray@entrust.com
 
 
    Serge Mister
-   Enrust Limited
+   Entrust Limited
 
    Email: serge.mister@entrust.com
 

@@ -31,14 +31,14 @@ author:
     -
       ins: J. Gray
       name: John Gray
-      org: Enrust Limited
+      org: Entrust Limited
       abbrev: Entrust
       email: john.gray@entrust.com
 
     -
       ins: S. Mister
       name: Serge Mister
-      org: Enrust Limited
+      org: Entrust Limited
       abbrev: Entrust
       email: serge.mister@entrust.com
   
@@ -663,7 +663,6 @@ When encrypting for a Composite-OR public key and using a subset of the recipien
 
 ~~ TODO ~~
 
-~~~
 
 ## Intellectual Property Considerations
 
