@@ -91,7 +91,7 @@ Table of Contents
      2.5.  Decryption process  . . . . . . . . . . . . . . . . . . .   9
    3.  Composite Key Transport using Encryption and KEM primitives .  11
      3.1.  Algorithm Identifier  . . . . . . . . . . . . . . . . . .  11
-     3.2.  Public key and key usage  . . . . . . . . . . . . . . . .  12
+     3.2.  Public key and key usage  . . . . . . . . . . . . . . . .  11
        3.2.1.  Composite-OR  . . . . . . . . . . . . . . . . . . . .  12
      3.3.  Algorithm parameters  . . . . . . . . . . . . . . . . . .  12
      3.4.  Encryption process  . . . . . . . . . . . . . . . . . . .  12
@@ -441,7 +441,7 @@ Generation Procedure:
             C := C XOR Si
             Ei = encrypt(Si, Pi, Ai)
 
-   4. Output E1, E2, .., En
+   3. Output E1, E2, .., En
 
 
 
@@ -566,8 +566,7 @@ Internet-Draft             PQ Composite Certs                  July 2021
    allows.
 
    EDNOTE: investigate whether this is actually a special case of the
-   next mechanism, and can therefore both sections can be folded
-   together.
+   next mechanism, and therefore both sections can be folded together.
 
 3.  Composite Key Transport using Encryption and KEM primitives
 
@@ -606,10 +605,11 @@ id-alg-composite-kem OBJECT IDENTIFIER ::= {
    EDNOTE: this is a temporary OID for the purposes of prototyping.
    Permanent OIDs should be requested from IANA, see Section 6.
 
+3.2.  Public key and key usage
 
-
-
-
+   The recipient MUST have a composite public key which supports key
+   transport or key encapsulation operations.  Where the recipient
+   public key has an associated keyUsage as specified in [RFC5280], it
 
 
 
@@ -618,11 +618,6 @@ Ounsworth, et al.       Expires January 13, 2022               [Page 11]
 Internet-Draft             PQ Composite Certs                  July 2021
 
 
-3.2.  Public key and key usage
-
-   The recipient MUST have a composite public key which supports key
-   transport or key encapsulation operations.  Where the recipient
-   public key has an associated keyUsage as specified in [RFC5280], it
    MUST have keyUsage: keyEncipherment.  In other words, the mechanism
    specified in this section applies only if all of the recipient's
    public keys are encryption or KEM algorithms.
@@ -662,6 +657,11 @@ Internet-Draft             PQ Composite Certs                  July 2021
 
    Given these conditions are met, the encryption process defined in
    Section 2.4 is modified as follows:
+
+
+
+
+
 
 
 
@@ -764,8 +764,8 @@ Internet-Draft             PQ Composite Certs                  July 2021
    Composite key exchange uses the underlying primitive to either
    encrypt for, encapsulate, or interactively do key agreement with each
    of the recipient's public keys, then all shared secrets are
-   concatenated together and a KDF is applies as prescribed by NIST
-   SP-800 56Cr2 <TODO: cite properly>.
+   concatenated together and a KDF is applies as prescribed by NIST SP
+   800-56Cr2 [SP80056cr2].
 
 4.1.  Algorithm Identifier
 
@@ -849,8 +849,8 @@ Internet-Draft             PQ Composite Certs                  July 2021
    Composite key exchange uses the underlying primitive to either
    encrypt for, encapsulate, or interactively do key agreement with each
    of the recipient's public keys, then all shared secrets are
-   concatenated together and a KDF is applies as prescribed by NIST
-   SP-800 56Cr2 <TODO: cite properly>.
+   concatenated together and a KDF is applies as prescribed by NIST SP
+   800-56Cr2 [SP80056cr2].
 
 
 
@@ -1239,6 +1239,11 @@ Internet-Draft             PQ Composite Certs                  July 2021
               RFC 8411, DOI 10.17487/RFC8411, August 2018,
               <https://www.rfc-editor.org/info/rfc8411>.
 
+   [SP80056cr2]
+              NIST, "SP 800-56c Rev. 2: Recommendation for Key-
+              Derivation Methods in Key-Establishment Schemes", August
+              2020.
+
    [X.690]    ITU-T, "Information technology - ASN.1 encoding Rules:
               Specification of Basic Encoding Rules (BER), Canonical
               Encoding Rules (CER) and Distinguished Encoding Rules
@@ -1265,11 +1270,6 @@ Authors' Addresses
    Enrust Limited
 
    Email: serge.mister@entrust.com
-
-
-
-
-
 
 
 

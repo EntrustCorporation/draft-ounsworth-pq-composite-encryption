@@ -59,6 +59,11 @@ normative:
         org: ITU-T
       seriesinfo:
         ISO/IEC: 8825-1:2015
+  SP80056cr2:
+      title: "SP 800-56c Rev. 2: Recommendation for Key-Derivation Methods in Key-Establishment Schemes"
+      date: August 2020
+      author:
+        org: NIST
 
 
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
@@ -266,7 +271,7 @@ Generation Procedure:
             C := C XOR Si
             Ei = encrypt(Si, Pi, Ai)
 
-   4. Output E1, E2, .., En
+   3. Output E1, E2, .., En
 ~~~
 
 Where `random_bits(SIZE)` is a cryptographically-secure random bit generator outputting SIZE bits, and where `emptyOctetString` is the octet string of length 0.
@@ -325,7 +330,7 @@ Generation Procedure:
 
 The if statement in step 1 (and ensuring its proper bit length for the XOR in step 2) is the only modification required to support Composite Or encryption. The designers have intentionally omitted a check that the recipient key is of type id-composite-or-key because even if the sender erroneously used composite or subset encryption for a recipient key which is not of type id-composite-or-key, the damage has already been done by encrypting and transmitting the data, no further harm can be done by decrypting it. However, where appropriate, clients SHOULD indicate a warning to users that this data was transmitted with weaker encrypting than their public key allows.
 
-EDNOTE: investigate whether this is actually a special case of the next mechanism, and can therefore both sections can be folded together.
+EDNOTE: investigate whether this is actually a special case of the next mechanism, and therefore both sections can be folded together.
 
 
 # Composite Key Transport using Encryption and KEM primitives {#sec-com-key-trans_kem}
@@ -441,7 +446,7 @@ This mode is the most general in that it supports a composite recipient public k
 
 This mode is compatible with protocols requiring a key agreement primitive, such as CMS' KeyAgreeRecipientInfo [RFC5652].
 
-Composite key exchange uses the underlying primitive to either encrypt for, encapsulate, or interactively do key agreement with each of the recipient's public keys, then all shared secrets are concatenated together and a KDF is applies as prescribed by NIST SP-800 56Cr2 <TODO: cite properly>.
+Composite key exchange uses the underlying primitive to either encrypt for, encapsulate, or interactively do key agreement with each of the recipient's public keys, then all shared secrets are concatenated together and a KDF is applies as prescribed by NIST SP 800-56Cr2 [SP80056cr2].
 
 
 ## Algorithm Identifier
@@ -490,7 +495,7 @@ here for completeness.
 
 ## Encapsulation Process
 
-Composite key exchange uses the underlying primitive to either encrypt for, encapsulate, or interactively do key agreement with each of the recipient's public keys, then all shared secrets are concatenated together and a KDF is applies as prescribed by NIST SP-800 56Cr2 <TODO: cite properly>.
+Composite key exchange uses the underlying primitive to either encrypt for, encapsulate, or interactively do key agreement with each of the recipient's public keys, then all shared secrets are concatenated together and a KDF is applies as prescribed by NIST SP 800-56Cr2 [SP80056cr2].
 
 ~~~
 Input:
