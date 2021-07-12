@@ -298,9 +298,6 @@ id-alg-composite-encryption OBJECT IDENTIFIER ::= {
    EDNOTE: this is a temporary OID for the purposes of prototyping.
    Permanent OIDs should be requested from IANA, see Section 6.
 
-   EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in
-   the Entrust arc.
-
 2.2.  Public key and key usage
 
    The recipient MUST have a composite public key which supports key
@@ -329,6 +326,9 @@ id-alg-composite-encryption OBJECT IDENTIFIER ::= {
    this document, a recipient marking their public key as id-composite-
    or-key must accept the risk that a sender may encrypt sensitive data
    for it using any one of its component keys in isolation.  Composite
+   Or is a direct tradeoff of lower security for increased migration
+   flexibility.
+
 
 
 
@@ -337,9 +337,6 @@ Ounsworth, et al.       Expires January 13, 2022                [Page 6]
 
 Internet-Draft             PQ Composite Certs                  July 2021
 
-
-   Or is a direct tradeoff of lower security for increased migration
-   flexibility.
 
 2.3.  Algorithm parameters
 
@@ -356,6 +353,9 @@ Internet-Draft             PQ Composite Certs                  July 2021
    length as the content encryption key.  The final one-time-pad key is
    computed by XOR'ing the content encryption key with each of n-1
    previous keys.
+
+
+
 
 
 
@@ -566,7 +566,8 @@ Internet-Draft             PQ Composite Certs                  July 2021
    allows.
 
    EDNOTE: investigate whether this is actually a special case of the
-   next mechanism, and can therefore be removed.
+   next mechanism, and can therefore both sections can be folded
+   together.
 
 3.  Composite Key Transport using Encryption and KEM primitives
 
@@ -605,8 +606,7 @@ id-alg-composite-kem OBJECT IDENTIFIER ::= {
    EDNOTE: this is a temporary OID for the purposes of prototyping.
    Permanent OIDs should be requested from IANA, see Section 6.
 
-   EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in
-   the Entrust arc.
+
 
 
 
@@ -789,9 +789,6 @@ Internet-Draft             PQ Composite Certs                  July 2021
    EDNOTE: this is a temporary OID for the purposes of prototyping.
    Permanent OIDs should be requested from IANA, see Section 6.
 
-   EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in
-   the Entrust arc.
-
 4.2.  Public key and key usage
 
    The recipient MUST have a composite public key which supports key
@@ -834,6 +831,9 @@ Internet-Draft             PQ Composite Certs                  July 2021
 
    Params ::= KeyDerivationAlgorithmIdentifier
 
+   The KeyDerivationAlgorithmIdentifier type is specified in [RFC5652].
+   The KeyDerivationAlgorithmIdentifier definition is repeated here for
+   completeness.
 
 
 
@@ -841,10 +841,6 @@ Ounsworth, et al.       Expires January 13, 2022               [Page 15]
 
 Internet-Draft             PQ Composite Certs                  July 2021
 
-
-   The KeyDerivationAlgorithmIdentifier type is specified in [RFC5652].
-   The KeyDerivationAlgorithmIdentifier definition is repeated here for
-   completeness.
 
    KeyDerivationAlgorithmIdentifier ::= AlgorithmIdentifier
 
@@ -855,6 +851,10 @@ Internet-Draft             PQ Composite Certs                  July 2021
    of the recipient's public keys, then all shared secrets are
    concatenated together and a KDF is applies as prescribed by NIST
    SP-800 56Cr2 <TODO: cite properly>.
+
+
+
+
 
 
 

@@ -600,7 +600,6 @@ id-alg-composite-encryption OBJECT IDENTIFIER ::= {
     Algorithm(80) Composite(4) id-alg-composite-encryption(4) }
 </pre>
 <p id="rfc.section.2.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see <a href="#sec-iana" class="xref">Section 6</a>.</p>
-<p id="rfc.section.2.1.p.3">EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.</p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#public-key-and-key-usage" id="public-key-and-key-usage">Public key and key usage</a>
 </h1>
@@ -717,7 +716,7 @@ Generation Procedure:
    3. Output CEK
 </pre>
 <p id="rfc.section.2.5.p.2">The if statement in step 1 (and ensuring its proper bit length for the XOR in step 2) is the only modification required to support Composite Or encryption. The designers have intentionally omitted a check that the recipient key is of type id-composite-or-key because even if the sender erroneously used composite or subset encryption for a recipient key which is not of type id-composite-or-key, the damage has already been done by encrypting and transmitting the data, no further harm can be done by decrypting it. However, where appropriate, clients SHOULD indicate a warning to users that this data was transmitted with weaker encrypting than their public key allows.</p>
-<p id="rfc.section.2.5.p.3">EDNOTE: investigate whether this is actually a special case of the next mechanism, and can therefore be removed.</p>
+<p id="rfc.section.2.5.p.3">EDNOTE: investigate whether this is actually a special case of the next mechanism, and can therefore both sections can be folded together.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#sec-com-key-trans_kem" id="sec-com-key-trans_kem">Composite Key Transport using Encryption and KEM primitives</a>
 </h1>
@@ -736,7 +735,6 @@ id-alg-composite-kem OBJECT IDENTIFIER ::= {
     Algorithm(80) Composite(4) id-alg-composite-kem(5)} 
 </pre>
 <p id="rfc.section.3.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see <a href="#sec-iana" class="xref">Section 6</a>.</p>
-<p id="rfc.section.3.1.p.3">EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#public-key-and-key-usage-1" id="public-key-and-key-usage-1">Public key and key usage</a>
 </h1>
@@ -826,7 +824,6 @@ id-alg-composite-keyex OBJECT IDENTIFIER ::= {
     Algorithm(80) Composite(4) id-alg-composite-encryption(6) }
 </pre>
 <p id="rfc.section.4.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see <a href="#sec-iana" class="xref">Section 6</a>.</p>
-<p id="rfc.section.4.1.p.3">EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.</p>
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#public-key-and-key-usage-2" id="public-key-and-key-usage-2">Public key and key usage</a>
 </h1>

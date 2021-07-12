@@ -192,7 +192,6 @@ id-alg-composite-encryption OBJECT IDENTIFIER ::= {
 
 EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see {{sec-iana}}.
 
-EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.
 
 ## Public key and key usage
 
@@ -326,7 +325,7 @@ Generation Procedure:
 
 The if statement in step 1 (and ensuring its proper bit length for the XOR in step 2) is the only modification required to support Composite Or encryption. The designers have intentionally omitted a check that the recipient key is of type id-composite-or-key because even if the sender erroneously used composite or subset encryption for a recipient key which is not of type id-composite-or-key, the damage has already been done by encrypting and transmitting the data, no further harm can be done by decrypting it. However, where appropriate, clients SHOULD indicate a warning to users that this data was transmitted with weaker encrypting than their public key allows.
 
-EDNOTE: investigate whether this is actually a special case of the next mechanism, and can therefore be removed.
+EDNOTE: investigate whether this is actually a special case of the next mechanism, and can therefore both sections can be folded together.
 
 
 # Composite Key Transport using Encryption and KEM primitives {#sec-com-key-trans_kem}
@@ -352,7 +351,6 @@ id-alg-composite-kem OBJECT IDENTIFIER ::= {
 
 EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see {{sec-iana}}.
 
-EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.
 
 ## Public key and key usage 
 
@@ -458,8 +456,6 @@ id-alg-composite-keyex OBJECT IDENTIFIER ::= {
 ~~~
 
 EDNOTE: this is a temporary OID for the purposes of prototyping. Permanent OIDs should be requested from IANA, see {{sec-iana}}.
-
-EDNOTE: I'm inventing OIDs on the OpenCA arc; need to put these in the Entrust arc.
 
 
 ## Public key and key usage 
