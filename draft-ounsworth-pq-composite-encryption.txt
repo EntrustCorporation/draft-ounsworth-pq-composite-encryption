@@ -5,8 +5,8 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                               S. Mister
-Expires: August 9, 2022                                          Entrust
-                                                       February 05, 2022
+Expires: August 16, 2022                                         Entrust
+                                                       February 12, 2022
 
 
               Composite Encryption For Use In Internet PKI
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                 [Page 1]
+Ounsworth, et al.        Expires August 16, 2022                [Page 1]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -61,7 +61,7 @@ Internet-Draft             PQ Composite Certs              February 2022
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 9, 2022.
+   This Internet-Draft will expire on August 16, 2022.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                 [Page 2]
+Ounsworth, et al.        Expires August 16, 2022                [Page 2]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -165,7 +165,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                 [Page 3]
+Ounsworth, et al.        Expires August 16, 2022                [Page 3]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -221,7 +221,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                 [Page 4]
+Ounsworth, et al.        Expires August 16, 2022                [Page 4]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -277,7 +277,7 @@ CompositeEncryptedKey ::= EncryptedKey{ SEQUENCE SIZE (2..Max)  OF OCTET STRING}
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                 [Page 5]
+Ounsworth, et al.        Expires August 16, 2022                [Page 5]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -333,7 +333,7 @@ id-alg-composite-encryption OBJECT IDENTIFIER ::= {
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                 [Page 6]
+Ounsworth, et al.        Expires August 16, 2022                [Page 6]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -389,7 +389,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                 [Page 7]
+Ounsworth, et al.        Expires August 16, 2022                [Page 7]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -445,7 +445,7 @@ Generation Procedure:
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                 [Page 8]
+Ounsworth, et al.        Expires August 16, 2022                [Page 8]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -501,7 +501,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                 [Page 9]
+Ounsworth, et al.        Expires August 16, 2022                [Page 9]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -557,7 +557,7 @@ Generation Procedure:
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 10]
+Ounsworth, et al.        Expires August 16, 2022               [Page 10]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -613,7 +613,7 @@ id-alg-composite-kem OBJECT IDENTIFIER ::= {
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 11]
+Ounsworth, et al.        Expires August 16, 2022               [Page 11]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -669,7 +669,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 12]
+Ounsworth, et al.        Expires August 16, 2022               [Page 12]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -725,7 +725,7 @@ Generation Procedure:
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 13]
+Ounsworth, et al.        Expires August 16, 2022               [Page 13]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -781,7 +781,7 @@ id-alg-composite-keyex OBJECT IDENTIFIER ::= {
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 14]
+Ounsworth, et al.        Expires August 16, 2022               [Page 14]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -837,7 +837,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 15]
+Ounsworth, et al.        Expires August 16, 2022               [Page 15]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -893,7 +893,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 16]
+Ounsworth, et al.        Expires August 16, 2022               [Page 16]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -949,7 +949,7 @@ Ciphertext and master secret Generation Procedure:
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 17]
+Ounsworth, et al.        Expires August 16, 2022               [Page 17]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -1005,7 +1005,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 18]
+Ounsworth, et al.        Expires August 16, 2022               [Page 18]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -1061,7 +1061,7 @@ Output:
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 19]
+Ounsworth, et al.        Expires August 16, 2022               [Page 19]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -1117,7 +1117,7 @@ id-alg-composite-keyex OBJECT IDENTIFIER ::= {
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 20]
+Ounsworth, et al.        Expires August 16, 2022               [Page 20]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -1173,7 +1173,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 21]
+Ounsworth, et al.        Expires August 16, 2022               [Page 21]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -1229,7 +1229,7 @@ Internet-Draft             PQ Composite Certs              February 2022
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 22]
+Ounsworth, et al.        Expires August 16, 2022               [Page 22]
 
 Internet-Draft             PQ Composite Certs              February 2022
 
@@ -1285,4 +1285,4 @@ Authors' Addresses
 
 
 
-Ounsworth, et al.        Expires August 9, 2022                [Page 23]
+Ounsworth, et al.        Expires August 16, 2022               [Page 23]

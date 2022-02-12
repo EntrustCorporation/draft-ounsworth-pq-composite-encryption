@@ -5,6 +5,7 @@ abbrev: PQ Composite Certs
 docname: draft-ounsworth-pq-composite-encryption-01
 
 # <!-- stand_alone: true -->
+ipr: trust200902
 area: Security
 wg: LAMPS
 kw: Internet-Draft
